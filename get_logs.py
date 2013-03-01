@@ -55,9 +55,9 @@ class parsePage:
             raise Exception("Date should be given as String")
         
         if type(logs_type) is str and (logs_type == "" or logs_type == "access" or logs_type == "error" or logs_type == "ftp" or logs_type == "cgi" or logs_type == "out" or logs_type == "ssh"):
-            self.logs_type = logs_type+"/"   
+            self.prepareLogsType(logs_type)   
         else:
-            raise Exception("Logs type should be given as String and should have one of values: access, error, ftp, cgi, out, ssh")
+            raise Exception("Logs type should be given as String")
 
         if type(report_format) is str and (report_format == "" or report_format == "xml" or report_format == "html" or report_format == "txt"):
             self.report_format = report_format
@@ -70,6 +70,16 @@ class parsePage:
         self.date_start = self.prepareTime(date_start)
         self.date_end = self.prepareTime(date_end)
         self.days_range = self.generateDays(self.date_start, self.date_end)
+
+
+
+    def prepareLogsType(self, logs_type):
+        if (logs_type == "" or logs_type == "error" or logs_type == "ftp" or logs_type == "cgi" or logs_type == "out" or logs_type == "ssh"):
+            self.logs_type = logs_type+"/"   
+        elif logs_type == "access":
+            self.logs_type = "/"
+        else:
+            raise Exception("Logs type should have one of values: access, error, ftp, cgi, out, ssh")
 
 
 
@@ -107,6 +117,7 @@ class parsePage:
 
 
     def loadPage(self):
+        print self.logs_address
         try:
             if len(self.login) != 0:
                 params = urllib.urlencode("")
@@ -117,30 +128,34 @@ class parsePage:
                 opened_url = urllib2.urlopen(self.logs_address)
 
             self.page_handle = StringIO.StringIO(opened_url.read())
-            return True
+            return 1
         except urllib2.HTTPError as error:
-            print error
-            return False
-
+            errMsg = str(error)
+            if "401" in errMsg:
+                return 401
+            elif "404" in errMsg:
+                return 404
+            else:
+                return -1
 
 
     def loadLogsFromDay(self, day):
         self.prepareAddress(day)
         getPageResult = self.loadPage()
-        if getPageResult == True:
+        if getPageResult == 1:
             if day == self.today:
                 result = self.page_handle.read()
             else:
                 result = self.decompresFile()    
         else:
-            result = "-1"
+            result = str(getPageResult)
 
         return result
     
 
     
     def loadLogs(self):
-        if len(self.logs) == 0 or self.logs == "-1":
+        if len(self.logs) == 0:
             if (self.date_start == self.date_end):
                 result =  self.loadLogsFromDay(self.date_start)
             else:

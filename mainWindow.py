@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.prepareMainWidget()
         
         self.main_window.setObjectName(_fromUtf8("MainWindow"))
-        self.main_window.resize(796, 600)
+        self.main_window.resize(1024, 768)
         self.main_window.setCentralWidget(self.mainWidget)
 
         self.retranslateUi()
@@ -97,6 +97,7 @@ class Ui_MainWindow(object):
 
         self.startDateValue = QtGui.QDateEdit()
         self.startDateValue.setObjectName(_fromUtf8("startDateValue"))
+        self.startDateValue.setDate(QtCore.QDate().currentDate())
         self.firstLineTopWidgetLayout.addWidget(self.startDateValue)
 
         self.endDateLabel = QtGui.QLabel(_fromUtf8("End date: "))
@@ -105,6 +106,7 @@ class Ui_MainWindow(object):
         
         self.endDateValue = QtGui.QDateEdit()
         self.endDateValue.setObjectName(_fromUtf8("endDateValue"))
+        self.endDateValue.setDate(QtCore.QDate().currentDate())
         self.firstLineTopWidgetLayout.addWidget(self.endDateValue)
         
         self.firstLineTopWidget.setLayout(self.firstLineTopWidgetLayout)

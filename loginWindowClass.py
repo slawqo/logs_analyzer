@@ -23,6 +23,7 @@ class loginWindow(QtGui.QDialog):
         self.login = QtGui.QLineEdit(self)
         self.passwordLabel = QtGui.QLabel(_fromUtf8("Password: "))
         self.password = QtGui.QLineEdit()
+        self.password.setEchoMode(QtGui.QLineEdit.Password)
         self.buttonLogin = QtGui.QPushButton(_fromUtf8("Login"))
         self.buttonLogin.clicked.connect(self.handleLogin)
         layout = QtGui.QGridLayout()

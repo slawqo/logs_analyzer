@@ -45,26 +45,38 @@ class mainApp(QtGui.QMainWindow):
         if len(page) != 0:
             start = self.ui.startDateValue.date()
             end = self.ui.endDateValue.date()
+
+            #jeżeli ktoś podał zły zakres dat:
+            if start > end:
+                end = start #wyrównaj datę końcową z początkową jeżeli koniec jest wcześniejszy niż poczętek
+                self.ui.endDateValue.setDate(start)
+            
             self.parser.test_page = page 
             self.parser.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
-            self.parser.logs_type = "/" #@TODO: dodać możliwość wybierania typu logów
+            self.parser.prepareLogsType(str(self.ui.logsTypeValue.currentText())) 
             self.parser.report_format = "xml" #@TODO: dodać drugą kartę z raportem
-            print type(start)
-            if start > end:
-                print "Error"
+            
             logs = self.parser.loadLogs()
-            if logs == "-1":
+            self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+            if logs == "401":
                 logWin = loginWindow(self)
                 logWin.exec_()
                 self.parser.login = self.login
                 self.parser.password = self.password
                 self.getLogs()
+            elif logs == "404":
+                QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
+            elif logs == "-1":
+                QtGui.QMessageBox.about(self, "Error", "Unknown error")
             else:
                 self.displayDataInColumns(logs)
+        else:
+            QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
 
 
     def displayDataInColumns(self, logs):
+        self.ui.resultsView.clear()
         logs_lines = logs.split("\n")
         for line in logs_lines:
             self.ui.resultsView.addItem(str(line))
