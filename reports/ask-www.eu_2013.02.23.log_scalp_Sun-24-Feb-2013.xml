@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ File created by Scalp! by Romain Gaucher - http://code.google.com/p/apache-scalp
+ Apache log attack analysis tool based on PHP-IDS filters
+-->
+<scalp file="ask-www.eu_2013.02.23.log" time="Sun-24-Feb-2013">
+  <attack type="xss" name="Cross-Site Scripting">
+    <impact value="5">
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.101 www.ask-www.eu - [23/Feb/2013:01:17:08 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/WinCache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.86 www.ask-www.eu - [23/Feb/2013:01:51:14 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Test.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.114 www.ask-www.eu - [23/Feb/2013:01:54:44 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Static.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.85 www.ask-www.eu - [23/Feb/2013:04:48:38 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Static.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.82 www.ask-www.eu - [23/Feb/2013:05:24:03 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Memcached.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.113 www.ask-www.eu - [23/Feb/2013:07:08:58 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Xcache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.97 www.ask-www.eu - [23/Feb/2013:07:55:59 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/WinCache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.97 www.ask-www.eu - [23/Feb/2013:07:54:53 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Test.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.115 www.ask-www.eu - [23/Feb/2013:08:10:26 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Static.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.110 www.ask-www.eu - [23/Feb/2013:10:45:53 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Static.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.108 www.ask-www.eu - [23/Feb/2013:13:26:05 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/File.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.118 www.ask-www.eu - [23/Feb/2013:14:04:31 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Test.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.107 www.ask-www.eu - [23/Feb/2013:14:12:55 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/WinCache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.103 www.ask-www.eu - [23/Feb/2013:14:25:08 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Xcache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.86 www.ask-www.eu - [23/Feb/2013:17:26:41 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Xcache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.104 www.ask-www.eu - [23/Feb/2013:19:53:16 +0100] "GET /zend_tests/library/Zend/Controller/Action/HelperBroker/.svn/text-base/PriorityStack.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.116 www.ask-www.eu - [23/Feb/2013:20:43:04 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/WinCache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.81 www.ask-www.eu - [23/Feb/2013:20:43:58 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/Test.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.89 www.ask-www.eu - [23/Feb/2013:20:44:32 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/File.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+      <item>
+        <reason><![CDATA[Detects basic obfuscated JavaScript script injections]]></reason>
+        <line><![CDATA[66.249.73.84 www.ask-www.eu - [23/Feb/2013:23:17:58 +0100] "GET /zend_tests/library/Zend/Cache/Backend/.svn/text-base/WinCache.php.svn-base HTTP/1.1" 500 582 "-" "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+]]></line>
+      </item>
+    </impact>
+  </attack>
+  <attack type="csrf" name="Cross-Site Request Forgery">
+  </attack>
+  <attack type="format string">
+  </attack>
+  <attack type="spam" name="Spam">
+  </attack>
+  <attack type="lfi" name="Local File Inclusion">
+  </attack>
+  <attack type="sqli" name="SQL Injection">
+  </attack>
+  <attack type="rfe" name="Remote File Execution">
+  </attack>
+  <attack type="dos" name="Denial Of Service">
+  </attack>
+  <attack type="dt" name="Directory Traversal">
+  </attack>
+  <attack type="id" name="Information Disclosure">
+  </attack>
+</scalp>

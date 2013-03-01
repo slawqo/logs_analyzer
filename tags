@@ -1,0 +1,88 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Exception	get_logs.py	/^class Exception(BaseException):$/;"	c
+StringIO	get_logs.py	/^import StringIO$/;"	i
+StringIO	scalp.py	/^from StringIO import StringIO$/;"	i
+__application__	scalp.py	/^__application__ = "scalp"$/;"	v
+__author__	scalp.py	/^__author__      = "Romain Gaucher"$/;"	v
+__getattr__	scalp.py	/^	def __getattr__(self, item):$/;"	m	class:object_dict	file:
+__init__	get_logs.py	/^    def __init__(self, address, date_start, date_end, logs_type):$/;"	m	class:parsePage
+__init__	get_logs.py	/^    def __init__(self, m):$/;"	m	class:Exception
+__init__	scalp.py	/^	def __init__(self, initd=None):$/;"	m	class:object_dict
+__parse_node	scalp.py	/^def __parse_node(node):$/;"	f	file:
+__release__	scalp.py	/^__release__     = __application__ + '\/' + __version__$/;"	v
+__setattr__	scalp.py	/^	def __setattr__(self, item, value):$/;"	m	class:object_dict	file:
+__str__	get_logs.py	/^    def __str__(self):$/;"	m	class:Exception	file:
+__version__	scalp.py	/^__version__     = "0.4"$/;"	v
+analyze_date	scalp.py	/^def analyze_date(date):$/;"	f
+analyzer	scalp.py	/^def analyzer(data):$/;"	f
+base64	scalp.py	/^import time, base64$/;"	i
+c_reg	scalp.py	/^c_reg = re.compile(r'^(.+)-(.*)\\[(.+)[-|+](\\d+)\\] "([A-Z]+)?(.+) HTTP\/\\d.\\d" (\\d+)(\\s[\\d]+)?(\\s"(.+)" )?(.*)$')$/;"	v
+calendar	get_logs.py	/^import calendar$/;"	i
+checker	get_logs.py	/^    checker = parsePage(page, day_start, day_end, logs_type)$/;"	v
+correct_period	scalp.py	/^def correct_period(date, period):$/;"	f
+createReport	get_logs.py	/^    def createReport(self):$/;"	m	class:parsePage
+d_replace	scalp.py	/^d_replace = {$/;"	v
+datetime	get_logs.py	/^import datetime$/;"	i
+day_end	get_logs.py	/^    day_end = today.strftime("%d.%m.%Y")$/;"	v
+day_start	get_logs.py	/^    day_start = today.strftime("%d.%m.%Y")$/;"	v
+decode_attempt	scalp.py	/^def decode_attempt(string):$/;"	f
+decompresFile	get_logs.py	/^    def decompresFile(self):$/;"	m	class:parsePage
+etree	scalp.py	/^			import xml.etree.ElementTree as etree$/;"	i
+etree	scalp.py	/^		import xml.etree.cElementTree as etree$/;"	i
+etree	scalp.py	/^	from lxml import etree$/;"	i
+fill_replace_dict	scalp.py	/^def fill_replace_dict():$/;"	f
+generateDays	get_logs.py	/^    def generateDays(self, start, end):$/;"	m	class:parsePage
+generate_html_file	scalp.py	/^def generate_html_file(flag, access, filters, odir):$/;"	f
+generate_text_file	scalp.py	/^def generate_text_file(flag, access, filters, odir):$/;"	f
+generate_xml_file	scalp.py	/^def generate_xml_file(flag, access, filters, odir):$/;"	f
+get_value	scalp.py	/^def get_value(array, default):$/;"	f
+gzip	get_logs.py	/^import gzip$/;"	i
+help	scalp.py	/^def help():$/;"	f
+html_entities	scalp.py	/^def html_entities(str):$/;"	f
+loadLogs	get_logs.py	/^    def loadLogs(self):$/;"	m	class:parsePage
+loadLogsFromDay	get_logs.py	/^    def loadLogsFromDay(self, day):$/;"	m	class:parsePage
+loadPage	get_logs.py	/^    def loadPage(self):$/;"	m	class:parsePage
+logs	get_logs.py	/^    logs = ""$/;"	v	class:parsePage
+logs	get_logs.py	/^    logs = checker.saveLogs();$/;"	v
+logs_type	get_logs.py	/^                    logs_type = splitted[1]$/;"	v
+logs_type	get_logs.py	/^    logs_type = ""  #default is Access log when is empty$/;"	v
+main	scalp.py	/^def main(argc, argv):$/;"	f
+main_address	get_logs.py	/^    main_address = "http:\/\/logs.ovh.net"$/;"	v	class:parsePage
+months	scalp.py	/^months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']$/;"	v
+multiple_replace	scalp.py	/^def multiple_replace(text):$/;"	f
+names	scalp.py	/^names = {$/;"	v
+object_dict	scalp.py	/^class object_dict(dict):$/;"	c
+os	get_logs.py	/^import os$/;"	i
+os	scalp.py	/^import os,sys,re,random$/;"	i
+page	get_logs.py	/^                page = splitted[1]$/;"	v
+page	get_logs.py	/^    page = "";$/;"	v
+parse	scalp.py	/^def parse(xml_file):$/;"	f
+parseDates	get_logs.py	/^def parseDates(day_1, day_2):$/;"	f
+parsePage	get_logs.py	/^class parsePage:$/;"	c
+prepareAddress	get_logs.py	/^    def prepareAddress(self, day):$/;"	m	class:parsePage
+prepareTime	get_logs.py	/^    def prepareTime(self, day):$/;"	m	class:parsePage
+progressBar	get_logs.py	/^    def progressBar(self, progress):$/;"	m	class:parsePage
+random	scalp.py	/^import os,sys,re,random$/;"	i
+re	scalp.py	/^import os,sys,re,random$/;"	i
+re_replace	scalp.py	/^re_replace = None$/;"	v
+report	get_logs.py	/^    report = checker.createReport()$/;"	v
+saveLogs	get_logs.py	/^    def saveLogs(self):$/;"	m	class:parsePage
+scalp	get_logs.py	/^import scalp$/;"	i
+scalper	scalp.py	/^def scalper(access, filters, preferences = [], output = "text"):$/;"	f
+splitted	get_logs.py	/^        splitted = arg.split("=")$/;"	v
+splitted_day	get_logs.py	/^                splitted_day = splitted[1].split("-")$/;"	v
+sys	get_logs.py	/^import sys$/;"	i
+sys	scalp.py	/^import os,sys,re,random$/;"	i
+table	scalp.py	/^table = {}$/;"	v
+time	scalp.py	/^import time, base64$/;"	i
+today	get_logs.py	/^    today = datetime.date.today()$/;"	v
+urllib	get_logs.py	/^import urllib$/;"	i
+urllib2	get_logs.py	/^import urllib2$/;"	i
+with_statement	scalp.py	/^from __future__ import with_statement$/;"	i
+xml	scalp.py	/^			import xml.etree.ElementTree as etree$/;"	i
+xml	scalp.py	/^		import xml.etree.cElementTree as etree$/;"	i
