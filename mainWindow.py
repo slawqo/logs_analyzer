@@ -67,7 +67,7 @@ class Ui_MainWindow(object):
         self.firstLineTopWidget = QtGui.QWidget()
         self.firstLineTopWidget.setObjectName(_fromUtf8("firstLineTopWidget"))
         self.secondLineTopWidget = QtGui.QWidget()
-        self.secondLineTopWidget.setObjectName(_fromUtf8("secondLineTopWidget"))    
+        self.secondLineTopWidget.setObjectName(_fromUtf8("secondLineTopWidget"))  
 
         self.topWidgetLayout = QtGui.QVBoxLayout()
         self.firstLineTopWidgetLayout = QtGui.QHBoxLayout()
@@ -115,9 +115,10 @@ class Ui_MainWindow(object):
         #druga linia górnego widgetu:
         self.getLogsButton = QtGui.QPushButton(_fromUtf8("Get Logs"))
         self.getLogsButton.setObjectName(_fromUtf8("getLogsButton"))
-        self.secondLineTopWidgetLayout.addWidget(self.getLogsButton)
+        self.getLogsButton.setFixedSize(100, 25)
+        self.secondLineTopWidgetLayout.addWidget(self.getLogsButton, 0, QtCore.Qt.AlignLeft)
 
-        self.secondLineTopWidgetLayout.addStretch(1)
+        #self.secondLineTopWidgetLayout.addStretch(0)
         self.secondLineTopWidget.setLayout(self.secondLineTopWidgetLayout)
         #koniec konfiguracji drugiej linii górnego widgetu    
 

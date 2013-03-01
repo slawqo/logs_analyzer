@@ -55,9 +55,21 @@ class mainApp(QtGui.QMainWindow):
             self.parser.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
             self.parser.prepareLogsType(str(self.ui.logsTypeValue.currentText())) 
             self.parser.report_format = "xml" #@TODO: dodać drugą kartę z raportem
-            
-            logs = self.parser.loadLogs()
+           
+            #ustawienie paska postępu pobierania logów:
+            progressBar = QtGui.QProgressBar()
+            progressBar.setMinimum(0)
+            progressBar.setMaximum(100)
+            self.ui.secondLineTopWidgetLayout.addWidget(progressBar)
+        
+            #pobranie logów:
+            logs = self.parser.loadLogs(progressBar)
             self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+            
+            #usunięcie paska postępu:
+            progressBar.deleteLater()
+           
+            #analiza i wyswietlenie pobranych wyników 
             if logs == "401":
                 logWin = loginWindow(self)
                 logWin.exec_()

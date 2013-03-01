@@ -154,7 +154,7 @@ class parsePage:
     
 
     
-    def loadLogs(self):
+    def loadLogs(self, progressBarWindow = None):
         if len(self.logs) == 0:
             if (self.date_start == self.date_end):
                 result =  self.loadLogsFromDay(self.date_start)
@@ -163,10 +163,17 @@ class parsePage:
                 percent_per_day = 100/len(self.days_range)
                 counter = 0
                 for day in self.days_range:
-                    result = result+self.loadLogsFromDay(day)
+                    day_result = ""
+                    day_result = self.loadLogsFromDay(day)
+                    if day_result != "401" and day_result != "404" and day_result != "-1":
+                        result = result+self.loadLogsFromDay(day)
+                    
                     counter = counter + percent_per_day
-                    self.progressBar(counter)
-            
+                    if progressBarWindow == None:
+                        self.progressBar(counter)
+                    else:
+                        self.graphicalProgressBar(progressBarWindow, counter)
+
                 sys.stdout.write("\n")
             self.logs = result
         
@@ -220,6 +227,11 @@ class parsePage:
         sys.stdout.write('\r[{0}{1}] {2}%'.format('#'*(progress/1),'-'*((100-progress)/1), progress))
         sys.stdout.flush()
 
+
+
+    def graphicalProgressBar(self, bar, progress):
+        bar.setValue(progress)
+        bar.show()
 
 
     def createReport(self):
