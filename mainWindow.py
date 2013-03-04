@@ -130,14 +130,32 @@ class Ui_MainWindow(object):
 
 
     def prepareCentralWidget(self):
-        self.centralWidget = QtGui.QTabWidget()
+        self.centralWidget = QtGui.QWidget()
         self.centralWidget.setObjectName(_fromUtf8("centralwidget"))
-
+        
         self.centralWidgetLayout = QtGui.QHBoxLayout()
-        #self.centralWidgetLayout.addStretch(1)
-
+        
+        self.tabsContainer = QtGui.QTabWidget()
+        self.tabsContainer.setEnabled(True)
+    
         self.resultsView = QtGui.QListWidget()
         self.resultsView.setObjectName(_fromUtf8("resultsTable"))
-        self.centralWidgetLayout.addWidget(self.resultsView)
+        self.resultsView.setResizeMode(self.resultsView.Adjust)
+        self.reportView = QtGui.QListWidget()
+        self.reportView.setObjectName(_fromUtf8("reportView"))
 
+        self.addTab(self.tabsContainer, self.resultsView, "Log")
+        self.addTab(self.tabsContainer, self.reportView, "Report")
+
+        self.centralWidgetLayout.addWidget(self.tabsContainer)
         self.centralWidget.setLayout(self.centralWidgetLayout)
+
+
+
+    def addTab(self, container, widget, title):
+        layout = QtGui.QHBoxLayout()
+        centralWidget = QtGui.QWidget()
+        layout.addWidget(widget)
+        centralWidget.setLayout(layout)
+        container.addTab(centralWidget, _fromUtf8(""))
+        container.setTabText(container.indexOf(centralWidget), _fromUtf8(title))
