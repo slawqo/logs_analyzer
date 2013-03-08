@@ -181,7 +181,12 @@ class parsePage:
         
 
 
-    def saveLogs(self):
+    def getDownloadedLogs(self):
+        return self.logs
+
+
+
+    def saveLogs(self, progressBarWindow = None):
         fileDir = os.path.abspath(os.curdir)+"/logs"
         if os.path.isdir(fileDir) == False:
             os.makedirs(fileDir)
@@ -192,7 +197,7 @@ class parsePage:
             fileName = fileDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")+".log"
         
         if os.path.isfile(fileName) == False or self.today in self.days_range:
-            self.loadLogs()
+            self.loadLogs(progressBarWindow)
             out = open(fileName, "w")
             out.write(self.logs)
             out.close()
@@ -234,12 +239,17 @@ class parsePage:
         bar.show()
 
 
-    def createReport(self):
+    def createReport(self, logFile = "", progressBarWindow = None):
         reportsDir = os.path.abspath(os.curdir)+"/reports"
         filtersDir = os.path.abspath(os.curdir)+"/filters"
 
         if os.path.isdir(reportsDir) == False:
             os.makedirs(reportsDir)
+      
+        if (self.date_start == self.date_end):
+            reportsFileName = self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")
+        else:
+            reportsFileName = self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")
 
         filters = filtersDir+"/default_filter.xml"
         preferences = {
@@ -255,9 +265,13 @@ class parsePage:
 		    'odir'       : reportsDir,
 		    'sample'     : float(100)
 	    }
-
-        logFile = self.saveLogs()
-        report = scalp.scalper(logFile, filters, preferences)
+        
+        if logFile == "" :
+            logFile = self.saveLogs(progressBarWindow)
+        print "LogFileName: "+logFile
+        report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName)
+        return reportsDir+"/"+reportsFileName+"."+self.report_format
+        
 
 
 #### Koniec klasy parsera ###
@@ -316,18 +330,18 @@ if __name__ == '__main__':
                 report_format = splitted[1]
 
 
-#    try:
-    checker = parsePage(page, day_start, day_end, logs_type, report_format)
-    logs = checker.saveLogs();
+    try:
+        checker = parsePage(page, day_start, day_end, logs_type, report_format)
+        logs = checker.saveLogs();
     
-    report = checker.createReport()
-    #if len(report) != 0:
-    print report
-    #else:
-    #print "There was no "+logs_type+" logs from "+day_start+" to "+day_end+" for domain "+page+" \n"
-#    except Exception as e:
-#        print e
-#    except BaseException as be:
-#        print be
+        report = checker.createReport()
+        if len(report) != 0:
+            print report
+        else:
+            print "There was no "+logs_type+" logs from "+day_start+" to "+day_end+" for domain "+page+" \n"
+    except Exception as e:
+        print e
+    except BaseException as be:
+        print be
 
 

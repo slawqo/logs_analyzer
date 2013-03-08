@@ -61,12 +61,7 @@ txt_header = """
 #
 """
 
-xml_header = """<?xml version="1.0" encoding="utf-8"?>
-<!--
- File created by Scalp! by Romain Gaucher - http://code.google.com/p/apache-scalp
- Apache log attack analysis tool based on PHP-IDS filters
--->
-"""
+xml_header = ""
 
 html_header = """<html><head><style>
 html, body {background-color:#ccc;color:#222;font-family:'Lucida Grande',Verdana,Arial,Sans-Serif;font-size:0.8em;line-height:1.6em;margin:0;padding:0;}
@@ -252,7 +247,7 @@ def analyzer(data):
 						else:
 							return
 
-def scalper(access, filters, preferences = [], output = "text"):
+def scalper(access, filters, preferences = [], output = "text", fileName = ""):
 	global table
 	if not os.path.isfile(access):
 		print "error: the log file doesn't exist"
@@ -367,13 +362,13 @@ def scalper(access, filters, preferences = [], output = "text"):
     
 	short_name = access[access.rfind(os.sep)+1:]
 	if n > 0:
-		print "Generating output in %s%s%s_scalp_*" % (preferences['odir'],os.sep,short_name)
+		print "Generating output in "+fileName+"."+output
 		if 'html' in preferences['output']:
-			generate_html_file(flag, short_name, filters, preferences['odir'])
+			generate_html_file(flag, short_name, filters, preferences['odir'], fileName)
 		elif 'text' in preferences['output']:
-			generate_text_file(flag, short_name, filters, preferences['odir'])
+			generate_text_file(flag, short_name, filters, preferences['odir'], fileName)
 		elif 'xml' in preferences['output']:
-			generate_xml_file(flag, short_name, filters, preferences['odir'])
+			generate_xml_file(flag, short_name, filters, preferences['odir'], fileName)
 
 	# generate exceptions
 	if len(diff) > 0:
@@ -383,9 +378,13 @@ def scalper(access, filters, preferences = [], output = "text"):
 		o_except.close()
 
 
-def generate_text_file(flag, access, filters, odir):
+def generate_text_file(flag, access, filters, odir, fname = ""):
 	curtime = time.strftime("%a-%d-%b-%Y", time.localtime())
-	fname = '%s_scalp_%s.txt' % (access,  curtime)
+	if fname == "" :
+		fname = '%s_scalp_%s.txt' % (access,  curtime)
+	else:
+		fname = fname+".txt"
+		
 	fname = os.path.abspath(odir + os.sep + fname)
 	try:
 		out = open(fname, 'w')
@@ -411,9 +410,13 @@ def generate_text_file(flag, access, filters, odir):
 	return
 
 
-def generate_xml_file(flag, access, filters, odir):
+def generate_xml_file(flag, access, filters, odir, fname = ""):
 	curtime = time.strftime("%a-%d-%b-%Y", time.localtime())
-	fname = '%s_scalp_%s.xml' % (access,  curtime)
+	if fname == "":
+		fname = '%s_scalp_%s.xml' % (access,  curtime)
+	else:
+		fname = fname+".xml"
+		
 	fname = os.path.abspath(odir + os.sep + fname)
 	try:
 		out = open(fname, 'w')
@@ -442,9 +445,13 @@ def generate_xml_file(flag, access, filters, odir):
 	return
 	return
 
-def generate_html_file(flag, access, filters, odir):
+def generate_html_file(flag, access, filters, odir, fname = ""):
 	curtime = time.strftime("%a-%d-%b-%Y", time.localtime())
-	fname = '%s_scalp_%s.html' % (access,  curtime)
+	if fname == "":
+		fname = '%s_scalp_%s.html' % (access,  curtime)
+	else:
+		fname = fname+".html"
+		
 	fname = os.path.abspath(odir + os.sep + fname)
 	try:
 		out = open(fname, 'w')

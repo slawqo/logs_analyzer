@@ -141,7 +141,10 @@ class Ui_MainWindow(object):
         self.resultsView = QtGui.QListWidget()
         self.resultsView.setObjectName(_fromUtf8("resultsTable"))
         self.resultsView.setResizeMode(self.resultsView.Adjust)
-        self.reportView = QtGui.QListWidget()
+        self.reportView = QtGui.QTreeWidget()
+        self.reportView.setGeometry(QtCore.QRect(30, 20, 256, 192))
+        self.reportView.headerItem().setText(0, _fromUtf8("Possible attacks"))
+
         self.reportView.setObjectName(_fromUtf8("reportView"))
 
         self.addTab(self.tabsContainer, self.resultsView, "Log")
