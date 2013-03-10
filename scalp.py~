@@ -362,7 +362,7 @@ def scalper(access, filters, preferences = [], output = "text", fileName = ""):
     
 	short_name = access[access.rfind(os.sep)+1:]
 	if n > 0:
-		print "Generating output in "+fileName+"."+output
+		print "Generating output in "+fileName
 		if 'html' in preferences['output']:
 			generate_html_file(flag, short_name, filters, preferences['odir'], fileName)
 		elif 'text' in preferences['output']:
