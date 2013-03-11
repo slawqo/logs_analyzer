@@ -56,24 +56,32 @@ class mainApp(QtGui.QMainWindow):
             self.parser.test_page = page 
             self.parser.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
             self.parser.prepareLogsType(str(self.ui.logsTypeValue.currentText())) 
-            self.parser.report_format = "xml" #@TODO: dodać drugą kartę z raportem
+            self.parser.report_format = "xml"
            
             #ustawienie paska postępu pobierania logów:
             progressBar = QtGui.QProgressBar()
             progressBar.setMinimum(0)
             progressBar.setMaximum(100)
             self.ui.secondLineTopWidgetLayout.addWidget(progressBar)
-        
+
             #pobranie logów:
-            reportFile = self.parser.createReport(progressBarWindow = progressBar)
+            logsFile = self.parser.saveLogs(progressBar)
+            #usunięcie paska postępu:
+            progressBar.deleteLater()
+            
+            #i dodanie nowej informacji o generowaniu logów:
+            progressInfo = QtGui.QLabel(_fromUtf8("Generating report about possible attacks. Please wait a moment..."))
+            self.ui.secondLineTopWidgetLayout.addWidget(progressInfo)
+            reportFile = self.parser.createReport(logFile = logsFile)
             logs = self.parser.getDownloadedLogs()
             report = self.parseAndDisplayReport(reportFile)
+            
+            #usunięcie informacji o generowaniu logów:
+            progressInfo.deleteLater()
             
     
             self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
             
-            #usunięcie paska postępu:
-            progressBar.deleteLater()
            
             #analiza i wyswietlenie pobranych wyników 
             if logs == "401":
@@ -102,6 +110,7 @@ class mainApp(QtGui.QMainWindow):
 
 
     def parseAndDisplayReport(self, reportFile):
+        self.ui.reportView.clear()
         if os.path.isfile(reportFile) == False:
             topLevelItem = QtGui.QTreeWidgetItem(self.ui.reportView)
             topLevelItem.setText(0, "No xml report file given")

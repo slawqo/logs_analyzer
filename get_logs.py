@@ -123,7 +123,7 @@ class parsePage:
                 params = urllib.urlencode("")
                 request = urllib2.Request(self.logs_address, params, self.prepareLoginData())
                 opened_url = urllib2.urlopen(request)
-                print opened_url
+                #print opened_url
             else:
                 opened_url = urllib2.urlopen(self.logs_address)
 
@@ -169,6 +169,7 @@ class parsePage:
                         result = result+self.loadLogsFromDay(day)
                     
                     counter = counter + percent_per_day
+                    print "Download counter: "+str(counter)
                     if progressBarWindow == None:
                         self.progressBar(counter)
                     else:
@@ -201,6 +202,8 @@ class parsePage:
             out = open(fileName, "w")
             out.write(self.logs)
             out.close()
+        else:
+            self.logs = open(fileName, "r").read()
 
         return fileName
 
@@ -268,6 +271,7 @@ class parsePage:
         
         if logFile == "" :
             logFile = self.saveLogs(progressBarWindow)
+            print "Pobieramy logi"
         print "LogFileName: "+logFile
         report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName)
         return reportsDir+"/"+reportsFileName+"."+self.report_format

@@ -774,5 +774,14 @@
             <tag>id</tag>
         </tags>
         <impact>3</impact>
-    </filter>      
+    </filter> 
+    <filter>
+        <id>78</id>
+        <rule><![CDATA[(?\.\.\/)+)]]></rule>
+        <description>Test Rafała</description>
+        <tags>
+            <tag>Rafal</tag>
+        </tags>
+        <impact>3</impact>
+    </filter>        
 </filters>
