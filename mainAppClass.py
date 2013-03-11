@@ -7,6 +7,7 @@ from get_logs import parsePage
 from loginWindowClass import loginWindow
 from xml.dom import minidom
 import os
+import time
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -59,25 +60,23 @@ class mainApp(QtGui.QMainWindow):
             self.parser.report_format = "xml"
            
             #ustawienie paska postępu pobierania logów:
-            progressBar = QtGui.QProgressBar()
-            progressBar.setMinimum(0)
-            progressBar.setMaximum(100)
-            self.ui.secondLineTopWidgetLayout.addWidget(progressBar)
+            progressBar = QtGui.QProgressDialog("Download logs file", "Cancel", 0, 100, self)
+            #@TODO: dodać akcję dla przycisku "cancel"
 
             #pobranie logów:
             logsFile = self.parser.saveLogs(progressBar)
-            #usunięcie paska postępu:
-            progressBar.deleteLater()
             
             #i dodanie nowej informacji o generowaniu logów:
-            progressInfo = QtGui.QLabel(_fromUtf8("Generating report about possible attacks. Please wait a moment..."))
-            self.ui.secondLineTopWidgetLayout.addWidget(progressInfo)
+            progressBar.setLabelText("Generating report...")
+            progressBar.setMaximum(0)
+            progressBar.setValue(0)
+            time.sleep(3)
             reportFile = self.parser.createReport(logFile = logsFile)
             logs = self.parser.getDownloadedLogs()
             report = self.parseAndDisplayReport(reportFile)
             
             #usunięcie informacji o generowaniu logów:
-            progressInfo.deleteLater()
+            progressBar.close()
             
     
             self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
