@@ -53,10 +53,11 @@ class mainApp(QtGui.QMainWindow):
             if start > end:
                 end = start #wyrównaj datę końcową z początkową jeżeli koniec jest wcześniejszy niż poczętek
                 self.ui.endDateValue.setDate(start)
-            
+           
+            logsType = str(self.ui.logsTypeValue.currentText())
             self.parser.test_page = page 
             self.parser.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
-            self.parser.prepareLogsType(str(self.ui.logsTypeValue.currentText())) 
+            self.parser.prepareLogsType(logsType) 
             self.parser.report_format = "xml"
            
             #ustawienie paska postępu pobierania logów:
@@ -65,23 +66,24 @@ class mainApp(QtGui.QMainWindow):
 
             #pobranie logów:
             logsFile = self.parser.saveLogs(progressBar)
+            logs = self.parser.getDownloadedLogs()
             
             #i dodanie nowej informacji o generowaniu logów:
-            progressBar.setLabelText("Generating report...")
-            progressBar.setMaximum(0)
-            progressBar.setValue(0)
-            time.sleep(3)
-            reportFile = self.parser.createReport(logFile = logsFile)
-            logs = self.parser.getDownloadedLogs()
-            report = self.parseAndDisplayReport(reportFile)
+            if logsType == "access":
+                progressBar.setLabelText("Generating report...")
+                progressBar.setMaximum(0)
+                progressBar.setValue(0)
+                time.sleep(3)
+
+                reportFile = self.parser.createReport(logFile = logsFile)
+                report = self.parseAndDisplayReport(reportFile)
             
+                
             #usunięcie informacji o generowaniu logów:
             progressBar.close()
             
-    
             self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
             
-           
             #analiza i wyswietlenie pobranych wyników 
             if logs == "401":
                 logWin = loginWindow(self)
