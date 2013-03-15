@@ -65,17 +65,15 @@ class mainApp(QtGui.QMainWindow):
             #@TODO: dodać akcję dla przycisku "cancel"
 
             #pobranie logów:
+            #@TODO: sprawdzić dlaczego nie działa podawanie hasła przy pobieraniu logów z kilku dni
             logsFile = self.parser.saveLogs(progressBar)
             logs = self.parser.getDownloadedLogs()
             
             #i dodanie nowej informacji o generowaniu logów:
             if logsType == "access":
-                progressBar.setLabelText("Generating report...")
-                progressBar.setMaximum(0)
-                progressBar.setValue(0)
                 time.sleep(3)
-
-                reportFile = self.parser.createReport(logFile = logsFile)
+                #@TODO: dokończyć robienie paska postępu dla generowania raportu
+                reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
                 report = self.parseAndDisplayReport(reportFile)
             
                 

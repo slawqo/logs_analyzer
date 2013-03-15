@@ -273,7 +273,7 @@ class parsePage:
             logFile = self.saveLogs(progressBarWindow)
             print "Pobieramy logi"
         print "LogFileName: "+logFile
-        report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName)
+        report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
         return reportsDir+"/"+reportsFileName+"."+self.report_format
         
 

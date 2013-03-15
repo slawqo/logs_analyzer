@@ -247,7 +247,7 @@ def analyzer(data):
 						else:
 							return
 
-def scalper(access, filters, preferences = [], output = "text", fileName = ""):
+def scalper(access, filters, preferences = [], output = "text", fileName = "", progressBar = None):
 	global table
 	if not os.path.isfile(access):
 		print "error: the log file doesn't exist"
@@ -321,6 +321,10 @@ def scalper(access, filters, preferences = [], output = "text", fileName = ""):
 	start = time.time()
 	diff = []
 	with open(access) as log_file:
+		progressBar.setLabelText("Generating report...")
+		progressBar.setMaximum(0)
+		progressBar.setValue(0)
+                                                             
 		for line in log_file:
 			lines += 1
 			if sample and lines not in sampled_lines:
