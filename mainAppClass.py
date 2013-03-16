@@ -61,9 +61,11 @@ class mainApp(QtGui.QMainWindow):
             self.parser.report_format = "xml"
            
             #ustawienie paska postępu pobierania logów:
-            progressBar = QtGui.QProgressDialog("Download logs file", "Cancel", 0, 100, self)
-
+            progressBar = QtGui.QProgressDialog("Download logs file", "Cance", 0, 100, self)
             #@TODO: dodać akcję dla przycisku "cancel"
+            #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+            #i dlatego przycisk "Cancel" jest ukryty
+            progressBar.setCancelButton(None)
 
             #pobranie logów:
             logsFile = self.parser.saveLogs(progressBar)
@@ -90,6 +92,9 @@ class mainApp(QtGui.QMainWindow):
             if logsType == "access":
                 print "Generate report..."
                 progressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 100, self)
+                #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+                #i dlatego przycisk "Cancel" jest ukryty:
+                progressBar.setCancelButton(None)
                 reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
                 report = self.parseAndDisplayReport(reportFile)
                 progressBar.close()
