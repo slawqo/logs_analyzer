@@ -167,6 +167,9 @@ class parsePage:
                     day_result = self.loadLogsFromDay(day)
                     if day_result != "401" and day_result != "404" and day_result != "-1":
                         result = result+self.loadLogsFromDay(day)
+                    elif day_result == "401":
+                        self.logs = day_result
+                        return self.logs
                     
                     counter = counter + percent_per_day
                     print "Download counter: "+str(counter)

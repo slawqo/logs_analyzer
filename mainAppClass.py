@@ -65,7 +65,6 @@ class mainApp(QtGui.QMainWindow):
             #@TODO: dodać akcję dla przycisku "cancel"
 
             #pobranie logów:
-            #@TODO: sprawdzić dlaczego nie działa podawanie hasła przy pobieraniu logów z kilku dni
             logsFile = self.parser.saveLogs(progressBar)
             logs = self.parser.getDownloadedLogs()
             
