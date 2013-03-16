@@ -242,7 +242,7 @@ class parsePage:
 
     def graphicalProgressBar(self, bar, progress):
         bar.setValue(progress)
-        bar.show()
+        #bar.show()
 
 
     def createReport(self, logFile = "", progressBarWindow = None):

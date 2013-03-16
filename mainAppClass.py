@@ -62,25 +62,16 @@ class mainApp(QtGui.QMainWindow):
            
             #ustawienie paska postępu pobierania logów:
             progressBar = QtGui.QProgressDialog("Download logs file", "Cancel", 0, 100, self)
+
             #@TODO: dodać akcję dla przycisku "cancel"
 
             #pobranie logów:
             logsFile = self.parser.saveLogs(progressBar)
             logs = self.parser.getDownloadedLogs()
             
-            #i dodanie nowej informacji o generowaniu logów:
-            if logsType == "access":
-                time.sleep(3)
-                #@TODO: dokończyć robienie paska postępu dla generowania raportu
-                reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
-                report = self.parseAndDisplayReport(reportFile)
-            
-                
             #usunięcie informacji o generowaniu logów:
             progressBar.close()
-            
-            self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
-            
+                        
             #analiza i wyswietlenie pobranych wyników 
             if logs == "401":
                 logWin = loginWindow(self)
@@ -94,6 +85,17 @@ class mainApp(QtGui.QMainWindow):
                 QtGui.QMessageBox.about(self, "Error", "Unknown error")
             else:
                 self.displayDataInColumns(logs)
+                
+            #i dodanie nowej informacji o generowaniu logów:
+            if logsType == "access":
+                print "Generate report..."
+                progressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 100, self)
+                reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
+                report = self.parseAndDisplayReport(reportFile)
+                progressBar.close()
+            
+            self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+                
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
@@ -140,5 +142,3 @@ class mainApp(QtGui.QMainWindow):
                     secondLevelItem = QtGui.QTreeWidgetItem(topLevelItem)
                     description = item.getElementsByTagName('reason')[0].childNodes[0].nodeValue + " \n " + item.getElementsByTagName('line')[0].childNodes[0].nodeValue
                     secondLevelItem.setText(0, _fromUtf8(description))
-
-
