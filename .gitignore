@@ -40,3 +40,7 @@ nosetests.xml
 # my files:
 reports/*
 logs/*
+
+#Kdevelop files:
+.kdev4
+*.kdev4
