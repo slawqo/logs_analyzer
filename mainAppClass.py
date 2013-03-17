@@ -19,6 +19,7 @@ class mainApp(QtGui.QMainWindow):
 
     login = ""
     password = ""
+    loginCanceled = False
 
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -46,9 +47,11 @@ class mainApp(QtGui.QMainWindow):
     def getLogs(self):
         page = str(self.ui.pageAddress.text())
         if len(page) != 0:
+            self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+            
             start = self.ui.startDateValue.date()
             end = self.ui.endDateValue.date()
-
+            
             #jeżeli ktoś podał zły zakres dat:
             if start > end:
                 end = start #wyrównaj datę końcową z początkową jeżeli koniec jest wcześniejszy niż poczętek
@@ -78,9 +81,12 @@ class mainApp(QtGui.QMainWindow):
             if logs == "401":
                 logWin = loginWindow(self)
                 logWin.exec_()
-                self.parser.login = self.login
-                self.parser.password = self.password
-                self.getLogs()
+                if self.loginCanceled == False:
+                    self.parser.login = self.login
+                    self.parser.password = self.password
+                    self.getLogs()
+                else:
+                    return
             elif logs == "404":
                 QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
             elif logs == "-1":
@@ -98,8 +104,6 @@ class mainApp(QtGui.QMainWindow):
                 reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
                 report = self.parseAndDisplayReport(reportFile)
                 progressBar.close()
-            
-            self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
                 
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")

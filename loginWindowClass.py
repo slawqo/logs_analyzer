@@ -26,22 +26,34 @@ class loginWindow(QtGui.QDialog):
         self.password.setEchoMode(QtGui.QLineEdit.Password)
         self.buttonLogin = QtGui.QPushButton(_fromUtf8("Login"))
         self.buttonLogin.clicked.connect(self.handleLogin)
+        self.buttonCancel = QtGui.QPushButton(_fromUtf8("Cancel"))
+        self.buttonCancel.clicked.connect(self.cancelLogin)
         layout = QtGui.QGridLayout()
         layout.addWidget(self.loginLabel, 1, 1)
         layout.addWidget(self.login, 1, 2)
         layout.addWidget(self.passwordLabel, 2, 1)
         layout.addWidget(self.password, 2, 2)
-        layout.addWidget(self.buttonLogin, 3, 2)
+        layout.addWidget(self.buttonLogin, 3, 1)
+        layout.addWidget(self.buttonCancel, 3, 2)
         self.setLayout(layout)
         self.setWindowTitle(_fromUtf8("Login required"))
         print self   
         self.show()
 
 
+
     def handleLogin(self):
         self.parent.login = str(self.login.text())
         self.parent.password = str(self.password.text())
+        self.parent.loginCanceled = False
         self.deleteLater()
+        
+        
+    
+    def cancelLogin(self):
+        self.parent.loginCanceled = True
+        self.deleteLater()
+
 
 
 if __name__ == "__main__":
