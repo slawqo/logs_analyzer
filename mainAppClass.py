@@ -120,6 +120,10 @@ class mainApp(QtGui.QMainWindow):
 
     def parseAndDisplayReport(self, reportFile):
         self.ui.reportView.clear()
+        self.ui.reportView.setHeaderHidden(True)
+        maxLenght = 0
+        longestText = ""
+        
         if os.path.isfile(reportFile) == False:
             topLevelItem = QtGui.QTreeWidgetItem(self.ui.reportView)
             topLevelItem.setText(0, "No xml report file given")
@@ -151,3 +155,12 @@ class mainApp(QtGui.QMainWindow):
                     secondLevelItem = QtGui.QTreeWidgetItem(topLevelItem)
                     description = item.getElementsByTagName('reason')[0].childNodes[0].nodeValue + " \n " + item.getElementsByTagName('line')[0].childNodes[0].nodeValue
                     secondLevelItem.setText(0, _fromUtf8(description))
+                    if len(description) > maxLenght:
+                        maxLenght = len(description)
+                        longestText = description
+            
+            #obliczenie szerokości najdłuższego wpisu:
+            itemWidth = int(QtGui.QFontMetrics(self.ui.reportView.font()).width(longestText))
+            self.ui.reportView.setColumnWidth(0, itemWidth)
+                
+            
