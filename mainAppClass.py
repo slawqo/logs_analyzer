@@ -20,6 +20,9 @@ class mainApp(QtGui.QMainWindow):
     login = ""
     password = ""
     loginCanceled = False
+    searchWidgetDisplayed = False #flaga informująca czy wyświetlony jest panel wyszukiwania w logach
+    displayedSearchedItemIndex = 0 #index aktualnie podświetlonego elemetnu jaki został znaleziony
+    items = [] #elementy wyszukane przez użytkownika
 
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -34,6 +37,14 @@ class mainApp(QtGui.QMainWindow):
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        
+        self.createSearchBox()
+        
+        self.searchAction = QtGui.QAction("search", self)
+        self.searchAction.setShortcut("Ctrl+f")
+        self.searchAction.setShortcutContext(QtCore.Qt.ApplicationShortcut)
+        self.addAction(self.searchAction)
+        
         self.connectSignals()
         self.setWindowTitle(_fromUtf8("Logs analizer"))
         
@@ -41,8 +52,12 @@ class mainApp(QtGui.QMainWindow):
 
     def connectSignals(self):
         self.ui.getLogsButton.clicked.connect(self.getLogs)
-
-
+        self.ui.pageAddress.returnPressed.connect(self.getLogs)
+        self.searchAction.triggered.connect(self.searchBox)
+        self.searchButton.clicked.connect(self.searchItem)
+        self.searchTextValue.returnPressed.connect(self.searchItem)
+        self.nextResultButton.clicked.connect(self.showNextItem)
+        self.previousResultButton.clicked.connect(self.showPreviousItem)
 
     def getLogs(self):
         page = str(self.ui.pageAddress.text())
@@ -104,7 +119,9 @@ class mainApp(QtGui.QMainWindow):
                 reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
                 report = self.parseAndDisplayReport(reportFile)
                 progressBar.close()
-                
+            
+            #self.createSearchBox()
+            #self.searchItem("Googlebot")
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
@@ -115,8 +132,8 @@ class mainApp(QtGui.QMainWindow):
         logs_lines = logs.split("\n")
         for line in logs_lines:
             self.ui.resultsView.addItem(str(line))
-
-
+            #item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled );
+        
 
     def parseAndDisplayReport(self, reportFile):
         self.ui.reportView.clear()
@@ -162,5 +179,87 @@ class mainApp(QtGui.QMainWindow):
             #obliczenie szerokości najdłuższego wpisu:
             itemWidth = int(QtGui.QFontMetrics(self.ui.reportView.font()).width(longestText))
             self.ui.reportView.setColumnWidth(0, itemWidth)
-                
-            
+
+    
+    
+    def createSearchBox(self):
+        self.searchBoxWidget = QtGui.QWidget()
+        self.searchBoxWidgetLayout = QtGui.QHBoxLayout()
+        
+        self.searchLabel = QtGui.QLabel(_fromUtf8("Search text: "))
+        self.searchTextValue = QtGui.QLineEdit()
+        self.searchButton = QtGui.QPushButton(_fromUtf8("Search"))
+        self.nextResultButton = QtGui.QPushButton(_fromUtf8("Next"))
+        self.nextResultButton.setEnabled(False)
+        self.previousResultButton = QtGui.QPushButton(_fromUtf8("Prevoius"))
+        self.previousResultButton.setEnabled(False)
+        
+        self.searchBoxWidgetLayout.addWidget(self.searchLabel)
+        self.searchBoxWidgetLayout.addWidget(self.searchTextValue)
+        self.searchBoxWidgetLayout.addWidget(self.searchButton)
+        self.searchBoxWidgetLayout.addWidget(self.nextResultButton)
+        self.searchBoxWidgetLayout.addWidget(self.previousResultButton)
+    
+        self.searchBoxWidget.setLayout(self.searchBoxWidgetLayout)
+        #domyślnie na początku pasek ten jest ukryty:
+        self.searchBoxWidget.hide()
+        self.ui.centralWidgetLayout.addWidget(self.searchBoxWidget)
+        
+        
+        
+    def searchItem(self):
+        searchExpression = self.searchTextValue.text()
+        self.items = self.ui.resultsView.findItems(searchExpression, QtCore.Qt.MatchContains)
+        #wyzerowanie indeksu tak aby wyświetlić pierwszy znaleziony element
+        self.displayedSearchedItemIndex = 0
+        if len(self.items) > 0:
+            self.items[self.displayedSearchedItemIndex].setSelected(True)
+        
+        #jeżeli jest więcej niż jeden element to aktywować trzeba przycisk "next":
+        if len(self.items) > 1:
+            self.nextResultButton.setEnabled(True)
+    
+    
+    #@TODO: trzeba zrobić aby przesuwało do aktywnego znalezionego rekordo
+    def showNextItem(self):
+        self.displayedSearchedItemIndex+=1
+        self.items[self.displayedSearchedItemIndex].setSelected(True)
+        #trzeba ustawić przycisk "previous" na aktywny:
+        self.previousResultButton.setEnabled(True)
+        
+        #jeżeli jest to ostatni element to trzeba zablokować przycisk next:
+        if len(self.items) == (self.displayedSearchedItemIndex+1):
+            self.nextResultButton.setEnabled(False)
+    
+    
+    
+    def showPreviousItem(self):
+        self.displayedSearchedItemIndex-=1
+        self.items[self.displayedSearchedItemIndex].setSelected(True)
+        #trzeba ustawić przycisk "previous" na aktywny:
+        self.nextResultButton.setEnabled(True)
+        
+        #jeżeli jest to pierwszy element to trzeba zablokować przycisk previous:
+        if self.displayedSearchedItemIndex == 0:
+            self.previousResultButton.setEnabled(False)
+
+
+
+    def searchBox(self):
+        if self.ui.tabsContainer.currentIndex() == 0:
+            if self.searchWidgetDisplayed == False:
+                self.showSearchBox()
+            else:
+                self.hideSearchBox()
+
+    
+    
+    def showSearchBox(self):    
+        self.searchBoxWidget.show()
+        self.searchWidgetDisplayed = True
+        
+        
+    
+    def hideSearchBox(self):
+        self.searchBoxWidget.hide()
+        self.searchWidgetDisplayed = False

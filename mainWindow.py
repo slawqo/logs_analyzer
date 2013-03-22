@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         self.centralWidget = QtGui.QWidget()
         self.centralWidget.setObjectName(_fromUtf8("centralwidget"))
         
-        self.centralWidgetLayout = QtGui.QHBoxLayout()
+        self.centralWidgetLayout = QtGui.QVBoxLayout()
         
         self.tabsContainer = QtGui.QTabWidget()
         self.tabsContainer.setEnabled(True)
