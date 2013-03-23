@@ -225,7 +225,7 @@ def decode_attempt(string):
     return multiple_replace(string)
 
 def analyzer(data):
-    exp_line, regs, array, preferences, org_line = data[0],data[1],data[2],data[3],data[4]
+    exp_line, regs, array, preferences, org_line, line_number = data[0],data[1],data[2],data[3],data[4], data[5]
     done = []
     # look for the detected attacks...
     # either stop at the first found or not
@@ -243,7 +243,7 @@ def analyzer(data):
                     if attack[0].search(cur_line):
                         if attack[1] not in array[attack_type]:
                             array[attack_type][attack[1]] = []
-                        array[attack_type][attack[1]].append((exp_line, attack[3], attack[2], org_line))
+                        array[attack_type][attack[1]].append((exp_line, attack[3], attack[2], org_line, line_number))
                         if preferences['exhaustive']:
                             break
                         else:
@@ -356,12 +356,13 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
                 byte = out.group(8)
                 referrer = out.group(9)
                 agent = out.group(10)
+                line_number = lines
 
                 if not correct_period(date, preferences['period']):
                     continue
                 loc += 1
                 if len(url) > 1 and method in ('GET','POST','HEAD','PUT','PUSH','OPTIONS'):
-                    analyzer([(ip,name,date,ext,method,url,response,byte,referrer,agent),regs,flag, preferences, line])
+                    analyzer([(ip,name,date,ext,method,url,response,byte,referrer,agent),regs,flag, preferences, line, line_number])
             elif preferences['except']:
                 diff.append(line)
 
@@ -454,6 +455,7 @@ def generate_xml_file(flag, access, filters, odir, fname = ""):
                     out.write("      <item>\n")
                     out.write("        <reason><![CDATA[%s]]></reason>\n" % e[2])
                     out.write("        <line><![CDATA[%s]]></line>\n" % e[3])
+                    out.write("        <line_number>%s</line_number>\n" % e[4])
                     out.write("      </item>\n")
                 out.write("    </impact>\n")
             out.write("  </attack>\n")

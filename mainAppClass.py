@@ -172,14 +172,19 @@ class mainApp(QtGui.QMainWindow):
                     secondLevelItem = QtGui.QTreeWidgetItem(topLevelItem)
                     description = item.getElementsByTagName('reason')[0].childNodes[0].nodeValue + " \n " + item.getElementsByTagName('line')[0].childNodes[0].nodeValue
                     secondLevelItem.setText(0, _fromUtf8(description))
+                    line_number = item.getElementsByTagName('line_number')[0].childNodes[0].nodeValue
+                    #w kolumnie 1 która i tak jest niewidoczna zapisywany jest nr linii ktrórej dotyczy wpis:
+                    secondLevelItem.setText(1, _fromUtf8(line_number))
                     if len(description) > maxLenght:
                         maxLenght = len(description)
                         longestText = description
             
-            #obliczenie szerokości najdłuższego wpisu:
-            itemWidth = int(QtGui.QFontMetrics(self.ui.reportView.font()).width(longestText))
-            self.ui.reportView.setColumnWidth(0, itemWidth)
+        #obliczenie szerokości najdłuższego wpisu:
+        itemWidth = int(QtGui.QFontMetrics(self.ui.reportView.font()).width(longestText))
+        self.ui.reportView.setColumnWidth(0, itemWidth)
 
+        #dodanie sygnału do elementów listy:
+        self.ui.reportView.itemActivated.connect(self.showLine)
     
     
     def createSearchBox(self):
@@ -263,3 +268,9 @@ class mainApp(QtGui.QMainWindow):
     def hideSearchBox(self):
         self.searchBoxWidget.hide()
         self.searchWidgetDisplayed = False
+    
+    
+    
+    def showLine(self, item, column = 0):
+        line_nr = int(item.text(1)) - 1 
+        self.ui.resultsView.item(line_nr).setSelected(True)
