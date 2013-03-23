@@ -172,7 +172,7 @@ class Ui_MainWindow(object):
     
         self.bottomWidget.setLayout(self.bottomWidgetLayout)
         #domyślnie na początku pasek ten jest ukryty:
-        self.bottomWidget.hide()
+        #self.bottomWidget.hide()
         
 
 

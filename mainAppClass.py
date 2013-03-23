@@ -37,11 +37,13 @@ class mainApp(QtGui.QMainWindow):
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-                
-        self.searchAction = QtGui.QAction("search", self)
-        self.searchAction.setShortcut("Ctrl+f")
-        self.searchAction.setShortcutContext(QtCore.Qt.ApplicationShortcut)
-        self.addAction(self.searchAction)
+        
+        #akcja wyłączona ponieważ na razie jest problem z wydajnością pojawiania się tego pola wyszukiwania 
+        #przy dużej ilości logów w qlistwidget 
+        #self.searchAction = QtGui.QAction("search", self)
+        #self.searchAction.setShortcut("Ctrl+f")
+        #self.searchAction.setShortcutContext(QtCore.Qt.ApplicationShortcut)
+        #self.addAction(self.searchAction)
         
         self.connectSignals()
         self.setWindowTitle(_fromUtf8("Logs analizer"))
@@ -51,7 +53,8 @@ class mainApp(QtGui.QMainWindow):
     def connectSignals(self):
         self.ui.getLogsButton.clicked.connect(self.getLogs)
         self.ui.pageAddress.returnPressed.connect(self.getLogs)
-        self.searchAction.triggered.connect(self.searchBox)
+        #sygnał nie przypisany ze względu na problem z wydajnością wyświetlania pola search:
+        #self.searchAction.triggered.connect(self.searchBox)
         self.ui.searchButton.clicked.connect(self.searchItem)
         self.ui.searchTextValue.returnPressed.connect(self.searchItem)
         self.ui.nextResultButton.clicked.connect(self.showNextItem)
