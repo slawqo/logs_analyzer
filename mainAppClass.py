@@ -235,13 +235,13 @@ class mainApp(QtGui.QMainWindow):
     
     
     def showSearchBox(self):    
-        self.ui.bottomWidget.show()
+        self.ui.searchWidget.show()
         self.searchWidgetDisplayed = True
         
         
     
     def hideSearchBox(self):
-        self.ui.bottomWidget.hide()
+        self.ui.searchWidget.hide()
         self.searchWidgetDisplayed = False
     
     

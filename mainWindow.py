@@ -50,11 +50,9 @@ class Ui_MainWindow(object):
         #utworzenie widgeta górnego i środkowego:
         self.prepareTopWidget()
         self.prepareCentralWidget()
-        self.prepareBottomWidget()
-
+            
         self.mainWidgetLayout.addWidget(self.topWidget)
         self.mainWidgetLayout.addWidget(self.centralWidget)
-        self.mainWidgetLayout.addWidget(self.bottomWidget)
 
 
     def prepareTopWidget(self):
@@ -152,9 +150,9 @@ class Ui_MainWindow(object):
 
 
 
-    def prepareBottomWidget(self):
-        self.bottomWidget = QtGui.QWidget()
-        self.bottomWidgetLayout = QtGui.QHBoxLayout()
+    def prepareSearchWidget(self):
+        self.searchWidget = QtGui.QWidget()
+        self.searchWidgetLayout = QtGui.QHBoxLayout()
         
         self.searchLabel = QtGui.QLabel(_fromUtf8("Search text: "))
         self.searchTextValue = QtGui.QLineEdit()
@@ -164,22 +162,23 @@ class Ui_MainWindow(object):
         self.previousResultButton = QtGui.QPushButton(_fromUtf8("Prevoius"))
         self.previousResultButton.setEnabled(False)
         
-        self.bottomWidgetLayout.addWidget(self.searchLabel)
-        self.bottomWidgetLayout.addWidget(self.searchTextValue)
-        self.bottomWidgetLayout.addWidget(self.searchButton)
-        self.bottomWidgetLayout.addWidget(self.nextResultButton)
-        self.bottomWidgetLayout.addWidget(self.previousResultButton)
+        self.searchWidgetLayout.addWidget(self.searchLabel)
+        self.searchWidgetLayout.addWidget(self.searchTextValue)
+        self.searchWidgetLayout.addWidget(self.searchButton)
+        self.searchWidgetLayout.addWidget(self.nextResultButton)
+        self.searchWidgetLayout.addWidget(self.previousResultButton)
     
-        self.bottomWidget.setLayout(self.bottomWidgetLayout)
-        #domyślnie na początku pasek ten jest ukryty:
-        #self.bottomWidget.hide()
-        
+        self.searchWidget.setLayout(self.searchWidgetLayout)
+
 
 
     def addTab(self, container, widget, title):
-        layout = QtGui.QHBoxLayout()
+        layout = QtGui.QVBoxLayout()
         centralWidget = QtGui.QWidget()
         layout.addWidget(widget)
+        if title == "Log":
+            self.prepareSearchWidget()
+            layout.addWidget(self.searchWidget)
         centralWidget.setLayout(layout)
         container.addTab(centralWidget, _fromUtf8(""))
         container.setTabText(container.indexOf(centralWidget), _fromUtf8(title))
