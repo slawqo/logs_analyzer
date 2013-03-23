@@ -34,12 +34,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self):
         self.main_window.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        #self.label.setText(QtGui.QApplication.translate("MainWindow", "Domena", None, QtGui.QApplication.UnicodeUTF8))
-        #self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Typ", None, QtGui.QApplication.UnicodeUTF8))
-        #self.label_3.setText(QtGui.QApplication.translate("MainWindow", "Data", None, QtGui.QApplication.UnicodeUTF8))
-        #self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Pobierz log", None, QtGui.QApplication.UnicodeUTF8))
-
-
+        
+        
 
     def prepareMainWidget(self):
         #declare widgets (containers):
@@ -54,10 +50,11 @@ class Ui_MainWindow(object):
         #utworzenie widgeta górnego i środkowego:
         self.prepareTopWidget()
         self.prepareCentralWidget()
+        self.prepareBottomWidget()
 
         self.mainWidgetLayout.addWidget(self.topWidget)
         self.mainWidgetLayout.addWidget(self.centralWidget)
-
+        self.mainWidgetLayout.addWidget(self.bottomWidget)
 
 
     def prepareTopWidget(self):
@@ -153,6 +150,30 @@ class Ui_MainWindow(object):
         self.centralWidgetLayout.addWidget(self.tabsContainer)
         self.centralWidget.setLayout(self.centralWidgetLayout)
 
+
+
+    def prepareBottomWidget(self):
+        self.bottomWidget = QtGui.QWidget()
+        self.bottomWidgetLayout = QtGui.QHBoxLayout()
+        
+        self.searchLabel = QtGui.QLabel(_fromUtf8("Search text: "))
+        self.searchTextValue = QtGui.QLineEdit()
+        self.searchButton = QtGui.QPushButton(_fromUtf8("Search"))
+        self.nextResultButton = QtGui.QPushButton(_fromUtf8("Next"))
+        self.nextResultButton.setEnabled(False)
+        self.previousResultButton = QtGui.QPushButton(_fromUtf8("Prevoius"))
+        self.previousResultButton.setEnabled(False)
+        
+        self.bottomWidgetLayout.addWidget(self.searchLabel)
+        self.bottomWidgetLayout.addWidget(self.searchTextValue)
+        self.bottomWidgetLayout.addWidget(self.searchButton)
+        self.bottomWidgetLayout.addWidget(self.nextResultButton)
+        self.bottomWidgetLayout.addWidget(self.previousResultButton)
+    
+        self.bottomWidget.setLayout(self.bottomWidgetLayout)
+        #domyślnie na początku pasek ten jest ukryty:
+        self.bottomWidget.hide()
+        
 
 
     def addTab(self, container, widget, title):
