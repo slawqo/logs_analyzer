@@ -194,7 +194,8 @@ class mainApp(QtGui.QMainWindow):
         self.displayedSearchedItemIndex = 0
         if len(self.items) > 0:
             self.items[self.displayedSearchedItemIndex].setSelected(True)
-        
+            self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
+            
         #jeżeli jest więcej niż jeden element to aktywować trzeba przycisk "next":
         if len(self.items) > 1:
             self.ui.nextResultButton.setEnabled(True)
@@ -204,6 +205,8 @@ class mainApp(QtGui.QMainWindow):
     def showNextItem(self):
         self.displayedSearchedItemIndex+=1
         self.items[self.displayedSearchedItemIndex].setSelected(True)
+        self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
+        
         #trzeba ustawić przycisk "previous" na aktywny:
         self.ui.previousResultButton.setEnabled(True)
         
@@ -216,6 +219,8 @@ class mainApp(QtGui.QMainWindow):
     def showPreviousItem(self):
         self.displayedSearchedItemIndex-=1
         self.items[self.displayedSearchedItemIndex].setSelected(True)
+        self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
+
         #trzeba ustawić przycisk "previous" na aktywny:
         self.ui.nextResultButton.setEnabled(True)
         
@@ -248,4 +253,6 @@ class mainApp(QtGui.QMainWindow):
     
     def showLine(self, item, column = 0):
         line_nr = int(item.text(1)) - 1 
-        self.ui.resultsView.item(line_nr).setSelected(True)
+        itemToSelect = self.ui.resultsView.item(line_nr)
+        itemToSelect.setSelected(True)
+        self.ui.resultsView.scrollToItem(itemToSelect)
