@@ -34,6 +34,9 @@ class parsePage:
     '''
     classdocs
     '''
+    homeDir = os.path.expanduser("~")
+    dataDir = ".logs_analyzer"
+    
     main_address = "http://logs.ovh.net"
     logs = ""
     login = ""
@@ -43,6 +46,10 @@ class parsePage:
 
     def __init__(self, address="", date_start="", date_end="", logs_type="", report_format=""):
         self.today = datetime.date.today()
+        
+        #definiowanie i tworzenie katalogów z danymi:
+        self.createAndLoadDirs()
+
         if (type(address) is str):
             self.test_page = address
         else:
@@ -63,6 +70,28 @@ class parsePage:
             self.report_format = report_format
         else:
             raise Exception("Report format should be given as string and have one of values: xml, html, txt")
+
+
+
+    def createAndLoadDirs(self):
+        self.reportsDir = self.homeDir+"/"+self.dataDir+"/"+"reports"
+        self.logsDir = self.homeDir+"/"+self.dataDir+"/"+"logs"
+        self.filtersDir = self.homeDir+"/"+self.dataDir+"/"+"filters"
+        #self.filtersDir = os.path.abspath(os.curdir)+"/filters"
+
+        if os.path.isdir(self.homeDir) == False:
+            os.makedirs(self.homeDir)
+        if os.path.isdir(self.logsDir) == False:
+            os.makedirs(self.logsDir)
+        if os.path.isdir(self.reportsDir) == False:
+            os.makedirs(self.reportsDir)
+        if os.path.isdir(self.filtersDir) == False:
+            os.makedirs(self.filtersDir)
+        
+        if os.path.isfile(self.filtersDir+"/filters.xml"):
+            self.filters = self.filtersDir+"/filters.xml"
+        else:
+            self.filters = os.path.abspath(os.curdir)+"/filters/default_filter.xml"
 
 
 
@@ -191,14 +220,12 @@ class parsePage:
 
 
     def saveLogs(self, progressBarWindow = None):
-        fileDir = os.path.abspath(os.curdir)+"/logs"
-        if os.path.isdir(fileDir) == False:
-            os.makedirs(fileDir)
+        
 
         if (self.date_start == self.date_end):
-            fileName = fileDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+".log"
+            fileName = self.logsDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+".log"
         else:
-            fileName = fileDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")+".log"
+            fileName = self.logsDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")+".log"
         
         if os.path.isfile(fileName) == False or self.today in self.days_range:
             self.loadLogs(progressBarWindow)
@@ -246,18 +273,13 @@ class parsePage:
 
 
     def createReport(self, logFile = "", progressBarWindow = None):
-        reportsDir = os.path.abspath(os.curdir)+"/reports"
-        filtersDir = os.path.abspath(os.curdir)+"/filters"
-
-        if os.path.isdir(reportsDir) == False:
-            os.makedirs(reportsDir)
       
         if (self.date_start == self.date_end):
             reportsFileName = self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")
         else:
             reportsFileName = self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")
 
-        filters = filtersDir+"/default_filter.xml"
+        
         preferences = {
 		    'attack_type' : [],
 		    'period' : {
@@ -268,17 +290,17 @@ class parsePage:
 		    'exhaustive' : False,
 		    'encodings'  : False,
 		    'output'     : self.report_format,
-		    'odir'       : reportsDir,
+		    'odir'       : self.reportsDir,
 		    'sample'     : float(100)
 	    }
         
         if logFile == "" :
             logFile = self.saveLogs(progressBarWindow)
             print "Pobieramy logi"
-        outputFile = reportsDir+"/"+reportsFileName+"."+self.report_format
+        outputFile = self.reportsDir+"/"+reportsFileName+"."+self.report_format
         #sprawdzanie czy plik już przypadkiem nie istnieje, jeżeli tak to raport nie jest tworzony na nowo:
         if os.path.isfile(outputFile) == False or self.today in self.days_range:
-            report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
+            report = scalp.scalper(logFile, self.filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
         
         return outputFile
         
