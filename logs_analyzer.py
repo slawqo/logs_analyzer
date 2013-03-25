@@ -39,7 +39,7 @@ This file is part of Logs Analyzer.
     jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
-'''
+
 import sys
 from PyQt4 import QtGui
 from mainAppClass import mainApp
