@@ -275,9 +275,12 @@ class parsePage:
         if logFile == "" :
             logFile = self.saveLogs(progressBarWindow)
             print "Pobieramy logi"
-        print "LogFileName: "+logFile
-        report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
-        return reportsDir+"/"+reportsFileName+"."+self.report_format
+        outputFile = reportsDir+"/"+reportsFileName+"."+self.report_format
+        #sprawdzanie czy plik już przypadkiem nie istnieje, jeżeli tak to raport nie jest tworzony na nowo:
+        if os.path.isfile(outputFile) == False or self.today in self.days_range:
+            report = scalp.scalper(logFile, filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
+        
+        return outputFile
         
 
 
