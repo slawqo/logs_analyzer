@@ -125,7 +125,7 @@ class parsePage:
         if os.path.isfile(self.filtersDir+"/filters.xml"):
             self.filters = self.filtersDir+"/filters.xml"
         else:
-            self.filters = os.path.abspath(os.curdir)+"/filters/default_filter.xml"
+            self.filters = os.path.abspath(os.path.dirname(__file__))+"/filters/default_filter.xml"
 
 
 

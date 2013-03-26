@@ -1,0 +1,10 @@
+Package: logsanalyzer
+Version: 1.0-beta
+Section: web
+Maintainer: Slawek Kaplonski <slawek@kaplonski.pl>
+Priority: optional
+Architecture: all
+Depends: python-qt4 (>=4.7)
+Description: Anazyzer of web logs from OVH's hosting servers
+ This program can download and analyze logs (like access log) from OVH's hosting servers and generate report of potential attacks
+
