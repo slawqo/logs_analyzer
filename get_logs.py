@@ -167,10 +167,10 @@ class parsePage:
            arguments: datetime day
         '''
         if day != self.today: 
-            self.logs_address = self.main_address+"/"+self.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+"/"+self.logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
+            self.logs_address = self.main_address+"/"+self.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+self.logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
         else:
-            self.logs_address = self.main_address+"/"+self.test_page+"/osl/"+self.logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
-
+            self.logs_address = self.main_address+"/"+self.test_page+"/osl"+self.logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
+        print "page address: "+self.logs_address
 
 
     def prepareLoginData(self):
