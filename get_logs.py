@@ -138,9 +138,9 @@ class parsePage:
 
     def prepareLogsType(self, logs_type):
         if (logs_type == "" or logs_type == "error" or logs_type == "ftp" or logs_type == "cgi" or logs_type == "out" or logs_type == "ssh"):
-            self.logs_type = logs_type+"/"   
+            self.logs_type = logs_type   
         elif logs_type == "access":
-            self.logs_type = "/"
+            self.logs_type = ""
         else:
             raise Exception("Logs type should have one of values: access, error, ftp, cgi, out, ssh")
 
@@ -167,9 +167,9 @@ class parsePage:
            arguments: datetime day
         '''
         if day != self.today: 
-            self.logs_address = self.main_address+"/"+self.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+self.logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
+            self.logs_address = self.main_address+"/"+self.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+self.logs_type+"/"+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
         else:
-            self.logs_address = self.main_address+"/"+self.test_page+"/osl"+self.logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
+            self.logs_address = self.main_address+"/"+self.test_page+"/osl"+self.logs_type+"/"+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
         print "page address: "+self.logs_address
 
 
@@ -254,18 +254,22 @@ class parsePage:
 
 
     def saveLogs(self, progressBarWindow = None):
-        
+        if self.logs_type == "":
+            file_logs_type = "access"
+        else:
+            file_logs_type = self.logs_type
 
         if (self.date_start == self.date_end):
-            fileName = self.logsDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+".log"
+            fileName = self.logsDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+file_logs_type+".log"
         else:
-            fileName = self.logsDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")+".log"
+            fileName = self.logsDir+"/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")+"-"+file_logs_type+".log"
         
         if os.path.isfile(fileName) == False or self.today in self.days_range:
             self.loadLogs(progressBarWindow)
-            out = open(fileName, "w")
-            out.write(self.logs)
-            out.close()
+            if len(self.logs) > 3 :
+                out = open(fileName, "w")
+                out.write(self.logs)
+                out.close()
         else:
             self.logs = open(fileName, "r").read()
 
