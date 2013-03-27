@@ -166,10 +166,15 @@ class parsePage:
         '''prepare logs file web address with correct date and server page name
            arguments: datetime day
         '''
-        if day != self.today: 
-            self.logs_address = self.main_address+"/"+self.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+self.logs_type+"/"+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
+        if self.logs_type == "":
+            logs_type = "/"
         else:
-            self.logs_address = self.main_address+"/"+self.test_page+"/osl"+self.logs_type+"/"+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
+            logs_type = "/"+self.logs_type+"/"
+        
+        if day != self.today: 
+            self.logs_address = self.main_address+"/"+self.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
+        else:
+            self.logs_address = self.main_address+"/"+self.test_page+"/osl"+logs_type+self.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
         print "page address: "+self.logs_address
 
 
