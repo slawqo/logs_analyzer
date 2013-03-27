@@ -197,7 +197,7 @@ class Ui_MainWindow(object):
         self.searchButton = QtGui.QPushButton(_fromUtf8("Search"))
         self.nextResultButton = QtGui.QPushButton(_fromUtf8("Next"))
         self.nextResultButton.setEnabled(False)
-        self.previousResultButton = QtGui.QPushButton(_fromUtf8("Prevoius"))
+        self.previousResultButton = QtGui.QPushButton(_fromUtf8("Previous"))
         self.previousResultButton.setEnabled(False)
         
         self.searchWidgetLayout.addWidget(self.searchLabel)
