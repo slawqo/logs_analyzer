@@ -46,6 +46,7 @@ from loginWindowClass import loginWindow
 from xml.dom import minidom
 import os
 import time
+import re
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -61,7 +62,8 @@ class mainApp(QtGui.QMainWindow):
     searchWidgetDisplayed = False #flaga informująca czy wyświetlony jest panel wyszukiwania w logach
     displayedSearchedItemIndex = 0 #index aktualnie podświetlonego elemetnu jaki został znaleziony
     items = [] #elementy wyszukane przez użytkownika
-
+    logsLinesItems = [] #elementy logu (linie) wyświetlone w analizatorze
+    
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         super(mainApp, self).__init__(parent)
@@ -165,14 +167,34 @@ class mainApp(QtGui.QMainWindow):
 
 
     def displayDataInColumns(self, logs):
-        self.ui.resultsView.clear()
+        self.logsLinesItems = [] #wyzerowanie listy elementów wyświetlanych
+        self.ui.resultsView.clear() #i wyzerowanie samego widgetu
+        self.ui.setTableHeaders()
         logs_lines = logs.split("\n")
-        for line in logs_lines:
-            self.ui.resultsView.addItem(str(line))
-
+        longestTexts = self.ui.columnsToView
         
-
+        for line in logs_lines:
+            splittedLine = self.splitLogLine(line)
+            col = 0
+            if len(splittedLine) != 0:
+                rowEntry = QtGui.QTreeWidgetItem(self.ui.resultsView)
+                for columnValue in splittedLine:
+                    rowEntry.setText(col, _fromUtf8(columnValue))
+                    rowEntry.setTextAlignment(col, QtCore.Qt.AlignLeft)
+                    if len(columnValue) > len(longestTexts[col]):
+                        longestTexts[col] = columnValue
+                    col += 1
+                self.logsLinesItems.append(rowEntry)
+        col = 0
+        for longestValue in longestTexts:
+            itemWidth = int(QtGui.QFontMetrics(self.ui.resultsView.font()).width(longestValue))
+            self.ui.resultsView.setColumnWidth(col, itemWidth+25) #nie wiem dlaczego, ale bez tego zawsze trochę brakuje
+            col += 1
+   
+   
+   
     def parseAndDisplayReport(self, reportFile):
+        self.reportLinesItems = []
         self.ui.reportView.clear()
         self.ui.reportView.setHeaderHidden(True)
         maxLenght = 0
@@ -212,8 +234,7 @@ class mainApp(QtGui.QMainWindow):
                     line_number = item.getElementsByTagName('line_number')[0].childNodes[0].nodeValue
                     #w kolumnie 1 która i tak jest niewidoczna zapisywany jest nr linii ktrórej dotyczy wpis:
                     secondLevelItem.setText(1, _fromUtf8(line_number))
-                    if len(description) > maxLenght:
-                        maxLenght = len(description)
+                    if len(description) > len(longestText):
                         longestText = description
             
         #obliczenie szerokości najdłuższego wpisu:
@@ -221,17 +242,23 @@ class mainApp(QtGui.QMainWindow):
         self.ui.reportView.setColumnWidth(0, itemWidth)
 
         #dodanie sygnału do elementów listy:
-        self.ui.reportView.itemActivated.connect(self.showLine)
+        self.ui.reportView.itemActivated.connect(self.showLineInResultsView)
     
         
         
     def searchItem(self):
         searchExpression = self.ui.searchTextValue.text()
-        self.items = self.ui.resultsView.findItems(searchExpression, QtCore.Qt.MatchContains)
+        currentColumn = 0
+        self.items = []
+        for column in self.ui.columnsToView:
+            self.items.extend(self.ui.resultsView.findItems(searchExpression, QtCore.Qt.MatchContains, currentColumn))
+            currentColumn += 1
+            
+        print self.items
         #wyzerowanie indeksu tak aby wyświetlić pierwszy znaleziony element
         self.displayedSearchedItemIndex = 0
         if len(self.items) > 0:
-            self.items[self.displayedSearchedItemIndex].setSelected(True)
+            self.ui.resultsView.setCurrentItem(self.items[self.displayedSearchedItemIndex])
             self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
             
         #jeżeli jest więcej niż jeden element to aktywować trzeba przycisk "next":
@@ -242,7 +269,7 @@ class mainApp(QtGui.QMainWindow):
     #@TODO: trzeba zrobić aby przesuwało do aktywnego znalezionego rekordo
     def showNextItem(self):
         self.displayedSearchedItemIndex+=1
-        self.items[self.displayedSearchedItemIndex].setSelected(True)
+        self.ui.resultsView.setCurrentItem(self.items[self.displayedSearchedItemIndex])
         self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
         
         #trzeba ustawić przycisk "previous" na aktywny:
@@ -256,7 +283,7 @@ class mainApp(QtGui.QMainWindow):
     
     def showPreviousItem(self):
         self.displayedSearchedItemIndex-=1
-        self.items[self.displayedSearchedItemIndex].setSelected(True)
+        self.ui.resultsView.setCurrentItem(self.items[self.displayedSearchedItemIndex])
         self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
 
         #trzeba ustawić przycisk "previous" na aktywny:
@@ -289,8 +316,23 @@ class mainApp(QtGui.QMainWindow):
     
     
     
-    def showLine(self, item, column = 0):
+    def showLineInResultsView(self, item, column = 0):
         line_nr = int(item.text(1)) - 1 
-        itemToSelect = self.ui.resultsView.item(line_nr)
-        itemToSelect.setSelected(True)
+        #itemToSelect = self.ui.resultsView.item(line_nr)
+        itemToSelect = self.logsLinesItems[line_nr]
+        self.ui.resultsView.setCurrentItem(itemToSelect)
+        #itemToSelect.setSelected(True)
         self.ui.resultsView.scrollToItem(itemToSelect)
+        
+        
+        
+    def splitLogLine(self, line):
+        result = []
+        regex = '([(\d\.)]+) (.*?) (.*?) \[(.*?)\] "(.*?)" (\d+) (-|\d+) "(.*?)" "(.*?)"'
+        if len(line) != 0:
+            values = list(re.match(regex, line).groups())
+            del(values[1]) #usunięcie kolumny której nie używam późniejszych
+            #usunięcie białych znaków z każdego elementu
+            for value in values:
+                result.append(value.strip())
+        return result

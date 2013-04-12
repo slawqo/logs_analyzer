@@ -55,6 +55,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     
     logsTypes = [ "access", "error", "ftp", "cgi", "out", "ssh" ]
+    columnsToView = ['IP Address', 'User', 'Time', 'Request', 'Answear Status', 'Answear size', 'Referer', 'User Agent']
     
     def setupUi(self, MainWindow):
         self.main_window = MainWindow
@@ -171,9 +172,10 @@ class Ui_MainWindow(object):
         self.tabsContainer = QtGui.QTabWidget()
         self.tabsContainer.setEnabled(True)
     
-        self.resultsView = QtGui.QListWidget()
+        self.resultsView = QtGui.QTreeWidget()
         self.resultsView.setObjectName(_fromUtf8("resultsTable"))
-        self.resultsView.setResizeMode(self.resultsView.Adjust)
+        self.resultsView.setIndentation(0)
+        self.setTableHeaders()
         self.reportView = QtGui.QTreeWidget()
         self.reportView.setGeometry(QtCore.QRect(30, 20, 256, 192))
         self.reportView.headerItem().setText(0, _fromUtf8("Possible attacks"))
@@ -220,3 +222,11 @@ class Ui_MainWindow(object):
         centralWidget.setLayout(layout)
         container.addTab(centralWidget, _fromUtf8(""))
         container.setTabText(container.indexOf(centralWidget), _fromUtf8(title))
+        
+     
+    def setTableHeaders(self):
+        i = 0
+        for label in self.columnsToView:
+            self.resultsView.headerItem().setText(i, _fromUtf8(label))
+            i += 1
+
