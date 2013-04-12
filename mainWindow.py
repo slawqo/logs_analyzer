@@ -208,6 +208,7 @@ class Ui_MainWindow(object):
         self.searchWidgetLayout.addWidget(self.nextResultButton)
         self.searchWidgetLayout.addWidget(self.previousResultButton)
     
+        self.searchWidget.hide()
         self.searchWidget.setLayout(self.searchWidgetLayout)
 
 
