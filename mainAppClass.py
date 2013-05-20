@@ -122,7 +122,7 @@ class mainApp(QtGui.QMainWindow):
             self.parser.report_format = "xml"
            
             #ustawienie paska postępu pobierania logów:
-            progressBar = QtGui.QProgressDialog("Download logs file", "Cance", 0, 100, self)
+            progressBar = QtGui.QProgressDialog("Download logs file", "Cancel", 0, 100, self)
             #@TODO: dodać akcję dla przycisku "cancel"
             #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
             #i dlatego przycisk "Cancel" jest ukryty
@@ -151,7 +151,7 @@ class mainApp(QtGui.QMainWindow):
                 QtGui.QMessageBox.about(self, "Error", "Unknown error")
             else:
                 self.displayDataInColumns(logs)
-                
+            
             #i dodanie nowej informacji o generowaniu logów:
             if logsType == "access":
                 print "Generate report..."
@@ -162,32 +162,41 @@ class mainApp(QtGui.QMainWindow):
                 reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
                 report = self.parseAndDisplayReport(reportFile)
                 progressBar.close()
-
+            
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
+        
+        print "Labele na koniec getLogs:"
+        print self.ui.columnsToView
 
 
 
     def displayDataInColumns(self, logs):
         self.logsLinesItems = [] #wyzerowanie listy elementów wyświetlanych
-        self.ui.resultsView.clear() #i wyzerowanie samego widgetu
-        self.ui.setTableHeaders()
-        logs_lines = logs.split("\n")
-        longestTexts = self.ui.columnsToView
+        self.ui.itemsModel.clear()
+        self.ui.setItemsHeaders()
         
+        logs_lines = logs.split("\n")
+        longestTexts = self.ui.columnsToView[:]
+        
+        row = 0
         for line in logs_lines:
             splittedLine = self.splitLogLine(line)
             col = 0
             if len(splittedLine) != 0:
-                rowEntry = QtGui.QTreeWidgetItem(self.ui.resultsView)
                 for columnValue in splittedLine:
-                    rowEntry.setText(col, _fromUtf8(columnValue))
-                    rowEntry.setTextAlignment(col, QtCore.Qt.AlignLeft)
+                    item = QtGui.QStandardItem(columnValue)
+                    self.ui.itemsModel.setItem(row, col, item)
                     if len(columnValue) > len(longestTexts[col]):
                         longestTexts[col] = columnValue
                     col += 1
-                self.logsLinesItems.append(rowEntry)
+
+            row += 1
+            
+        self.ui.resultsView.setModel(self.ui.itemsModel)
+        row = 0
         col = 0
+        
         for longestValue in longestTexts:
             itemWidth = int(QtGui.QFontMetrics(self.ui.resultsView.font()).width(longestValue))
             self.ui.resultsView.setColumnWidth(col, itemWidth+25) #nie wiem dlaczego, ale bez tego zawsze trochę brakuje
@@ -257,6 +266,10 @@ class mainApp(QtGui.QMainWindow):
             currentColumn += 1
             
         print self.items
+        #for item in self.items:
+		#	if item not in self.ui.resultsView:
+		#		self.ui.resultsView.
+        
         #wyzerowanie indeksu tak aby wyświetlić pierwszy znaleziony element
         self.displayedSearchedItemIndex = 0
         if len(self.items) > 0:

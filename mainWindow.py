@@ -172,10 +172,13 @@ class Ui_MainWindow(object):
         self.tabsContainer = QtGui.QTabWidget()
         self.tabsContainer.setEnabled(True)
     
-        self.resultsView = QtGui.QTreeWidget()
+        self.resultsView = QtGui.QTreeView()
         self.resultsView.setObjectName(_fromUtf8("resultsTable"))
         self.resultsView.setIndentation(0)
-        self.setTableHeaders()
+        self.itemsModel = QtGui.QStandardItemModel()
+        self.setItemsHeaders()
+        self.resultsView.setModel(self.itemsModel)
+        
         self.reportView = QtGui.QTreeWidget()
         self.reportView.setGeometry(QtCore.QRect(30, 20, 256, 192))
         self.reportView.headerItem().setText(0, _fromUtf8("Possible attacks"))
@@ -225,9 +228,13 @@ class Ui_MainWindow(object):
         container.setTabText(container.indexOf(centralWidget), _fromUtf8(title))
         
      
-    def setTableHeaders(self):
+    def setItemsHeaders(self):
+        self.itemsModel.setColumnCount(len(self.columnsToView))
+        self.itemsModel.setRowCount(0)
+        print "Labele w setItemsHeaders:"
+        print self.columnsToView
         i = 0
         for label in self.columnsToView:
-            self.resultsView.headerItem().setText(i, _fromUtf8(label))
+            self.itemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
             i += 1
 
