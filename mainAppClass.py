@@ -75,6 +75,9 @@ class mainApp(QtGui.QMainWindow):
 
         self.parser = parsePage()
         
+        self.logsProxy = QtGui.QSortFilterProxyModel(self)
+        self.logsProxy.setFilterKeyColumn(-1)
+        
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         
@@ -165,15 +168,13 @@ class mainApp(QtGui.QMainWindow):
             
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
-        
-        print "Labele na koniec getLogs:"
-        print self.ui.columnsToView
+
 
 
 
     def displayDataInColumns(self, logs):
         self.logsLinesItems = [] #wyzerowanie listy elementów wyświetlanych
-        self.ui.itemsModel.clear()
+        self.ui.logsItemsModel.clear()
         self.ui.setItemsHeaders()
         
         logs_lines = logs.split("\n")
@@ -186,14 +187,15 @@ class mainApp(QtGui.QMainWindow):
             if len(splittedLine) != 0:
                 for columnValue in splittedLine:
                     item = QtGui.QStandardItem(columnValue)
-                    self.ui.itemsModel.setItem(row, col, item)
+                    self.ui.logsItemsModel.setItem(row, col, item)
                     if len(columnValue) > len(longestTexts[col]):
                         longestTexts[col] = columnValue
                     col += 1
 
             row += 1
-            
-        self.ui.resultsView.setModel(self.ui.itemsModel)
+        
+        self.logsProxy.setSourceModel(self.ui.logsItemsModel)
+        self.ui.resultsView.setModel(self.logsProxy)
         row = 0
         col = 0
         
@@ -258,28 +260,12 @@ class mainApp(QtGui.QMainWindow):
         
         
     def searchItem(self):
-        searchExpression = self.ui.searchTextValue.text()
-        currentColumn = 0
-        self.items = []
-        for column in self.ui.columnsToView:
-            self.items.extend(self.ui.resultsView.findItems(searchExpression, QtCore.Qt.MatchContains, currentColumn))
-            currentColumn += 1
-            
-        print self.items
-        #for item in self.items:
-		#	if item not in self.ui.resultsView:
-		#		self.ui.resultsView.
+        searchExpression = QtCore.QRegExp(self.ui.searchTextValue.text(),
+                                            QtCore.Qt.CaseInsensitive,
+                                            QtCore.QRegExp.RegExp
+                                        )
+        self.logsProxy.setFilterRegExp(searchExpression)
         
-        #wyzerowanie indeksu tak aby wyświetlić pierwszy znaleziony element
-        self.displayedSearchedItemIndex = 0
-        if len(self.items) > 0:
-            self.ui.resultsView.setCurrentItem(self.items[self.displayedSearchedItemIndex])
-            self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
-            
-        #jeżeli jest więcej niż jeden element to aktywować trzeba przycisk "next":
-        if len(self.items) > 1:
-            self.ui.nextResultButton.setEnabled(True)
-    
     
     #@TODO: trzeba zrobić aby przesuwało do aktywnego znalezionego rekordo
     def showNextItem(self):

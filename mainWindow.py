@@ -175,9 +175,10 @@ class Ui_MainWindow(object):
         self.resultsView = QtGui.QTreeView()
         self.resultsView.setObjectName(_fromUtf8("resultsTable"))
         self.resultsView.setIndentation(0)
-        self.itemsModel = QtGui.QStandardItemModel()
+        
+        self.logsItemsModel = QtGui.QStandardItemModel()
         self.setItemsHeaders()
-        self.resultsView.setModel(self.itemsModel)
+        self.resultsView.setModel(self.logsItemsModel)
         
         self.reportView = QtGui.QTreeWidget()
         self.reportView.setGeometry(QtCore.QRect(30, 20, 256, 192))
@@ -229,12 +230,12 @@ class Ui_MainWindow(object):
         
      
     def setItemsHeaders(self):
-        self.itemsModel.setColumnCount(len(self.columnsToView))
-        self.itemsModel.setRowCount(0)
+        self.logsItemsModel.setColumnCount(len(self.columnsToView))
+        self.logsItemsModel.setRowCount(0)
         print "Labele w setItemsHeaders:"
         print self.columnsToView
         i = 0
         for label in self.columnsToView:
-            self.itemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
+            self.logsItemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
             i += 1
 
