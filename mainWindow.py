@@ -232,8 +232,6 @@ class Ui_MainWindow(object):
     def setItemsHeaders(self):
         self.logsItemsModel.setColumnCount(len(self.columnsToView))
         self.logsItemsModel.setRowCount(0)
-        print "Labele w setItemsHeaders:"
-        print self.columnsToView
         i = 0
         for label in self.columnsToView:
             self.logsItemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
