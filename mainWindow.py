@@ -45,7 +45,7 @@ This file is part of Logs Analyzer.
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, QtWebKit
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -185,9 +185,15 @@ class Ui_MainWindow(object):
         self.reportView.headerItem().setText(0, _fromUtf8("Possible attacks"))
 
         self.reportView.setObjectName(_fromUtf8("reportView"))
+        
+        self.statsView = QtWebKit.QWebView()
+        self.statsView.load(QtCore.QUrl("http://google.pl"))
+        self.statsView.show()
+        self.statsView.setObjectName(_fromUtf8("statsView"))
 
         self.addTab(self.tabsContainer, self.resultsView, "Log")
         self.addTab(self.tabsContainer, self.reportView, "Report")
+        self.addTab(self.tabsContainer, self.statsView, "Statistics")
 
         self.centralWidgetLayout.addWidget(self.tabsContainer)
         self.centralWidget.setLayout(self.centralWidgetLayout)
