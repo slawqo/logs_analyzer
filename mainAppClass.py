@@ -76,7 +76,6 @@ class mainApp(QtGui.QMainWindow):
         self.parser = parsePage()
         
         self.logsProxy = QtGui.QSortFilterProxyModel(self)
-        self.logsProxy.setFilterKeyColumn(-1)
         
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -100,8 +99,6 @@ class mainApp(QtGui.QMainWindow):
         self.searchAction.triggered.connect(self.searchBox)
         self.ui.searchButton.clicked.connect(self.searchItem)
         self.ui.searchTextValue.returnPressed.connect(self.searchItem)
-        self.ui.nextResultButton.clicked.connect(self.showNextItem)
-        self.ui.previousResultButton.clicked.connect(self.showPreviousItem)
 
 
 
@@ -260,39 +257,13 @@ class mainApp(QtGui.QMainWindow):
         
         
     def searchItem(self):
+        columnToSearch = int(self.ui.searchColumns.currentIndex())-1
+        self.logsProxy.setFilterKeyColumn(columnToSearch)
         searchExpression = QtCore.QRegExp(self.ui.searchTextValue.text(),
                                             QtCore.Qt.CaseInsensitive,
                                             QtCore.QRegExp.RegExp
                                         )
         self.logsProxy.setFilterRegExp(searchExpression)
-        
-    
-    #@TODO: trzeba zrobić aby przesuwało do aktywnego znalezionego rekordo
-    def showNextItem(self):
-        self.displayedSearchedItemIndex+=1
-        self.ui.resultsView.setCurrentItem(self.items[self.displayedSearchedItemIndex])
-        self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
-        
-        #trzeba ustawić przycisk "previous" na aktywny:
-        self.ui.previousResultButton.setEnabled(True)
-        
-        #jeżeli jest to ostatni element to trzeba zablokować przycisk next:
-        if len(self.items) == (self.displayedSearchedItemIndex+1):
-            self.ui.nextResultButton.setEnabled(False)
-    
-    
-    
-    def showPreviousItem(self):
-        self.displayedSearchedItemIndex-=1
-        self.ui.resultsView.setCurrentItem(self.items[self.displayedSearchedItemIndex])
-        self.ui.resultsView.scrollToItem(self.items[self.displayedSearchedItemIndex])
-
-        #trzeba ustawić przycisk "previous" na aktywny:
-        self.ui.nextResultButton.setEnabled(True)
-        
-        #jeżeli jest to pierwszy element to trzeba zablokować przycisk previous:
-        if self.displayedSearchedItemIndex == 0:
-            self.ui.previousResultButton.setEnabled(False)
 
 
 

@@ -195,23 +195,23 @@ class Ui_MainWindow(object):
 
 
     def prepareSearchWidget(self):
+        columns = ["All",]
+        columns.extend(self.columnsToView)
+        
         self.searchWidget = QtGui.QWidget()
         self.searchWidgetLayout = QtGui.QHBoxLayout()
         
         self.searchLabel = QtGui.QLabel(_fromUtf8("Search text: "))
         self.searchTextValue = QtGui.QLineEdit()
         self.searchButton = QtGui.QPushButton(_fromUtf8("Search"))
-        self.nextResultButton = QtGui.QPushButton(_fromUtf8("Next"))
-        self.nextResultButton.setEnabled(False)
-        self.previousResultButton = QtGui.QPushButton(_fromUtf8("Previous"))
-        self.previousResultButton.setEnabled(False)
+        self.searchColumns = QtGui.QComboBox()
+        self.searchColumns.addItems(columns)
         
         self.searchWidgetLayout.addWidget(self.searchLabel)
         self.searchWidgetLayout.addWidget(self.searchTextValue)
+        self.searchWidgetLayout.addWidget(self.searchColumns)
         self.searchWidgetLayout.addWidget(self.searchButton)
-        self.searchWidgetLayout.addWidget(self.nextResultButton)
-        self.searchWidgetLayout.addWidget(self.previousResultButton)
-    
+        
         self.searchWidget.hide()
         self.searchWidget.setLayout(self.searchWidgetLayout)
 
