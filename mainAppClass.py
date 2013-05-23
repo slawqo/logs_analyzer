@@ -281,6 +281,7 @@ class mainApp(QtGui.QMainWindow):
     
     def showSearchBox(self):    
         self.ui.searchWidget.show()
+        self.ui.searchTextValue.setFocus()
         self.searchWidgetDisplayed = True
         
         
