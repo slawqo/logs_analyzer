@@ -63,6 +63,7 @@ class mainApp(QtGui.QMainWindow):
     displayedSearchedItemIndex = 0 #index aktualnie podświetlonego elemetnu jaki został znaleziony
     items = [] #elementy wyszukane przez użytkownika
     logsLinesItems = [] #elementy logu (linie) wyświetlone w analizatorze
+    lastSelectedLine = [] #ostatnio podświetlona linia w widoku logu
     
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -182,13 +183,15 @@ class mainApp(QtGui.QMainWindow):
             splittedLine = self.splitLogLine(line)
             col = 0
             if len(splittedLine) != 0:
+                singleLineItems = []
                 for columnValue in splittedLine:
                     item = QtGui.QStandardItem(columnValue)
                     self.ui.logsItemsModel.setItem(row, col, item)
+                    singleLineItems.append(item)
                     if len(columnValue) > len(longestTexts[col]):
                         longestTexts[col] = columnValue
                     col += 1
-
+                self.logsLinesItems.append(singleLineItems)
             row += 1
         
         self.logsProxy.setSourceModel(self.ui.logsItemsModel)
@@ -290,14 +293,32 @@ class mainApp(QtGui.QMainWindow):
     
     def showLineInResultsView(self, item, column = 0):
         line_nr = int(item.text(1)) - 1 
-        #itemToSelect = self.ui.resultsView.item(line_nr)
-        itemToSelect = self.logsLinesItems[line_nr]
-        self.ui.resultsView.setCurrentItem(itemToSelect)
-        #itemToSelect.setSelected(True)
-        self.ui.resultsView.scrollToItem(itemToSelect)
+        if len(self.lastSelectedLine) > 0 :
+            self.deselectLine(self.lastSelectedLine)
+        
+        lineToSelect = self.logsLinesItems[line_nr]
+        self.selectLine(lineToSelect)
+        
+        self.lastSelectedLine = lineToSelect
         
         
         
+    def selectLine(self, line):
+        selectionModel = self.ui.resultsView.selectionModel()
+        for item in line:
+            itemToSelect = self.ui.logsItemsModel.indexFromItem(item)
+            selectionModel.select(itemToSelect, selectionModel.Select)
+            
+            
+            
+    def deselectLine(self, line):
+        selectionModel = self.ui.resultsView.selectionModel()
+        for item in line:
+            itemToSelect = self.ui.logsItemsModel.indexFromItem(item)
+            selectionModel.select(itemToSelect, selectionModel.Deselect)
+    
+    
+    
     def splitLogLine(self, line):
         result = []
         regex = '([(\d\.)]+) (.*?) (.*?) \[(.*?)\] "(.*?)" (\d+) (-|\d+) "(.*?)" "(.*?)"'
