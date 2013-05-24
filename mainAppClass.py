@@ -120,43 +120,49 @@ class mainApp(QtGui.QMainWindow):
             self.parser.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
             self.parser.prepareLogsType(logsType) 
             self.parser.report_format = "xml"
-           
-            #ustawienie paska postępu pobierania logów:
-            progressBar = QtGui.QProgressDialog("Download logs file", "Cancel", 0, 100, self)
-            #@TODO: dodać akcję dla przycisku "cancel"
-            #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-            #i dlatego przycisk "Cancel" jest ukryty
-            progressBar.setCancelButton(None)
-
-            #pobranie logów:
-            logsFile = self.parser.saveLogs(progressBar)
-            logs = self.parser.getDownloadedLogs()
             
-            #usunięcie informacji o generowaniu logów:
-            progressBar.close()
+            try:
+                #ustawienie paska postępu pobierania logów:
+                progressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
+                #@TODO: dodać akcję dla przycisku "cancel"
+                #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+                #i dlatego przycisk "Cancel" jest ukryty
+                progressBar.setCancelButton(None)
+                progressBar.show()
+            
+                #pobranie logów:
+                logsFile = self.parser.saveLogs(progressBar)
+                logs = self.parser.getDownloadedLogs()
+            
+                #usunięcie informacji o generowaniu logów:
+                progressBar.close()
                         
-            #analiza i wyswietlenie pobranych wyników 
-            if logs == "401":
-                logWin = loginWindow(self)
-                logWin.exec_()
-                if self.loginCanceled == False:
-                    self.parser.login = self.login
-                    self.parser.password = self.password
-                    self.getLogs()
+                #analiza i wyswietlenie pobranych wyników 
+                if logs == "401":
+                    logWin = loginWindow(self)
+                    logWin.exec_()
+                    if self.loginCanceled == False:
+                        self.parser.login = self.login
+                        self.parser.password = self.password
+                        self.getLogs()
+                    else:
+                        return
+                elif logs == "404":
+                    QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
+                elif logs == "-1":
+                    QtGui.QMessageBox.about(self, "Error", "Unknown error")
                 else:
-                    return
-            elif logs == "404":
-                QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
-            elif logs == "-1":
-                QtGui.QMessageBox.about(self, "Error", "Unknown error")
-            else:
-                self.displayDataInColumns(logs, logsType)
+                    self.displayDataInColumns(logs, logsType)
             
-            #i dodanie nowej informacji o generowaniu logów:
-            if logsType == "access":
-                print "Generate report..."
-                self.generateReport(logsFile)
-                self.generateStats(logsFile)
+                #i dodanie nowej informacji o generowaniu logów:
+                if logsType == "access":
+                    print "Generate report..."
+                    self.generateReport(logsFile)
+                    self.generateStats(logsFile)
+            
+            except Exception as e:
+                QtGui.QMessageBox.about(self, "Error", str(e))
+                progressBar.close()
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
@@ -167,6 +173,7 @@ class mainApp(QtGui.QMainWindow):
         #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
         #i dlatego przycisk "Cancel" jest ukryty:
         progressBar.setCancelButton(None)
+        progressBar.show()
         reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
         report = self.parseAndDisplayReport(reportFile)
         progressBar.close()
@@ -174,10 +181,11 @@ class mainApp(QtGui.QMainWindow):
         
         
     def generateStats(self, logsFile):
-        progressBar = QtGui.QProgressDialog("Generating statystyk...", "Cancel", 0, 100, self)
+        progressBar = QtGui.QProgressDialog("Generating statistics...", "Cancel", 0, 0, self)
         #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
         #i dlatego przycisk "Cancel" jest ukryty:
         progressBar.setCancelButton(None)
+        progressBar.show()
         awstatsFile = self.parser.createAwstats(logFile = logsFile, progressBarWindow = progressBar)
         #report = self.parseAndDisplayReport(reportFile)
         self.ui.showPage(awstatsFile)
