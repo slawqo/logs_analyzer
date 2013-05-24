@@ -1,0 +1,566 @@
+AWSTATS DATA FILE 7.1.1 (build 1.989)
+# If you remove this file, all statistics for date 201305 will be lost/reset.
+# Last config file used to build this data file was /home/slawek/.logs_analyzer/awstats/awstats_tmp_config.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 27
+POS_GENERAL 2015                
+POS_TIME 2703                
+POS_VISITOR 3683                
+POS_DAY 7871                
+POS_DOMAIN 8026                
+POS_LOGIN 8321                
+POS_ROBOT 8476                
+POS_WORMS 8861                
+POS_EMAILSENDER 8992                
+POS_EMAILRECEIVER 9135                
+POS_SESSION 9211                
+POS_SIDER 9417                
+POS_FILETYPES 12071               
+POS_DOWNLOADS 12269               
+POS_OS 12513               
+POS_BROWSER 12716               
+POS_SCREENSIZE 13101               
+POS_UNKNOWNREFERER 13175               
+POS_UNKNOWNREFERERBROWSER 13447               
+POS_ORIGIN 13529               
+POS_SEREFERRALS 13668               
+POS_PAGEREFS 13836               
+POS_SEARCHWORDS 17905               
+POS_KEYWORDS 18685               
+POS_MISC 2365                
+POS_ERRORS 19159               
+POS_CLUSTER 8177                
+POS_SIDER_404 19263               
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20130523235603 2561 672546 14107141467436
+FirstTime 20130523000840
+LastTime 20130523234535
+LastUpdate 20130524143609 2561 0 2561 0 0
+TotalVisits 77                  
+TotalUnique 64                  
+MonthHostsKnown 55                  
+MonthHostsUnknown 26                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+JavascriptDisabled 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+AddToFavourites 0 171 0
+RealPlayerSupport 0 0 0
+TotalMisc 0 0 0
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 11 39 13056483 2 17 5851751
+1 1 1 0 3 16 174773
+2 0 0 0 4 33 10552274
+3 0 0 0 0 24 1310546
+4 0 0 0 4 40 6580289
+5 0 0 0 0 23 5553019
+6 0 0 0 1 20 2624177
+7 10 32 12903412 1 38 4635643
+8 10 39 14581823 6 37 2736586
+9 64 135 17786147 2 25 2359946
+10 43 224 40367703 3 43 15007586
+11 13 86 21004464 3 32 4131123
+12 27 146 20285891 2 30 3703704
+13 20 89 24345015 2 26 747414
+14 30 133 28574820 2 38 3847130
+15 6 35 15467959 2 26 45079694
+16 12 38 7844759 1 28 4182817
+17 32 100 21200815 1 39 1496038
+18 4 60 8243789 0 23 7184789
+19 16 78 29321032 0 15 7186896
+20 31 134 22190831 3 29 83528
+21 78 244 41949065 1 61 45620
+22 26 154 23413058 3 13 55816
+23 16 86 14685747 23 32 2953847
+END_TIME
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 81
+acng85.neoplus.adsl.tpnet.pl 49 49 355711 20130523101229
+195.182.9.245 33 33 142941 20130523101346
+aatq72.neoplus.adsl.tpnet.pl 32 32 173072 20130523215606
+host-0-13.internetunion.pl 31 31 315993 20130523214111
+37-128-80-226.ip.netia.com.pl 17 17 86302 20130523101121
+router.krt.net.pl 16 16 75399 20130523211718
+auh141.neoplus.adsl.tpnet.pl 15 15 83297 20130523140949
+90-156-12-77.internetia.net.pl 14 14 80028 20130523225620 20130523224008 /klasy/
+user-94-254-148-223.play-internet.pl 14 14 91210 20130523175431
+89-70-99-145.dynamic.chello.pl 13 13 79498 20130523172929
+abcd-ovh5.yasni.de 2 2 66159 20130523174136
+h82-143-157-137-static.e-wro.net.pl 3 3 20970 20130523081847
+static-nat-222.broadband.greenlan.pl 2 2 11113 20130523123629
+aayl99.neoplus.adsl.tpnet.pl 2 2 7497 20130523115243
+aacv106.neoplus.adsl.tpnet.pl 2 2 11113 20130523201427
+aop27.neoplus.adsl.tpnet.pl 7 7 37488 20130523142058
+77.254.186.161 2 2 6956 20130523225016
+212-87-13-77.sds.uw.edu.pl 2 2 26063 20130523134800
+legolas.bdmedia.pl 2 2 27900 20130523234502 20130523234501 /wp-content/plugins/jquery-featured-content-gallery/jfc.css.php
+aaes13.neoplus.adsl.tpnet.pl 11 11 56475 20130523133521
+dynamic-78-8-158-166.ssp.dialog.net.pl 2 2 11113 20130523202342
+89-70-165-87.dynamic.chello.pl 6 6 24135 20130523165733
+dynamic-87-105-135-127.ssp.dialog.net.pl 2 2 11113 20130523222606
+178.37.170.70 4 4 22226 20130523192300
+catherina.static.korbank.pl 3 3 20970 20130523105313
+176-57-142-28.kryutek.net 1 1 122598 20130523114555
+iuw35.internetdsl.tpnet.pl 2 2 11113 20130523110245
+host-8-78.internetunion.pl 2 2 10403 20130523220446
+aarh78.neoplus.adsl.tpnet.pl 4 4 22226 20130523190601
+46.105.196.199 0 276 217935416 
+90-156-58-39.internetia.net.pl 4 4 22226 20130523111639
+46.105.196.104 0 10 549202 
+46.105.196.101 0 11 276506 
+46.105.196.200 0 248 15492167 
+89-70-165-83.dynamic.chello.pl 12 12 55444 20130523195000
+90-156-75-106.internetia.net.pl 8 8 46329 20130523213509
+abwu200.neoplus.adsl.tpnet.pl 0 2 172770 
+host-5-151.internetunion.pl 2 2 11113 20130523141113
+aate228.neoplus.adsl.tpnet.pl 2 2 11113 20130523084503
+213-5-41-117.bestgo.pl 8 8 41013 20130523234212 20130523234029 /wp-content/plugins/jquery-featured-content-gallery/jfc.css.php
+user-164-127-50-234.play-internet.pl 4 4 26225 20130523151632
+188.147.72.220.nat.umts.dynamic.t-mobile.pl 0 1 96676 
+46.105.196.102 0 5 107276 
+h82-143-156-97-static.e-wro.net.pl 12 12 47095 20130523205519
+176.57.141.193 2 2 64501 20130523174136
+auq98.neoplus.adsl.tpnet.pl 2 2 11113 20130523225016
+90-156-57-111.internetia.net.pl 2 2 11113 20130523212456
+google-proxy-66-249-81-137.google.com 2 2 13530 20130523180148
+46.105.196.37 0 136 9453475 
+aclu191.neoplus.adsl.tpnet.pl 2 2 11113 20130523204911
+46.105.196.38 0 106 10885140 
+46.105.196.197 0 190 7969324 
+46.105.196.39 0 139 81445276 
+host-0-12.internetunion.pl 2 2 11113 20130523181714
+212.244.210.66 6 6 217520 20130523234535 20130523234454 /wp-content/plugins/jquery-featured-content-gallery/jfc.css.php
+adm152.neoplus.adsl.tpnet.pl 2 2 8518 20130523201147
+37.128.0.31 9 9 44035 20130523121555
+90-156-54-71.internetia.net.pl 4 4 22226 20130523142924
+193.35.99.238 4 4 22226 20130523093152
+46.105.196.103 0 4 189180 
+46.105.196.198 0 112 6592316 
+80.51.30.25 4 4 209289 20130523123009
+host-188-122-21-121.finemedia.pl 10 10 55565 20130523143123
+176.57.141.254 2 2 110518 20130523215945
+46.105.196.40 0 160 15582632 
+195.205.163.218 2 2 7999 20130523124625
+199.pluscom.jawnet.pl 0 1 3123647 
+abcd-ovh2.yasni.de 1 1 114943 20130523114555
+159.205.117.133 0 1 89872 
+ex2.edf.pl 2 2 45923 20130523071009
+abcd-ovh6.yasni.de 3 3 234582 20130523204845
+89-70-95-198.dynamic.chello.pl 2 2 11113 20130523072117
+abcd-ovh9.yasni.de 2 2 170202 20130523174613
+194.12.64.4 1 1 0 20130523013251
+77-255-211-255.adsl.inetia.pl 11 11 70408 20130523001009
+user-94-254-145-48.play-internet.pl 2 2 11113 20130523101016
+176.57.143.60 1 1 114943 20130523141900
+90-156-49-230.internetia.net.pl 4 4 18846 20130523223657
+host-85.232.230.155.nowaera.pl 9 9 196945 20130523203235
+host-89.miotek.kalety.net 0 1 3123647 
+77.254.65.177 10 10 57254 20130523122431
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 1
+20130523 450 1853 377222813 77
+END_DAY
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 5
+pl 359 363 5788962
+ip 80 1478 367588190
+de 8 8 585886
+com 2 2 13530
+net 1 2 3246245
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 7
+googlebot 388 99200075 20130523221410 3
+msnbot\-media 81 37624302 20130523235447 40
+bingbot 40 1046915 20130523233048 11
+ezoom 8 97035 20130523231423 4
+wordpress 3 633 20130523200658 0
+surveybot 2 9916 20130523134912 1
+proximic 2 44726 20130523084539 1
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Session range - Number of visits
+BEGIN_SESSION 7
+1h+ 1
+5mn-15mn 5
+30s-2mn 5
+2mn-5mn 9
+15mn-30mn 4
+0s-30s 48
+30mn-1h 1
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 68
+/wp-content/plugins/jquery-featured-content-gallery/jfc.css.php 191 239896 2 51
+/ 100 1090130 51 5
+/strona/aktualnosci/ 12 106820 0 0
+/strona/szkola/ 10 91052 0 0
+/strona/dokumenty/ 9 47295 0 1
+/klasy/ 8 257624 5 3
+/strona/rodzice/ 7 61091 0 0
+/strona/rodzice/komunikaty/ 6 50664 0 1
+/page/4/ 6 50826 1 0
+/zajecia-pozalekcyjne-w-gimnzajum-nr-9/ 5 138152 0 1
+/kalendarz-roku-szkolnego/ 1 5507 0 0
+/strona/szkola/podreczniki-szkola/ 1 5062 0 0
+/czeski-sen-czeski-koszmar/ 1 6349 0 0
+/sladami-wladcy-pierscieni-i-hobbita/ 1 5700 1 0
+/projekty-edukacyjne/ 3 17805 0 0
+/egzaminy-juz-za-nami/ 3 18579 0 0
+/strona/pedagog/ 1 5626 0 0
+/rok-szkolny-20092010/ 2 64510 2 2
+/strona/dzialania/turystyka/ 1 134796 0 1
+/o-czym-szumia-wroclawskie-drzewa/ 1 6609 0 0
+/strona/o-nas/ 1 6362 0 0
+/swieta-jadwiga-slaska/ 1 12274 1 0
+/strona/uczniowie/osiagniecia/ 3 271840 3 2
+/harmonogram-spotkan-z-rodzicami-w-roku-szkolnym-20112012/ 1 5696 0 0
+/page/6/ 2 17600 0 0
+/strona/uczniowie/ 3 25734 0 0
+/strona/dzialania/turystyka/rajd-otrzesinowy/ 1 71981 1 0
+/strona/kandydaci/terminy/ 1 5547 0 0
+/regulamin-uczniowski/ 5 26535 0 0
+/samorzad-uczniowski/ 1 5766 0 0
+/ocena-stanu-przyrodniczego-osiedla-kuzniki/ 1 8054 0 0
+/podreczniki-obowiazujace/ 1 7058 0 0
+/strona/rodzice/page/2/ 1 5994 0 0
+/strona/4godzinawf/ 1 5709 0 0
+/strona/biblioteka/ 1 5578 0 0
+/wp-login.php 1 0 1 1
+/strona/galeria-sztuki/ 2 13500 0 0
+/jestesmy-fajni-wiadomo/ 1 6164 0 0
+/page/5/ 1 8156 0 0
+/strona/dzialania/ 3 404281 0 0
+/strona/projekty/ 1 9061 0 0
+/certyfikat-bezpiecznej-szkoly-przyznany-2/ 3 20391 0 0
+/strona/aktualnosci/page/3/ 1 9124 0 0
+/warsztaty-dla-rodzicow/ 1 5950 0 0
+/page/2/ 2 16486 0 0
+/kampania-trwa/ 1 6741 0 0
+/rok-szkolny-20012002/ 1 33904 1 1
+/page/3/ 3 28255 0 0
+/poznajmy-sie/ 1 5729 0 0
+/oboz-naukowy-wlochy-2010/ 1 69135 0 0
+/hej-koleda-koleda/ 1 6845 0 0
+/konkurs-piosenki-ekologicznej-w-ramach-projektu-wroclawskie-dzieci-ucza-segregowac-smieci/ 5 33762 1 0
+/strona/uczniowie/page/2/ 4 369636 4 3
+/kadra/ 4 25908 0 0
+/strona/aktualnosci/page/2/ 1 7964 0 0
+/z-nauka-wesolo-i-ciekawie/ 1 7262 1 0
+/rajd-otrzesinowy-juz-za-nami/ 1 7723 0 0
+/liga-klas/ 3 17985 0 0
+/wolontariat/ 1 5841 0 0
+/strona/dzialania/szkola-odkrywcow-talentow/ 1 5125 0 0
+/rok-szkolny-20022003/ 1 32246 1 1
+/w-imieniny-andrzeja-zwyklismy-sie-bawic/ 1 6173 0 0
+/strona/rodzice/spotkaniazrodzicami/ 5 27813 0 0
+/page/7/ 1 37289 0 0
+/strona/projekty/tutoring/ 1 5850 0 0
+/korczak-na-duzym-ekranie/ 1 6241 1 0
+/najfajniejsze-gimnazjum-kontynuacja/ 1 5818 0 0
+/wygralismy/ 1 6112 0 0
+END_SIDER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 7
+css 18 37103 0 0
+php 450 4138291 0 0
+png 327 11442576 0 0
+js 22 707645 0 0
+pdf 6 4740516 0 0
+jpg 946 353779049 0 0
+gif 84 2377633 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 3
+/wp-content/uploads/2012/02/statut.pdf 6 0 4740516
+/wp-content/uploads/2013/01/zadania_i_odpowiedzi_etap1_MiE_SP.pdf 1 0 683391
+/wp-content/uploads/2013/01/przyk%C5%82adowe-zadania.pdf 1 0 188796
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 10
+linuxandroid 266 63
+macosx6 20 2
+winxp 508 72
+winlong 190 82
+linux 67 22
+win7 680 188
+macosx 6 2
+linuxdebian 1 0
+win8 82 16
+Unknown 33 3
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 19
+firefox20.0 196 45
+android 266 63
+firefox21.0 273 82
+firefox10.0.1 20 2
+safari5.0 1 0
+chrome9.0.597 32 2
+firefox7.0.1 2 2
+opera9.80 71 6
+msie8.0 107 20
+chrome14.0.835.163 1 0
+mozilla 1 1
+chrome26.0.1410.64 566 138
+chrome27.0.1453.93 16 4
+msie10.0 74 14
+firefox5.0.1 28 4
+safari5.1 6 2
+firefox6.0 14 14
+msie9.0 152 49
+firefox19.0 27 2
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 2
+Mozilla/5.0_(en-us)_AppleWebKit/534.14_(KHTML,_like_Gecko;_Google_Wireless_Transcoder)_Chrome/9.0.597_Safari/534.14 20130523180149
+Mozilla/3.0_(compatible;_Indy_Library) 20130523013251
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 0
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 50 54
+From1 0 0
+From2 42 47
+From3 358 1752
+From4 0 0
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 2
+google 41 46
+onetpl 1 1
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 68
+http://gimnazjum9.wroclaw.pl 141 882
+http://gimnazjum9.wroclaw.pl/strona/aktualnosci/ 22 33
+http://gimnazjum9.wroclaw.pl/strona/szkola/ 19 31
+http://gimnazjum9.wroclaw.pl/strona/rodzice/ 12 14
+http://gimnazjum9.wroclaw.pl/strona/rodzice/komunikaty/ 11 11
+http://gimnazjum9.wroclaw.pl/page/3/ 9 26
+http://gimnazjum9.wroclaw.pl/regulamin-uczniowski/ 9 9
+http://gimnazjum9.wroclaw.pl/strona/dokumenty/ 9 12
+http://gimnazjum9.wroclaw.pl/zajecia-pozalekcyjne-w-gimnzajum-nr-9/ 7 7
+http://www.gim9.ckp.pl/zmianaadresu.htm 7 7
+http://gimnazjum9.wroclaw.pl/strona/dzialania/szkola-odkrywcow-talentow/ 2 2
+http://gimnazjum9.wroclaw.pl/strona/rodzice/page/2/ 2 2
+http://gimnazjum9.wroclaw.pl/strona/uczniowie/page/2/ 1 11
+http://priv.ckp.pl/killo/gimnazjum/zmianaadresu.htm 3 3
+http://gimnazjum9.wroclaw.pl/swieta-jadwiga-slaska/ 1 31
+http://gimnazjum9.wroclaw.pl/strona/4godzinawf/ 1 3
+http://gimnazjum9.wroclaw.pl/strona/dzialania/ 6 16
+http://gimnazjum9.wroclaw.pl/harmonogram-spotkan-z-rodzicami-w-roku-szkolnym-20112012/ 3 3
+http://gimnazjum9.wroclaw.pl/z-nauka-wesolo-i-ciekawie/ 1 17
+http://gimnazjum9.wroclaw.pl/wygralismy/ 1 1
+http://gimnazjum9.wroclaw.pl/klasy/ 1 11
+http://gimnazjum9.wroclaw.pl/kadra/ 5 45
+http://www2.delta-search.com 1 1
+http://static.gimnazjum9.wroclaw.pl/wp-content/themes/gim9theme/style.css 0 91
+http://static.gimnazjum9.wroclaw.pl/wp-content/themes/gim9theme/menu_style.css 0 14
+http://gimnazjum9.wroclaw.pl/strona/rodzice/spotkaniazrodzicami/ 3 3
+http://gimnazjum9.wroclaw.pl/czeski-sen-czeski-koszmar/ 1 1
+http://gimnazjum9.wroclaw.pl/strona/kandydaci/terminy/ 1 1
+http://gimnazjum9.wroclaw.pl/page/7/ 1 4
+http://gimnazjum9.wroclaw.pl/jestesmy-fajni-wiadomo/ 1 1
+http://gimnazjum9.wroclaw.pl/rajd-otrzesinowy-juz-za-nami/ 2 82
+http://gimnazjum9.wroclaw.pl/hej-koleda-koleda/ 2 26
+http://gimnazjum9.wroclaw.pl/strona/pedagog/ 1 1
+http://gimnazjum9.wroclaw.pl/o-czym-szumia-wroclawskie-drzewa/ 1 1
+http://gimnazjum9.wroclaw.pl/strona/galeria-sztuki/ 2 2
+http://gimnazjum9.wroclaw.pl/certyfikat-bezpiecznej-szkoly-przyznany-2/ 3 4
+http://gimnazjum9.wroclaw.pl/page/4/ 6 53
+http://gimnazjum9.wroclaw.pl/strona/uczniowie/osiagniecia/ 1 2
+http://gimnazjum9.wroclaw.pl/strona/projekty/ 2 2
+http://gimnazjum9.wroclaw.pl/kalendarz-roku-szkolnego/ 2 2
+http://gimnazjum9.wroclaw.pl/konkurs-piosenki-ekologicznej-w-ramach-projektu-wroclawskie-dzieci-ucza-segregowac-smieci/ 4 65
+http://gim9.ckp.pl/zmianaadresu.htm 2 2
+http://gimnazjum9.wroclaw.pl/projekty-edukacyjne/ 7 8
+http://gimnazjum9.wroclaw.pl/podreczniki-obowiazujace/ 2 2
+http://gimnazjum9.wroclaw.pl/kampania-trwa/ 1 15
+http://priv.ckp.pl/killo/gimnazjum/index.htm 1 1
+http://gimnazjum9.wroclaw.pl/w-imieniny-andrzeja-zwyklismy-sie-bawic/ 1 11
+http://gimnazjum9.wroclaw.pl/strona/uczniowie/ 5 5
+http://gimnazjum9.wroclaw.pl/page/6/ 2 11
+http://gimnazjum9.wroclaw.pl/strona/o-nas/ 1 4
+http://gimnazjum9.wroclaw.pl/poznajmy-sie/ 1 2
+http://gimnazjum9.wroclaw.pl/korczak-na-duzym-ekranie/ 1 16
+http://gimnazjum9.wroclaw.pl/page/2/ 5 15
+http://gimnazjum9.wroclaw.pl/samorzad-uczniowski/ 1 1
+http://gimnazjum9.wroclaw.pl/oboz-naukowy-wlochy-2010/ 1 1
+http://gimnazjum9.wroclaw.pl/egzaminy-juz-za-nami/ 2 64
+http://gimnazjum9.wroclaw.pl/strona/dzialania/turystyka/ 1 7
+http://gimnazjum9.wroclaw.pl/najfajniejsze-gimnazjum-kontynuacja/ 1 1
+http://static.gimnazjum9.wroclaw.pl/wp-content/uploads/2012/02/statut.pdf 0 3
+http://gimnazjum9.wroclaw.pl/page/5/ 3 12
+http://gimnazjum9.wroclaw.pl/strona/aktualnosci/page/3/ 2 9
+http://gimnazjum9.wroclaw.pl/strona/szkola/podreczniki-szkola/ 2 2
+http://gimnazjum9.wroclaw.pl/liga-klas/ 3 3
+http://gimnazjum9.wroclaw.pl/strona/dzialania/turystyka/rajd-otrzesinowy/ 1 5
+http://gimnazjum9.wroclaw.pl/strona/projekty/tutoring/ 1 1
+http://gimnazjum9.wroclaw.pl/sladami-wladcy-pierscieni-i-hobbita/ 1 11
+http://gimnazjum9.wroclaw.pl/strona/aktualnosci/page/2/ 2 5
+http://gimnazjum9.wroclaw.pl/strona/biblioteka/ 1 2
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 18
+gimnazjum+nr+9+wroc%c5%82aw 3
+gim+9+wroc%c5%82aw 2
+gimanzjum+nr+9+we+wroc%c5%82awiu 2
+dorota+tomczyk+gimnazjum+nr+9+wroc%c5%82aw 2
+sanktuarium+w+trzebnicy+cele+wycieczki 1
+cele+wycieczki+sanktuarium+trzebnica 1
+korczak+refleksje+po+filmie 1
+szko%c5%82a+podstawowa+ul+sarbinowska+wroc%c5%82aw 1
+gimnazjum+sarbinowska 1
+gimnazjum+nr+9+sarbinowska+wroc%c5%82aw+polska 1
+piosenka+o+segregowaniu+%c5%9bmieci 1
+gimnazjum+nr+9+we+wroclawiu 1
+wroc%c5%81aw+gimnazjum+nr+9 1
+gimnazjum+nr+ix+we+wroc%c5%82awiu 1
+lekcja+matematyki+na+weso%c5%82o+w+gimnazjum 1
+hobbit+w+gimnazjum 1
+krystian+kawaciuk 1
+wroc%c5%82aw+ku%c5%baniki+gimnazjum 1
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 40
+gimnazjum 13
+9 12
+nr 11
+wroc%c5%82aw 10
+we 4
+w 3
+sarbinowska 3
+wroc%c5%82awiu 3
+wycieczki 2
+gim 2
+wroc%c5%81aw 1
+piosenka 1
+wroclawiu 1
+weso%c5%82o 1
+po 1
+lekcja 1
+polska 1
+ku%c5%baniki 1
+%c5%9bmieci 1
+segregowaniu 1
+matematyki 1
+gimanzjum 2
+hobbit 1
+tomczyk 2
+kawaciuk 1
+trzebnica 1
+szko%c5%82a 1
+ix 1
+ul 1
+cele 2
+trzebnicy 1
+dorota 2
+refleksje 1
+sanktuarium 2
+podstawowa 1
+filmie 1
+krystian 1
+korczak 1
+na 1
+o 1
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 3
+302 1 0
+301 4 60
+404 8 60985
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referer
+BEGIN_SIDER_404 8
+/plany-lekcji/plan-lekcji-klasy-i-d/ 1 -
+/ 1 -
+/wp-content/uploads/2013/01/zadaniaprzykladowe.doc 1 -
+/page/3/www.oke.wroc.pl/images/library/File/pdfy/ 1 -
+/page/4/www.oke.wroc.pl/images/library/File/pdfy/ 1 -
+/klasa-iii-c-rok-2009/ 1 -
+/klasa-iii-a-rok-2006/ 1 -
+/page/9/www.oke.wroc.pl/images/library/File/pdfy/list_do_gimnazjalistow_2012.pdf 1 -
+END_SIDER_404
