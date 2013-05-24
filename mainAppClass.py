@@ -150,7 +150,7 @@ class mainApp(QtGui.QMainWindow):
             elif logs == "-1":
                 QtGui.QMessageBox.about(self, "Error", "Unknown error")
             else:
-                self.displayDataInColumns(logs)
+                self.displayDataInColumns(logs, logsType)
             
             #i dodanie nowej informacji o generowaniu logów:
             if logsType == "access":
@@ -169,17 +169,18 @@ class mainApp(QtGui.QMainWindow):
 
 
 
-    def displayDataInColumns(self, logs):
+    def displayDataInColumns(self, logs, logsType):
         self.logsLinesItems = [] #wyzerowanie listy elementów wyświetlanych
         self.ui.logsItemsModel.clear()
-        self.ui.setItemsHeaders()
+        self.ui.setItemsHeaders(logsType)
+        self.ui.prepareSearchFilters(logsType)
         
         logs_lines = logs.split("\n")
-        longestTexts = self.ui.columnsToView[:]
+        longestTexts = self.ui.accessColumnsToView[:]
         
         row = 0
         for line in logs_lines:
-            splittedLine = self.splitLogLine(line)
+            splittedLine = self.splitLogLine(line, logsType)
             col = 0
             if len(splittedLine) != 0:
                 singleLineItems = []
@@ -319,12 +320,76 @@ class mainApp(QtGui.QMainWindow):
     
     
     
-    def splitLogLine(self, line):
+    def splitLogLine(self, line, logType):
+        result = []
+        if logType == "access":
+            return self.splitAccessLogLine(line)
+        elif logType == "error":
+            return self.splitErrorLogLine(line)
+        elif logType == "ftp":
+            return self.splitFtpLogLine(line)
+        elif logType == "ssh":
+            return self.splitSshLogLine(line)
+        elif logType == "out":
+            return self.splitOutLogLine(line)
+        else:
+            raise Exception("Wrong log type given")
+    
+    
+    
+    def splitAccessLogLine(self, line):
         result = []
         regex = '([(\d\.)]+) (.*?) (.*?) \[(.*?)\] "(.*?)" (\d+) (-|\d+) "(.*?)" "(.*?)"'
         if len(line) != 0:
             values = list(re.match(regex, line).groups())
             del(values[1]) #usunięcie kolumny której nie używam późniejszych
+            #usunięcie białych znaków z każdego elementu
+            for value in values:
+                result.append(value.strip())
+        return result
+    
+    
+    
+    def splitErrorLogLine(self, line):
+        result = []
+        regex = "\[(.*?)\] \[(.*?)\] \[(.*?)\] \[(.*?)\] (.*)"
+        if len(line) != 0:
+            values = list(re.match(regex, line).groups())
+            #usunięcie białych znaków z każdego elementu
+            for value in values:
+                result.append(value.strip())
+        return result
+    
+    
+    
+    def splitFtpLogLine(self, line):
+        result = []
+        regex = '\[(.*?)\] \((.*?)\) \[(.*?)\] (.*)'
+        if len(line) != 0:
+            values = list(re.match(regex, line).groups())
+            #usunięcie białych znaków z każdego elementu
+            for value in values:
+                result.append(value.strip())
+        return result
+    
+    
+    
+    def splitSshLogLine(self, line):
+        result = []
+        regex = '\[(.*?)\] (.*)'
+        if len(line) != 0:
+            values = list(re.match(regex, line).groups())
+            #usunięcie białych znaków z każdego elementu
+            for value in values:
+                result.append(value.strip())
+        return result
+    
+    
+    def splitOutLogLine(self, line):
+        result = []
+        regex = '\[(.*?)\] (.*)'
+        if len(line) != 0:
+            values = list(re.match(regex, line).groups())
             #usunięcie białych znaków z każdego elementu
             for value in values:
                 result.append(value.strip())

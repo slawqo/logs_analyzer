@@ -54,8 +54,12 @@ except AttributeError:
 
 class Ui_MainWindow(object):
     
-    logsTypes = [ "access", "error", "ftp", "cgi", "out", "ssh" ]
-    columnsToView = ['IP Address', 'User', 'Time', 'Request', 'Answear Status', 'Answear size', 'Referer', 'User Agent']
+    logsTypes = [ "access", "error", "ftp", "out", "ssh" ]
+    accessColumnsToView = ['IP Address', 'User', 'Time', 'Request', 'Answear Status', 'Answear size', 'Referer', 'User Agent']
+    errorColumnsToView = ['Data', 'Type', 'IP Address', 'Host', 'Message']
+    ftpColumnsToView = ['Data', 'User@IP Address', 'Type', 'Command']
+    sshColumnsToView = ['Data', 'Message']
+    outColumnsToView = ['Data', 'Message']
     
     def setupUi(self, MainWindow):
         self.main_window = MainWindow
@@ -200,17 +204,14 @@ class Ui_MainWindow(object):
 
 
 
-    def prepareSearchWidget(self):
-        columns = ["All",]
-        columns.extend(self.columnsToView)
-        
+    def prepareSearchWidget(self, logsType = "access"):
         self.searchWidget = QtGui.QWidget()
         self.searchWidgetLayout = QtGui.QHBoxLayout()
         
         self.searchLabel = QtGui.QLabel(_fromUtf8("Search text: "))
         self.searchTextValue = QtGui.QLineEdit()
         self.searchColumns = QtGui.QComboBox()
-        self.searchColumns.addItems(columns)
+        self.prepareSearchFilters(logsType)
         
         self.searchWidgetLayout.addWidget(self.searchLabel)
         self.searchWidgetLayout.addWidget(self.searchTextValue)
@@ -218,6 +219,14 @@ class Ui_MainWindow(object):
         
         self.searchWidget.hide()
         self.searchWidget.setLayout(self.searchWidgetLayout)
+
+
+
+    def prepareSearchFilters(self, logsType):
+        columns = ["All",]
+        columns.extend(self.getColumnsToView(logsType))
+        self.searchColumns.clear()
+        self.searchColumns.addItems(columns)
 
 
 
@@ -231,13 +240,30 @@ class Ui_MainWindow(object):
         centralWidget.setLayout(layout)
         container.addTab(centralWidget, _fromUtf8(""))
         container.setTabText(container.indexOf(centralWidget), _fromUtf8(title))
-        
-     
-    def setItemsHeaders(self):
-        self.logsItemsModel.setColumnCount(len(self.columnsToView))
+
+
+
+    def setItemsHeaders(self, logsType = "access"):
+        columnsToView = self.getColumnsToView(logsType)
+        self.logsItemsModel.setColumnCount(len(columnsToView))
         self.logsItemsModel.setRowCount(0)
         i = 0
-        for label in self.columnsToView:
+        for label in columnsToView:
             self.logsItemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
             i += 1
 
+
+
+    def getColumnsToView(self, logType):
+        if logType == "access":
+            return self.accessColumnsToView
+        elif logType == "error":
+            return self.errorColumnsToView
+        elif logType == "ftp":
+            return self.ftpColumnsToView
+        elif logType == "ssh":
+            return self.sshColumnsToView
+        elif logType == "out":
+            return self.outColumnsToView
+        else:
+            raise Exception("Wrong log type given")
