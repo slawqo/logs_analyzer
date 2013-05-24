@@ -191,8 +191,7 @@ class Ui_MainWindow(object):
         self.reportView.setObjectName(_fromUtf8("reportView"))
         
         self.statsView = QtWebKit.QWebView()
-        self.statsView.load(QtCore.QUrl("http://google.pl"))
-        self.statsView.show()
+        self.showPage()
         self.statsView.setObjectName(_fromUtf8("statsView"))
 
         self.addTab(self.tabsContainer, self.resultsView, "Log")
@@ -252,6 +251,11 @@ class Ui_MainWindow(object):
             self.logsItemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
             i += 1
 
+
+
+    def showPage(self, page = ""):
+        self.statsView.load(QtCore.QUrl(page))
+        self.statsView.show()
 
 
     def getColumnsToView(self, logType):

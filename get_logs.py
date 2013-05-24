@@ -50,6 +50,7 @@ import calendar
 import gzip
 import StringIO
 import scalp
+import subprocess as sub
 
 #Exception class:
 class Exception(BaseException):
@@ -111,6 +112,7 @@ class parsePage:
         self.reportsDir = self.homeDir+"/"+self.dataDir+"/"+"reports"
         self.logsDir = self.homeDir+"/"+self.dataDir+"/"+"logs"
         self.filtersDir = self.homeDir+"/"+self.dataDir+"/"+"filters"
+        self.awstatsDir = self.homeDir+"/"+self.dataDir+"/awstats"
         #self.filtersDir = os.path.abspath(os.curdir)+"/filters"
 
         if os.path.isdir(self.homeDir) == False:
@@ -121,7 +123,9 @@ class parsePage:
             os.makedirs(self.reportsDir)
         if os.path.isdir(self.filtersDir) == False:
             os.makedirs(self.filtersDir)
-        
+        if os.path.isdir(self.awstatsDir) == False:
+            os.makedirs(self.awstatsDir)
+            
         if os.path.isfile(self.filtersDir+"/filters.xml"):
             self.filters = self.filtersDir+"/filters.xml"
         else:
@@ -346,7 +350,52 @@ class parsePage:
             report = scalp.scalper(logFile, self.filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
         
         return outputFile
+    
+    
+    
+    def createAwstats(self, logFile = "", progressBarWindow = None):
+        if self.logs_type == "":
+            file_logs_type = "access"
+        else:
+            file_logs_type = self.logs_type
         
+        if logFile == "" :
+            logFile = self.saveLogs(progressBarWindow)
+            print "Pobieram logi"
+
+        if (self.date_start == self.date_end):
+            awstatsResultFileName = self.awstatsDir+"/stats/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+file_logs_type+".html"
+        else:
+            awstatsResultFileName = self.awstatsDir+"/stats/"+self.test_page+"_"+self.date_start.strftime("%Y.%m.%d")+"-"+self.date_end.strftime("%Y.%m.%d")+"-"+file_logs_type+".html"
+        
+        if os.path.isfile(awstatsResultFileName) == False or self.today in self.days_range:
+            configFile = self.createTmpConfig()
+            systemCommand = "libs/awstats/wwwroot/cgi-bin/awstats.pl Logfile="+logFile+" -config="+configFile+" -update -output > "+awstatsResultFileName
+            #systemProcess = sub.Popen(systemCommand, stdout=sub.PIPE, stderr=sub.PIPE)
+            os.system(systemCommand)
+            self.cleanAwstatsFiles()
+
+        return awstatsResultFileName
+
+
+
+    def createTmpConfig(self):
+        awstatsBaseConfig = "libs/awstats/base_access_config.conf"
+        tmpConfig = self.awstatsDir+"/awstats_tmp_config.conf"
+        base_file = open(awstatsBaseConfig, "r")
+        tmp_file = open(tmpConfig, "w")
+        config = base_file.read()
+        config = config + '\nDirData="'+self.awstatsDir+'/archive"\nHostAliases="localhost 127.0.0.1 www.'+self.test_page+'"\nSiteDomain="'+self.test_page+'"'
+        tmp_file.write(config)
+        return tmpConfig
+
+
+
+    def cleanAwstatsFiles(self):
+        tmpConfig = self.awstatsDir+"/awstats_tmp_config.conf"
+        os.system("rm "+tmpConfig)
+        os.system("rm "+self.awstatsDir+"/archive/* -rf")
+
 
 
 #### Koniec klasy parsera ###

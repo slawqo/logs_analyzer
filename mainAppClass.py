@@ -155,20 +155,36 @@ class mainApp(QtGui.QMainWindow):
             #i dodanie nowej informacji o generowaniu logów:
             if logsType == "access":
                 print "Generate report..."
-                progressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 100, self)
-                #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-                #i dlatego przycisk "Cancel" jest ukryty:
-                progressBar.setCancelButton(None)
-                reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
-                report = self.parseAndDisplayReport(reportFile)
-                progressBar.close()
-            
+                self.generateReport(logsFile)
+                self.generateStats(logsFile)
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
 
 
-
+    def generateReport(self, logsFile):
+        progressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 100, self)
+        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+        #i dlatego przycisk "Cancel" jest ukryty:
+        progressBar.setCancelButton(None)
+        reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
+        report = self.parseAndDisplayReport(reportFile)
+        progressBar.close()
+        
+        
+        
+    def generateStats(self, logsFile):
+        progressBar = QtGui.QProgressDialog("Generating statystyk...", "Cancel", 0, 100, self)
+        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+        #i dlatego przycisk "Cancel" jest ukryty:
+        progressBar.setCancelButton(None)
+        awstatsFile = self.parser.createAwstats(logFile = logsFile, progressBarWindow = progressBar)
+        #report = self.parseAndDisplayReport(reportFile)
+        self.ui.showPage(awstatsFile)
+        progressBar.close()
+        
+        
+        
     def displayDataInColumns(self, logs, logsType):
         self.logsLinesItems = [] #wyzerowanie listy elementów wyświetlanych
         self.ui.logsItemsModel.clear()
