@@ -40,7 +40,6 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
-import urllib
 import urllib2
 import sys
 import os
@@ -192,7 +191,7 @@ class parsePage:
         print self.logs_address
         try:
             if len(self.login) != 0:
-                params = urllib.urlencode("")
+                params = urllib2.urlencode("")
                 request = urllib2.Request(self.logs_address, params, self.prepareLoginData())
                 opened_url = urllib2.urlopen(request)
                 #print opened_url
