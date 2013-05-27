@@ -48,6 +48,9 @@ if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
     myapp = mainApp()
     
+    app.setWindowIcon(QtGui.QIcon('graphics/main-icon.png'))
+    myapp.setWindowIcon(QtGui.QIcon('graphics/main-icon.png'))
+    
     myapp.show()
     sys.exit(app.exec_())
     
