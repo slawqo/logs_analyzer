@@ -70,6 +70,7 @@ class parsePage:
     '''
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
+    programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
     
     main_address = "http://logs.ovh.net"
     logs = ""
@@ -369,7 +370,7 @@ class parsePage:
         
         if os.path.isfile(awstatsResultFileName) == False or self.today in self.days_range:
             configFile = self.createTmpConfig()
-            systemCommand = "libs/awstats/wwwroot/cgi-bin/awstats.pl Logfile="+logFile+" -config="+configFile+" -update -output > "+awstatsResultFileName
+            systemCommand = self.programDir+"/libs/awstats/wwwroot/cgi-bin/awstats.pl Logfile="+logFile+" -config="+configFile+" -update -output > "+awstatsResultFileName
             #systemProcess = sub.Popen(systemCommand, stdout=sub.PIPE, stderr=sub.PIPE)
             os.system(systemCommand)
             self.cleanAwstatsFiles()
@@ -379,7 +380,7 @@ class parsePage:
 
 
     def createTmpConfig(self):
-        awstatsBaseConfig = "libs/awstats/base_access_config.conf"
+        awstatsBaseConfig = self.programDir+"/libs/awstats/base_access_config.conf"
         tmpConfig = self.awstatsDir+"/awstats_tmp_config.conf"
         base_file = open(awstatsBaseConfig, "r")
         tmp_file = open(tmpConfig, "w")

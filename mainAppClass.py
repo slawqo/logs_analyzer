@@ -44,7 +44,7 @@ from mainWindow import Ui_MainWindow
 from get_logs import parsePage 
 from loginWindowClass import loginWindow
 from xml.dom import minidom
-import os
+import os, sys
 import time
 import re
 
@@ -68,7 +68,7 @@ class mainApp(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         super(mainApp, self).__init__(parent)
-                              
+        
         self.titleFont = QtGui.QFont()
         self.titleFont.setPointSize(13)
         self.titleFont.setBold(True)
