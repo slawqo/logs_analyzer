@@ -161,7 +161,7 @@ class mainApp(QtGui.QMainWindow):
                     self.generateStats(logsFile)
             
             except Exception as e:
-                QtGui.QMessageBox.about(self, "Error", str(e))
+                QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
                 progressBar.close()
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
