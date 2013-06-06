@@ -41,6 +41,7 @@ This file is part of Logs Analyzer.
 '''
 
 import urllib2
+import urllib
 import sys
 import os
 import base64
@@ -192,7 +193,7 @@ class parsePage:
         print self.logs_address
         try:
             if len(self.login) != 0:
-                params = urllib2.urlencode("")
+                params = urllib.urlencode("")
                 request = urllib2.Request(self.logs_address, params, self.prepareLoginData())
                 opened_url = urllib2.urlopen(request)
                 #print opened_url
