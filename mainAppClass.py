@@ -99,6 +99,7 @@ class mainApp(QtGui.QMainWindow):
         #sygnał nie przypisany ze względu na problem z wydajnością wyświetlania pola search:
         self.searchAction.triggered.connect(self.searchBox)
         self.ui.searchButton.clicked.connect(self.searchItem)
+        self.ui.clearButton.clicked.connect(self.clearSearchResults)
         self.ui.searchColumns.currentIndexChanged.connect(self.searchItem)
 
 
@@ -291,7 +292,22 @@ class mainApp(QtGui.QMainWindow):
                                             QtCore.QRegExp.RegExp
                                         )
         self.logsProxy.setFilterRegExp(searchExpression)
+        if self.ui.searchTextValue.text() == "":
+            self.ui.clearButton.setEnabled(False)
+        else:
+            self.ui.clearButton.setEnabled(True)
 
+
+
+    def clearSearchResults(self):
+        self.logsProxy.setFilterKeyColumn(-1)
+        #clear is only search with empty string:
+        searchExpression = QtCore.QRegExp("",
+                                        QtCore.Qt.CaseInsensitive,
+                                        QtCore.QRegExp.RegExp
+                                        )
+        self.logsProxy.setFilterRegExp(searchExpression)
+        self.ui.clearButton.setEnabled(False)
 
 
     def searchBox(self):

@@ -212,12 +212,17 @@ class Ui_MainWindow(object):
         self.searchColumns = QtGui.QComboBox()
         self.searchButton = QtGui.QPushButton(_fromUtf8("Search"))
         self.searchButton.setObjectName(_fromUtf8("searchButton"))
+        self.clearButton = QtGui.QPushButton(_fromUtf8("Clear results"))
+        self.clearButton.setObjectName(_fromUtf8("clearButton"))
+        self.clearButton.setEnabled(False)
+        
         self.prepareSearchFilters(logsType)
         
         self.searchWidgetLayout.addWidget(self.searchLabel)
         self.searchWidgetLayout.addWidget(self.searchTextValue)
         self.searchWidgetLayout.addWidget(self.searchColumns)
         self.searchWidgetLayout.addWidget(self.searchButton)
+        self.searchWidgetLayout.addWidget(self.clearButton)
         
         self.searchWidget.hide()
         self.searchWidget.setLayout(self.searchWidgetLayout)
