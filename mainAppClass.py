@@ -98,7 +98,7 @@ class mainApp(QtGui.QMainWindow):
         self.ui.pageAddress.returnPressed.connect(self.getLogs)
         #sygnał nie przypisany ze względu na problem z wydajnością wyświetlania pola search:
         self.searchAction.triggered.connect(self.searchBox)
-        self.ui.searchTextValue.textChanged.connect(self.searchItem)
+        self.ui.searchButton.clicked.connect(self.searchItem)
         self.ui.searchColumns.currentIndexChanged.connect(self.searchItem)
 
 

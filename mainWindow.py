@@ -210,11 +210,14 @@ class Ui_MainWindow(object):
         self.searchLabel = QtGui.QLabel(_fromUtf8("Search text: "))
         self.searchTextValue = QtGui.QLineEdit()
         self.searchColumns = QtGui.QComboBox()
+        self.searchButton = QtGui.QPushButton(_fromUtf8("Search"))
+        self.searchButton.setObjectName(_fromUtf8("searchButton"))
         self.prepareSearchFilters(logsType)
         
         self.searchWidgetLayout.addWidget(self.searchLabel)
         self.searchWidgetLayout.addWidget(self.searchTextValue)
         self.searchWidgetLayout.addWidget(self.searchColumns)
+        self.searchWidgetLayout.addWidget(self.searchButton)
         
         self.searchWidget.hide()
         self.searchWidget.setLayout(self.searchWidgetLayout)
