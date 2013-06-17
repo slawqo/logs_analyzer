@@ -45,5 +45,8 @@ logs/*
 .kdev4
 *.kdev4
 
+#eclipse files:
+.settings
+
 #vim files
 *.swp
