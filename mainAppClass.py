@@ -41,8 +41,11 @@ This file is part of Logs Analyzer.
 from PyQt4 import QtCore, QtGui
 
 from mainWindow import Ui_MainWindow
-from get_logs import parsePage 
 from loginWindowClass import loginWindow
+from downloaderClass import downloader
+from analyzerClass import analyzer
+from statsGeneratorClass import statsGenerator
+from logsSettingsClass import logsSettings
 from xml.dom import minidom
 import os, sys
 import time
@@ -74,7 +77,13 @@ class mainApp(QtGui.QMainWindow):
         self.titleFont.setBold(True)
         self.titleFont.setWeight(75)
 
-        self.parser = parsePage()
+        #self.parser = parsePage()
+        
+        self.logsParseSettings = logsSettings()
+        self.logsDownloader = downloader(self.logsParseSettings)
+        self.logsAnalyzer = analyzer(self.logsParseSettings)
+        self.statsGen = statsGenerator(self.logsParseSettings)
+        
         
         self.logsProxy = QtGui.QSortFilterProxyModel(self)
         
@@ -107,7 +116,7 @@ class mainApp(QtGui.QMainWindow):
     def getLogs(self):
         page = str(self.ui.pageAddress.text())
         if len(page) != 0:
-            self.parser.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+            self.logsDownloader.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
             
             start = self.ui.startDateValue.date()
             end = self.ui.endDateValue.date()
@@ -118,10 +127,11 @@ class mainApp(QtGui.QMainWindow):
                 self.ui.endDateValue.setDate(start)
            
             logsType = str(self.ui.logsTypeValue.currentText())
-            self.parser.test_page = page 
-            self.parser.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
-            self.parser.prepareLogsType(logsType) 
-            self.parser.report_format = "xml"
+            self.logsParseSettings.test_page = page 
+            self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
+            self.logsParseSettings.prepareLogsType(logsType) 
+            
+            self.logsDownloader.settings = self.logsParseSettings
             
             try:
                 #ustawienie paska postępu pobierania logów:
@@ -133,8 +143,8 @@ class mainApp(QtGui.QMainWindow):
                 progressBar.show()
             
                 #pobranie logów:
-                logsFile = self.parser.saveLogs(progressBar)
-                logs = self.parser.getDownloadedLogs()
+                logsFile = self.logsDownloader.saveLogs(progressBar)
+                logs = self.logsDownloader.getDownloadedLogs()
             
                 #usunięcie informacji o generowaniu logów:
                 progressBar.close()
@@ -144,8 +154,8 @@ class mainApp(QtGui.QMainWindow):
                     logWin = loginWindow(self)
                     logWin.exec_()
                     if self.loginCanceled == False:
-                        self.parser.login = self.login
-                        self.parser.password = self.password
+                        self.logsDownloader.login = self.login
+                        self.logsDownloader.password = self.password
                         self.getLogs()
                     else:
                         return
@@ -159,6 +169,10 @@ class mainApp(QtGui.QMainWindow):
                 #i dodanie nowej informacji o generowaniu logów:
                 if logsType == "access":
                     print "Generate report..."
+                    self.logsAnalyzer.settings = self.logsParseSettings
+                    
+                    self.statsGen.settings = self.logsParseSettings
+                    
                     self.generateReport(logsFile)
                     self.generateStats(logsFile)
             
@@ -176,7 +190,7 @@ class mainApp(QtGui.QMainWindow):
         #i dlatego przycisk "Cancel" jest ukryty:
         progressBar.setCancelButton(None)
         progressBar.show()
-        reportFile = self.parser.createReport(logFile = logsFile, progressBarWindow = progressBar)
+        reportFile = self.logsAnalyzer.createReport(logFile = logsFile, progressBarWindow = progressBar)
         report = self.parseAndDisplayReport(reportFile)
         progressBar.close()
         
@@ -188,7 +202,7 @@ class mainApp(QtGui.QMainWindow):
         #i dlatego przycisk "Cancel" jest ukryty:
         progressBar.setCancelButton(None)
         progressBar.show()
-        awstatsFile = self.parser.createAwstats(logFile = logsFile, progressBarWindow = progressBar)
+        awstatsFile = self.statsGen.createAwstats(logFile = logsFile, progressBarWindow = progressBar)
         #report = self.parseAndDisplayReport(reportFile)
         self.ui.showPage(awstatsFile)
         progressBar.close()
