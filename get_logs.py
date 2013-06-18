@@ -112,12 +112,12 @@ if __name__ == '__main__':
     
         report = checker.createReport()
         if len(report) != 0:
-            print report
+            print (report)
         else:
             print "There was no "+logs_type+" logs from "+day_start+" to "+day_end+" for domain "+page+" \n"
     except Exception as e:
-        print e
+        print (e)
     except BaseException as be:
-        print be
+        print (be)
 
 

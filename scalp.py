@@ -22,7 +22,7 @@
 from __future__ import with_statement
 import time, base64
 import os,sys,re,random
-from StringIO import StringIO
+from io import StringIO
 from PyQt4 import QtGui
 
 try:
@@ -34,7 +34,7 @@ except ImportError:
         try:
             import xml.etree.ElementTree as etree
         except ImportError:
-            print "Cannot find the ElementTree in your python packages"
+            print ("Cannot find the ElementTree in your python packages")
 
 __application__ = "scalp"
 __version__     = "0.4"
@@ -126,12 +126,12 @@ def parse(xml_file):
         xml_handler.close()
         return object_dict({doc.tag: __parse_node(doc)})
     except IOError:
-        print "error: problem with the filter's file"
+        print ("error: problem with the filter's file")
         return {}
 
 def get_value(array, default):
     if 'value' in array:
-        return array['value']
+        array['value']
     return default
 
 def html_entities(str):
@@ -252,14 +252,14 @@ def analyzer(data):
 def scalper(access, filters, preferences = [], output = "text", fileName = "", progressBar = None):
     global table
     if not os.path.isfile(access):
-        print "error: the log file doesn't exist"
+        print ("error: the log file doesn't exist")
         return
     if not os.path.isfile(filters):
-        print "error: the filters file (XML) doesn't exist"
-        print "please download it at https://svn.php-ids.org/svn/trunk/lib/IDS/default_filter.xml"
+        print ("error: the filters file (XML) doesn't exist")
+        print ("please download it at https://svn.php-ids.org/svn/trunk/lib/IDS/default_filter.xml")
         return
     if output not in ('html', 'text', 'xml'):
-        print "error: the output format '%s' hasn't been recognized" % output
+        print ("error: the output format '%s' hasn't been recognized" % output)
         return
     # load the XML file
     xml_filters = parse(filters)
@@ -271,7 +271,7 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
 
     progressValue = 0 #added By S.K. to make progressBar which will show that report is generating
     
-    print "Loading XML file '%s'..." % filters
+    print ("Loading XML file '%s'..." % filters)
     for group in xml_filters:
         for f in xml_filters[group]:
             #showing progressBar:
@@ -306,17 +306,17 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
                             try:
                                 compiled = re.compile(rule)
                             except Exception:
-                                print "The rule '%s' cannot be compiled properly" % rule
+                                print ("The rule '%s' cannot be compiled properly" % rule)
                                 return
                             _hash = hash(rule)
-                            if impact > -1:
+                            if int(impact) > -1:
                                 table[_hash] = (compiled, impact, description, rule, _hash)
                                 regs[t].append(_hash)
     if len(preferences['attack_type']) < 1:
         preferences['attack_type'] = regs.keys()
     flag = {} # {type => { impact => ({log_line dict}, rule, description, org_line) }}
 
-    print "Processing the file '%s'..." % access
+    print ("Processing the file '%s'..." % access)
 
     sample, sampled_lines = False, []
     if preferences['sample'] != float(100):
@@ -376,13 +376,13 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
         for i in flag[t]:
             n += len(flag[t][i])
     
-    print "Scalp results:"
-    print "\tProcessed %d lines over %d" % (loc,lines)
-    print "\tFound %d attack patterns in %f s" % (n,tt)
+    print ("Scalp results:")
+    print ("\tProcessed %d lines over %d" % (loc,lines))
+    print ("\tFound %d attack patterns in %f s" % (n,tt))
     
     short_name = access[access.rfind(os.sep)+1:]
     if n > 0:
-        print "Generating output in "+fileName+"."+output
+        print ("Generating output in "+fileName+"."+output)
         if 'html' in preferences['output']:
             generate_html_file(flag, short_name, filters, preferences['odir'], fileName)
         elif 'text' in preferences['output']:
@@ -426,7 +426,7 @@ def generate_text_file(flag, access, filters, odir, fname = ""):
                     out.write("\tReason: \"%s\"\n\n" % e[2])
         out.close()
     except IOError:
-        print "Cannot open the file:", fname
+        print ("Cannot open the file:", fname)
     return
 
 
@@ -462,7 +462,7 @@ def generate_xml_file(flag, access, filters, odir, fname = ""):
         out.write("</scalp>")
         out.close()
     except IOError:
-        print "Cannot open the file:", fname
+        print ("Cannot open the file:", fname)
     return
     return
 
@@ -503,7 +503,7 @@ def generate_html_file(flag, access, filters, odir, fname = ""):
         out.write(html_footer)
         out.close()
     except IOError:
-        print "Cannot open the file:", fname
+        print ("Cannot open the file:", fname)
     return
 
 months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
@@ -528,7 +528,7 @@ def correct_period(date, period):
 def analyze_date(date):
     """04/Apr/2008:15:45;*/May/2008"""
 
-    d_min = [01, 00, 0000, 00, 00, 00]
+    d_min = [1, 00, 0000, 00, 00, 00]
     d_max = [31, 11, 9999, 24, 59, 59]
 
     date   = date.replace(':', '/')
@@ -536,7 +536,7 @@ def analyze_date(date):
     l_start= l_date[0].split('/')
     l_end  = l_date[1].split('/')
 
-    v_start = [01, 00, 0000, 00, 00, 00]
+    v_start = [1, 00, 0000, 00, 00, 00]
     v_end   = [31, 11, 9999, 24, 59, 59]
 
     for i in range(len(l_start)):
@@ -562,32 +562,32 @@ def analyze_date(date):
     return {'start' : v_start, 'end' : v_end}
 
 def help():
-    print "Scalp the apache log! by Romain Gaucher - http://rgaucher.info"
-    print "usage:  ./scalp.py [--log|-l log_file] [--filters|-f filter_file] [--period time-frame] [OPTIONS] [--attack a1,a2,..,an]"
-    print "                   [--sample|-s 4.2]"
-    print "   --log       |-l:  the apache log file './access_log' by default"
-    print "   --filters   |-f:  the filter file     './default_filter.xml' by default"
-    print "   --exhaustive|-e:  will report all type of attacks detected and not stop"
-    print "                     at the first found"
-    print "   --tough     |-u:  try to decode the potential attack vectors (may increase"
-    print "                     the examination time)"
-    print "   --period    |-p:  the period must be specified in the same format as in"
-    print "                     the Apache logs using * as wild-card"
-    print "                     ex: 04/Apr/2008:15:45;*/Mai/2008"
-    print "                     if not specified at the end, the max or min are taken"
-    print "   --html      |-h:  generate an HTML output"
-    print "   --xml       |-x:  generate an XML output"
-    print "   --text      |-t:  generate a simple text output (default)"
-    print "   --except    |-c:  generate a file that contains the non examined logs due to the"
-    print "                     main regular expression; ill-formed Apache log etc."
-    print "   --attack    |-a:  specify the list of attacks to look for"
-    print "                     list: xss, sqli, csrf, dos, dt, spam, id, ref, lfi"
-    print "                     the list of attacks should not contains spaces and comma separated"
-    print "                     ex: xss,sqli,lfi,ref"
-    print "   --output    |-o:  specifying the output directory; by default, scalp will try to write"
-    print "                     in the same directory as the log file"
-    print "   --sample    |-s:  use a random sample of the lines, the number (float in [0,100]) is"
-    print "                     the percentage, ex: --sample 0.1 for 1/1000"
+    print ("Scalp the apache log! by Romain Gaucher - http://rgaucher.info")
+    print ("usage:  ./scalp.py [--log|-l log_file] [--filters|-f filter_file] [--period time-frame] [OPTIONS] [--attack a1,a2,..,an]")
+    print ("                   [--sample|-s 4.2]")
+    print ("   --log       |-l:  the apache log file './access_log' by default")
+    print ("   --filters   |-f:  the filter file     './default_filter.xml' by default")
+    print ("   --exhaustive|-e:  will report all type of attacks detected and not stop")
+    print ("                     at the first found")
+    print ("   --tough     |-u:  try to decode the potential attack vectors (may increase")
+    print ("                     the examination time)")
+    print ("   --period    |-p:  the period must be specified in the same format as in")
+    print ("                     the Apache logs using * as wild-card")
+    print ("                     ex: 04/Apr/2008:15:45;*/Mai/2008")
+    print ("                     if not specified at the end, the max or min are taken")
+    print ("   --html      |-h:  generate an HTML output")
+    print ("   --xml       |-x:  generate an XML output")
+    print ("   --text      |-t:  generate a simple text output (default)")
+    print ("   --except    |-c:  generate a file that contains the non examined logs due to the")
+    print ("                     main regular expression; ill-formed Apache log etc.")
+    print ("   --attack    |-a:  specify the list of attacks to look for")
+    print ("                     list: xss, sqli, csrf, dos, dt, spam, id, ref, lfi")
+    print ("                     the list of attacks should not contains spaces and comma separated")
+    print ("                     ex: xss,sqli,lfi,ref")
+    print ("   --output    |-o:  specifying the output directory; by default, scalp will try to write")
+    print ("                     in the same directory as the log file")
+    print ("   --sample    |-s:  use a random sample of the lines, the number (float in [0,100]) is")
+    print ("                     the percentage, ex: --sample 0.1 for 1/1000")
 
 def main(argc, argv):
     filters = "default_filter.xml"
@@ -596,7 +596,7 @@ def main(argc, argv):
     preferences = {
         'attack_type' : [],
         'period' : {
-            'start' : [01, 00, 0000, 00, 00, 00],# day, month, year, hour, minute, second
+            'start' : [1, 00, 0000, 00, 00, 00],# day, month, year, hour, minute, second
             'end'   : [31, 11, 9999, 24, 59, 59]
         },
         'except'     : False,
@@ -625,7 +625,7 @@ def main(argc, argv):
                         preferences['sample'] = float(argv[i+1])
                     except:
                         preferences['sample'] = float(4.2)
-                        print "/!\ Error in the sample size, will be 4.2%"
+                        print ("/!\ Error in the sample size, will be 4.2%")
                 elif s in ("--period", "-p"):
                     preferences['period'] = analyze_date(argv[i+1])
                 elif s in ("--exhaustive", "-e"):
@@ -644,16 +644,16 @@ def main(argc, argv):
                 elif s in ("--attack", "-a"):
                     preferences['attack_type'] = argv[i+1].split(',')
             else:
-                print "argument error, '%s' has been ignored" % s
+                print ("argument error, '%s' has been ignored" % s)
         if len(preferences['output']) < 1:
             preferences['output'] = "text"
         if not os.path.isdir(preferences['odir']):
-            print "The directory %s doesn't exist, scalp will try to create it"
+            print ("The directory %s doesn't exist, scalp will try to create it")
             try:
                 os.mkdir(preferences['odir'])
             except:
-                print "/!\ scalp cannot write in",preferences['odir']
-                print "/!\ Ising /tmp/scalp/ as new directory..."
+                print ("/!\ scalp cannot write in",preferences['odir'])
+                print ("/!\ Ising /tmp/scalp/ as new directory...")
                 preferences['odir'] = '/tmp/scalp'
                 os.mkdir(preferences['odir'])
         scalper(access, filters, preferences)

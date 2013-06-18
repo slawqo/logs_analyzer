@@ -40,9 +40,9 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
-import urllib2
-import urllib
-import os, sys, base64, datetime, calendar, gzip, StringIO
+from urllib import error, request, parse
+import os, sys, base64, datetime, calendar, gzip
+from io import StringIO, BytesIO, TextIOBase
 from exceptionClass import Exception
 
 
@@ -89,7 +89,7 @@ class downloader:
             self.logs_address = self.main_address+"/"+self.settings.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+logs_type+self.settings.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
         else:
             self.logs_address = self.main_address+"/"+self.settings.test_page+"/osl"+logs_type+self.settings.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
-        print "page address: "+self.logs_address
+        print ("page address: "+self.logs_address)
 
 
 
@@ -99,20 +99,21 @@ class downloader:
 
 
     def loadPage(self):
-        print self.logs_address
+        print (self.logs_address)
         try:
             if len(self.login) != 0:
-                params = urllib.urlencode("")
-                request = urllib2.Request(self.logs_address, params, self.prepareLoginData())
-                opened_url = urllib2.urlopen(request)
+                params = parse.urlencode("")
+                req = request.Request(self.logs_address, params, self.prepareLoginData())
+                opened_url = request.urlopen(req)
                 #print opened_url
             else:
-                opened_url = urllib2.urlopen(self.logs_address)
-
-            self.page_handle = StringIO.StringIO(opened_url.read())
+                opened_url = request.urlopen(self.logs_address)
+            
+            #print (str(opened_url.read()))
+            self.page_handle = BytesIO(opened_url.read())
             return 1
-        except urllib2.HTTPError as error:
-            errMsg = str(error)
+        except error.HTTPError as er:
+            errMsg = str(er)
             if "401" in errMsg:
                 return 401
             elif "404" in errMsg:
@@ -155,14 +156,14 @@ class downloader:
                         return self.logs
                     
                     counter = counter + percent_per_day
-                    print "Download counter: "+str(counter)
+                    print ("Download counter: "+str(counter))
                     if progressBarWindow == None:
                         self.progressBar(counter)
                     else:
                         self.graphicalProgressBar(progressBarWindow, counter)
 
                 sys.stdout.write("\n")
-            self.logs = result
+            self.logs = result.decode("utf-8", "strict")
         
         return self.logs
         
@@ -198,13 +199,13 @@ class downloader:
     
     
     def decompresFile(self):
-        params = urllib.urlencode("")
+        params = parse.urlencode("")
         if len(self.login) != 0:
-            request = urllib2.Request(self.logs_address, params, self.prepareLoginData())
+            req = request.Request(self.logs_address, params, self.prepareLoginData())
         else:
-            request = urllib2.Request(self.logs_address)
+            req = request.Request(self.logs_address)
 
-        handle = urllib2.urlopen(request)
+        handle = request.urlopen(req)
         f = gzip.GzipFile(fileobj=self.page_handle)
         return f.read()
     

@@ -88,7 +88,7 @@ class analyzer:
         preferences = {
             'attack_type' : [],
             'period' : {
-                'start' : [01, 00, 0000, 00, 00, 00],# day, month, year, hour, minute, second
+                'start' : [1, 00, 0000, 00, 00, 00],# day, month, year, hour, minute, second
                 'end'   : [31, 11, 9999, 24, 59, 59]
             },
             'except'     : False,

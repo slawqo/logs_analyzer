@@ -256,7 +256,7 @@ class Ui_MainWindow(object):
         self.logsItemsModel.setRowCount(0)
         i = 0
         for label in columnsToView:
-            self.logsItemsModel.setHeaderData(i, QtCore.Qt.Horizontal, QtCore.QVariant(_fromUtf8(label)))
+            self.logsItemsModel.setHeaderData(i, QtCore.Qt.Horizontal, label)
             i += 1
 
 

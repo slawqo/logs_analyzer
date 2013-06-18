@@ -71,7 +71,6 @@ class loginWindow(QtGui.QDialog):
         layout.addWidget(self.buttonCancel, 3, 2)
         self.setLayout(layout)
         self.setWindowTitle(_fromUtf8("Login required"))
-        print self   
         self.show()
 
 

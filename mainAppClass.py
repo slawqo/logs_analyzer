@@ -131,7 +131,8 @@ class mainApp(QtGui.QMainWindow):
             self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
             self.logsParseSettings.prepareLogsType(logsType) 
                         
-            try:
+            #try:
+            if 1:
                 #ustawienie paska postępu pobierania logów:
                 progressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
                 #@TODO: dodać akcję dla przycisku "cancel"
@@ -166,13 +167,13 @@ class mainApp(QtGui.QMainWindow):
             
                 #i dodanie nowej informacji o generowaniu logów:
                 if logsType == "access":
-                    print "Generate report..."
+                    print ("Generate report...")
                     self.generateReport(logsFile)
                     self.generateStats(logsFile)
             
-            except Exception as e:
-                QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
-                progressBar.close()
+            #except Exception as e:
+            #    QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
+            #    progressBar.close()
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
@@ -209,7 +210,10 @@ class mainApp(QtGui.QMainWindow):
         self.ui.setItemsHeaders(logsType)
         self.ui.prepareSearchFilters(logsType)
         
+        print (type(logs))
         logs_lines = logs.split("\n")
+        print (type(logs_lines))
+        print (len(logs_lines))
         longestTexts = self.ui.accessColumnsToView[:]
         
         row = 0
@@ -393,6 +397,7 @@ class mainApp(QtGui.QMainWindow):
     def splitAccessLogLine(self, line):
         result = []
         regex = '([(\d\.)]+) (.*?) (.*?) \[(.*?)\] "(.*?)" (\d+) (-|\d+) "(.*?)" "(.*?)"'
+        print (line)
         if len(line) != 0:
             values = list(re.match(regex, line).groups())
             del(values[1]) #usunięcie kolumny której nie używam późniejszych
