@@ -106,13 +106,11 @@ class downloader:
 
 
     def loadPage(self):
-        print (self.logs_address)
         try:
             if len(self.login) != 0:
                 self.prepareLoginData()
             
             opened_url = request.urlopen(self.logs_address)
-            print (opened_url)
             self.page_handle = BytesIO(opened_url.read())
             return 1
         except error.HTTPError as er:

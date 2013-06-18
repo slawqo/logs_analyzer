@@ -210,10 +210,7 @@ class mainApp(QtGui.QMainWindow):
         self.ui.setItemsHeaders(logsType)
         self.ui.prepareSearchFilters(logsType)
         
-        print (type(logs))
         logs_lines = logs.split("\n")
-        print (type(logs_lines))
-        print (len(logs_lines))
         longestTexts = self.ui.accessColumnsToView[:]
         
         row = 0
@@ -397,7 +394,6 @@ class mainApp(QtGui.QMainWindow):
     def splitAccessLogLine(self, line):
         result = []
         regex = '([(\d\.)]+) (.*?) (.*?) \[(.*?)\] "(.*?)" (\d+) (-|\d+) "(.*?)" "(.*?)"'
-        print (line)
         if len(line) != 0:
             values = list(re.match(regex, line).groups())
             del(values[1]) #usunięcie kolumny której nie używam późniejszych

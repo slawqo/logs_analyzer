@@ -296,7 +296,6 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
                             if type(elmt['tags']['tag']) == type([]):
                                 for tag in elmt['tags']['tag']:
                                     tags.append(get_value(tag, ""))
-                                    print (tags)
                             else:
                                 tags.append(get_value(elmt['tags']['tag'], ""))
                         # register the entry in our array
@@ -314,7 +313,6 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
                                 table[_hash] = (compiled, impact, description, rule, _hash)
                                 regs[t].append(_hash)
     if len(preferences['attack_type']) < 1:
-        #print (regs.keys())
         preferences['attack_type'] = regs.keys()
     flag = {} # {type => { impact => ({log_line dict}, rule, description, org_line) }}
 
