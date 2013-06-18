@@ -134,7 +134,7 @@ class downloader:
         else:
             result = str(getPageResult)
 
-        return result
+        return result.decode("utf-8", "strict")
     
 
     
@@ -163,7 +163,7 @@ class downloader:
                         self.graphicalProgressBar(progressBarWindow, counter)
 
                 sys.stdout.write("\n")
-            self.logs = result.decode("utf-8", "strict")
+            self.logs = result
         
         return self.logs
         
