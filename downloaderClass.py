@@ -94,7 +94,14 @@ class downloader:
 
 
     def prepareLoginData(self):
-        return {'Authorization': "Basic "+base64.b64encode("%s:%s" % (self.login, self.password))}
+        auth_handler = request.HTTPBasicAuthHandler()
+        auth_handler.add_password(realm='Statistiques Web. Utilisez votre identifiant pour vous connecter.',
+                                          uri="https://logs.ovh.net",
+                                          user=self.login,
+                                          passwd=self.password)
+        opener = request.build_opener(auth_handler)
+        # ...and install it globally so it can be used with urlopen.
+        request.install_opener(opener)
 
 
 
@@ -102,14 +109,10 @@ class downloader:
         print (self.logs_address)
         try:
             if len(self.login) != 0:
-                params = parse.urlencode("")
-                req = request.Request(self.logs_address, params, self.prepareLoginData())
-                opened_url = request.urlopen(req)
-                #print opened_url
-            else:
-                opened_url = request.urlopen(self.logs_address)
+                self.prepareLoginData()
             
-            #print (str(opened_url.read()))
+            opened_url = request.urlopen(self.logs_address)
+            print (opened_url)
             self.page_handle = BytesIO(opened_url.read())
             return 1
         except error.HTTPError as er:
@@ -133,8 +136,11 @@ class downloader:
                 result = self.decompresFile()    
         else:
             result = str(getPageResult)
-
-        return result.decode("utf-8", "strict")
+        
+        if type(result) is str:
+            return result
+        else:
+            return result.decode("utf-8", "strict")
     
 
     
@@ -201,9 +207,9 @@ class downloader:
     def decompresFile(self):
         params = parse.urlencode("")
         if len(self.login) != 0:
-            req = request.Request(self.logs_address, params, self.prepareLoginData())
-        else:
-            req = request.Request(self.logs_address)
+            self.prepareLoginData()
+        
+        req = request.Request(self.logs_address)
 
         handle = request.urlopen(req)
         f = gzip.GzipFile(fileobj=self.page_handle)
