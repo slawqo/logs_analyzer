@@ -131,7 +131,7 @@ def parse(xml_file):
 
 def get_value(array, default):
     if 'value' in array:
-        array['value']
+        return array['value']
     return default
 
 def html_entities(str):
@@ -296,6 +296,7 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
                             if type(elmt['tags']['tag']) == type([]):
                                 for tag in elmt['tags']['tag']:
                                     tags.append(get_value(tag, ""))
+                                    print (tags)
                             else:
                                 tags.append(get_value(elmt['tags']['tag'], ""))
                         # register the entry in our array
@@ -313,6 +314,7 @@ def scalper(access, filters, preferences = [], output = "text", fileName = "", p
                                 table[_hash] = (compiled, impact, description, rule, _hash)
                                 regs[t].append(_hash)
     if len(preferences['attack_type']) < 1:
+        #print (regs.keys())
         preferences['attack_type'] = regs.keys()
     flag = {} # {type => { impact => ({log_line dict}, rule, description, org_line) }}
 
@@ -447,8 +449,7 @@ def generate_xml_file(flag, access, filters, odir, fname = ""):
             if attack_type in names:
                 name = " name=\"%s\"" % names[attack_type]
             out.write("  <attack type=\"%s\"%s>\n" % (attack_type, name))
-            impacts = flag[attack_type].keys()
-            impacts.sort(reverse=True)
+            impacts = sorted(flag[attack_type], reverse = True)
             for i in impacts:
                 out.write("    <impact value=\"%d\">\n" % int(i))
                 for e in flag[attack_type][i]:
