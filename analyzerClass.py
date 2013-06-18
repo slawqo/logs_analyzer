@@ -49,9 +49,8 @@ class analyzer:
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
     programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    
     report_format = "xml";
-    
+    settings = None
     
     
     def __init__(self, settings):

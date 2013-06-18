@@ -130,9 +130,7 @@ class mainApp(QtGui.QMainWindow):
             self.logsParseSettings.test_page = page 
             self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
             self.logsParseSettings.prepareLogsType(logsType) 
-            
-            self.logsDownloader.settings = self.logsParseSettings
-            
+                        
             try:
                 #ustawienie paska postępu pobierania logów:
                 progressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
@@ -169,10 +167,6 @@ class mainApp(QtGui.QMainWindow):
                 #i dodanie nowej informacji o generowaniu logów:
                 if logsType == "access":
                     print "Generate report..."
-                    self.logsAnalyzer.settings = self.logsParseSettings
-                    
-                    self.statsGen.settings = self.logsParseSettings
-                    
                     self.generateReport(logsFile)
                     self.generateStats(logsFile)
             
@@ -241,7 +235,10 @@ class mainApp(QtGui.QMainWindow):
         
         for longestValue in longestTexts:
             itemWidth = int(QtGui.QFontMetrics(self.ui.resultsView.font()).width(longestValue))
-            self.ui.resultsView.setColumnWidth(col, itemWidth+25) #nie wiem dlaczego, ale bez tego zawsze trochę brakuje
+            if itemWidth <= 200:
+                self.ui.resultsView.setColumnWidth(col, itemWidth+25) #nie wiem dlaczego, ale bez tego zawsze trochę brakuje
+            else:
+                self.ui.resultsView.setColumnWidth(col, itemWidth*0.6)
             col += 1
    
    
@@ -292,7 +289,7 @@ class mainApp(QtGui.QMainWindow):
             
         #obliczenie szerokości najdłuższego wpisu:
         itemWidth = int(QtGui.QFontMetrics(self.ui.reportView.font()).width(longestText))
-        self.ui.reportView.setColumnWidth(0, itemWidth)
+        self.ui.reportView.setColumnWidth(0, itemWidth*0.6)
 
         #dodanie sygnału do elementów listy:
         self.ui.reportView.itemActivated.connect(self.showLineInResultsView)

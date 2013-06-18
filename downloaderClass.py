@@ -50,19 +50,17 @@ class downloader:
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
     programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    
-    settings = ""
-    
+    settings = None
     main_address = "http://logs.ovh.net"
     logs = ""
     login = ""
     password = ""
     
+    
+    
     def __init__(self, settings):
         self.today = datetime.date.today()
-        
         self.settings = settings
-        
         #definiowanie i tworzenie katalogów z danymi:
         self.createAndLoadDirs()
         
@@ -78,17 +76,6 @@ class downloader:
     
     
     
-    
-
-
-
-    
-
-
-
-    
-
-
     def prepareAddress(self, day):
         '''prepare logs file web address with correct date and server page name
            arguments: datetime day
@@ -221,12 +208,8 @@ class downloader:
         f = gzip.GzipFile(fileobj=self.page_handle)
         return f.read()
     
-   
-
     
-
-
-
+    
     def progressBar(self, progress):
         sys.stdout.write('\r[{0}{1}] {2}%'.format('#'*(progress/1),'-'*((100-progress)/1), progress))
         sys.stdout.flush()

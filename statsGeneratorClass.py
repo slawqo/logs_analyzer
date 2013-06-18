@@ -48,8 +48,7 @@ class statsGenerator:
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
     programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    
-    settings = ""
+    settings = None
     
     
     def __init__(self, settings):
