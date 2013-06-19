@@ -131,8 +131,7 @@ class mainApp(QtGui.QMainWindow):
             self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
             self.logsParseSettings.prepareLogsType(logsType) 
                         
-            #try:
-            if 1:
+            try:
                 #ustawienie paska postępu pobierania logów:
                 progressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
                 #@TODO: dodać akcję dla przycisku "cancel"
@@ -171,9 +170,9 @@ class mainApp(QtGui.QMainWindow):
                     self.generateReport(logsFile)
                     self.generateStats(logsFile)
             
-            #except Exception as e:
-            #    QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
-            #    progressBar.close()
+            except Exception as e:
+                QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
+                progressBar.close()
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
