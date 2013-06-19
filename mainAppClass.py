@@ -133,19 +133,14 @@ class mainApp(QtGui.QMainWindow):
                         
             try:
                 #ustawienie paska postępu pobierania logów:
-                progressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
-                #@TODO: dodać akcję dla przycisku "cancel"
-                #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-                #i dlatego przycisk "Cancel" jest ukryty
-                progressBar.setCancelButton(None)
-                progressBar.show()
-            
+                self.ui.createProgressWindow("Downloading logs", "Cancel", 0, 100, self)
+
                 #pobranie logów:
-                logsFile = self.logsDownloader.saveLogs(progressBar)
+                logsFile = self.logsDownloader.saveLogs(self.ui.progressBar)
                 logs = self.logsDownloader.getDownloadedLogs()
             
                 #usunięcie informacji o generowaniu logów:
-                progressBar.close()
+                self.ui.closeProgressWindow()
                         
                 #analiza i wyswietlenie pobranych wyników 
                 if logs == "401":
@@ -172,34 +167,25 @@ class mainApp(QtGui.QMainWindow):
             
             except Exception as e:
                 QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
-                progressBar.close()
+                self.ui.progressBar.close()
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
 
 
     def generateReport(self, logsFile):
-        progressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 100, self)
-        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-        #i dlatego przycisk "Cancel" jest ukryty:
-        progressBar.setCancelButton(None)
-        progressBar.show()
-        reportFile = self.logsAnalyzer.createReport(logFile = logsFile, progressBarWindow = progressBar)
+        self.ui.createProgressWindow("Generating report...", "Cancel", 0, 100, self)
+        reportFile = self.logsAnalyzer.createReport(logFile = logsFile, progressBarWindow = self.ui.progressBar)
         report = self.parseAndDisplayReport(reportFile)
-        progressBar.close()
+        self.ui.closeProgressWindow()
         
         
         
     def generateStats(self, logsFile):
-        progressBar = QtGui.QProgressDialog("Generating statistics...", "Cancel", 0, 0, self)
-        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-        #i dlatego przycisk "Cancel" jest ukryty:
-        progressBar.setCancelButton(None)
-        progressBar.show()
-        awstatsFile = self.statsGen.createAwstats(logFile = logsFile, progressBarWindow = progressBar)
-        #report = self.parseAndDisplayReport(reportFile)
+        self.ui.createProgressWindow("Generating statistics...", "Cancel", 0, 0, self)
+        awstatsFile = self.statsGen.createAwstats(logFile = logsFile, progressBarWindow = self.ui.progressBar)
         self.ui.showPage(awstatsFile)
-        progressBar.close()
+        self.ui.closeProgressWindow()
         
         
         
