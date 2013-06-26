@@ -40,25 +40,37 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
+from PyQt4 import QtCore
 from exceptionClass import Exception
 import scalp
 import os, sys, datetime
 
-class analyzer:
+class analyzer(QtCore.QThread):
     
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
     programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
     report_format = "xml";
     settings = None
+    logFile = ""
     
+    report_created = QtCore.pyqtSignal(object)
     
     def __init__(self, settings):
+        QtCore.QThread.__init__(self)
         self.today = datetime.date.today()
         self.settings = settings
         self.createAndLoadDirs()
         
         
+    
+    def run(self):
+        output_file = ""
+        if self.logFile != "":
+            output_file = self.createReport(self.logFile)
+        self.report_created.emit(output_file)
+
+    
     
     def createAndLoadDirs(self):
         self.reportsDir = self.homeDir+"/"+self.dataDir+"/"+"reports"
@@ -77,7 +89,7 @@ class analyzer:
             self.filters = os.path.abspath(os.path.dirname(__file__))+"/filters/default_filter.xml"
     
     
-    def createReport(self, logFile = "", progressBarWindow = None):
+    def createReport(self, logFile = ""):
       
         if (self.settings.date_start == self.settings.date_end):
             reportsFileName = self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")
@@ -105,6 +117,6 @@ class analyzer:
         outputFile = self.reportsDir+"/"+reportsFileName+"."+self.report_format
         #sprawdzanie czy plik już przypadkiem nie istnieje, jeżeli tak to raport nie jest tworzony na nowo:
         if os.path.isfile(outputFile) == False or self.today in self.settings.days_range:
-            report = scalp.scalper(logFile, self.filters, preferences, fileName=reportsFileName, progressBar = progressBarWindow)
+            report = scalp.scalper(logFile, self.filters, preferences, fileName=reportsFileName)
         
         return outputFile

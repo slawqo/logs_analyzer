@@ -40,22 +40,34 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
+from PyQt4 import QtCore
 from exceptionClass import Exception
 import os, sys, datetime
 
-class statsGenerator:
+class statsGenerator(QtCore.QThread):
     
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
     programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
     settings = None
+    logFile = ""
     
+    stats_created = QtCore.pyqtSignal(object)
     
     def __init__(self, settings):
+        QtCore.QThread.__init__(self)
         self.today = datetime.date.today()
         self.settings = settings
         self.createAndLoadDirs()
     
+    
+    
+    def run(self):
+        output_file = ""
+        if self.logFile != "":
+            output_file = self.createAwstats(self.logFile)
+        self.stats_created.emit(output_file)
+
     
     
     def createAndLoadDirs(self):
@@ -68,7 +80,7 @@ class statsGenerator:
     
     
     
-    def createAwstats(self, logFile = "", progressBarWindow = None):
+    def createAwstats(self, logFile = ""):
         if self.settings.logs_type == "":
             file_logs_type = "access"
         else:
