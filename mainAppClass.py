@@ -167,6 +167,7 @@ class mainApp(QtGui.QMainWindow):
             
                 #i dodanie nowej informacji o generowaniu logów:
                 if logsType == "access":
+                    #TODO: dodać dwa checkboxy do interfejsu i je tu sprawdzać jeszcze
                     print ("Generate report...")
                     self.generateReport(logsFile)
                     self.generateStats(logsFile)
