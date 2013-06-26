@@ -279,3 +279,19 @@ class Ui_MainWindow(object):
             return self.outColumnsToView
         else:
             raise Exception("Wrong log type given")
+    
+    
+    
+    def createProgressWindow(self, title, cancelLabel, minValue = 0, maxValue=100, parent = None):
+        self.progressBar = QtGui.QProgressDialog(title, cancelLabel, minValue, maxValue, parent)
+        #@TODO: dodać akcję dla przycisku "cancel"
+        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+        #i dlatego przycisk "Cancel" jest ukryty
+        self.progressBar.setCancelButton(None)
+        self.progressBar.setWindowModality(QtCore.Qt.WindowModal)
+        self.progressBar.show()
+    
+    
+    
+    def closeProgressWindow(self):
+        self.progressBar.close()
