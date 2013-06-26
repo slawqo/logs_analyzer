@@ -55,6 +55,7 @@ class downloader:
     logs = ""
     login = ""
     password = ""
+    fileName = ""
     
     
     
@@ -74,6 +75,19 @@ class downloader:
         if os.path.isdir(self.logsDir) == False:
             os.makedirs(self.logsDir)
     
+    
+    
+    def prepareFullFileName(self):
+        if self.settings.logs_type == "":
+            file_logs_type = "access"
+        else:
+            file_logs_type = self.settings.logs_type
+
+        if (self.settings.date_start == self.settings.date_end):
+            self.fileName = self.logsDir+"/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+file_logs_type+".log"
+        else:
+            self.fileName = self.logsDir+"/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+self.settings.date_end.strftime("%Y.%m.%d")+"-"+file_logs_type+".log"
+        
     
     
     def prepareAddress(self, day):
@@ -144,29 +158,35 @@ class downloader:
     
     def loadLogs(self, progressBarWindow = None):
         if len(self.logs) == 0:
-            if (self.settings.date_start == self.settings.date_end):
-                result =  self.loadLogsFromDay(self.settings.date_start)
-            else:
-                result = ""
-                percent_per_day = 100/len(self.settings.days_range)
-                counter = 0
-                for day in self.settings.days_range:
-                    day_result = ""
-                    day_result = self.loadLogsFromDay(day)
-                    if day_result != "401" and day_result != "404" and day_result != "-1":
-                        result = result+self.loadLogsFromDay(day)
-                    elif day_result == "401":
-                        self.logs = day_result
-                        return self.logs
+            self.prepareFullFileName()
+            if os.path.isfile(self.fileName) == False or self.today in self.settings.days_range:
+                if (self.settings.date_start == self.settings.date_end):
+                    result =  self.loadLogsFromDay(self.settings.date_start)
+                else:
+                    result = ""
+                    percent_per_day = 100/len(self.settings.days_range)
+                    counter = 0
+                    for day in self.settings.days_range:
+                        day_result = ""
+                        day_result = self.loadLogsFromDay(day)
+                        if day_result != "401" and day_result != "404" and day_result != "-1":
+                            result = result+self.loadLogsFromDay(day)
+                        elif day_result == "401":
+                            self.logs = day_result
+                            return self.logs
                     
-                    counter = counter + percent_per_day
-                    print ("Download counter: "+str(counter))
-                    if progressBarWindow == None:
-                        self.progressBar(counter)
-                    else:
-                        self.graphicalProgressBar(progressBarWindow, counter)
+                        counter = counter + percent_per_day
+                        print ("Download counter: "+str(counter))
+                        if progressBarWindow == None:
+                            self.progressBar(counter)
+                        else:
+                            self.graphicalProgressBar(progressBarWindow, counter)
 
-                sys.stdout.write("\n")
+                    sys.stdout.write("\n")
+            
+            else:
+                result = open(fileName, "r").read()
+            
             self.logs = result
         
         return self.logs
@@ -179,26 +199,17 @@ class downloader:
 
 
     def saveLogs(self, progressBarWindow = None):
-        if self.settings.logs_type == "":
-            file_logs_type = "access"
-        else:
-            file_logs_type = self.settings.logs_type
-
-        if (self.settings.date_start == self.settings.date_end):
-            fileName = self.logsDir+"/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+file_logs_type+".log"
-        else:
-            fileName = self.logsDir+"/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+self.settings.date_end.strftime("%Y.%m.%d")+"-"+file_logs_type+".log"
+        self.prepareFullFileName()
         
-        if os.path.isfile(fileName) == False or self.today in self.settings.days_range:
+        if len(self.logs) == 0:
             self.loadLogs(progressBarWindow)
-            if len(self.logs) > 3 :
-                out = open(fileName, "w")
-                out.write(self.logs)
-                out.close()
-        else:
-            self.logs = open(fileName, "r").read()
+        
+        if len(self.logs) > 3 :
+            out = open(self.fileName, "w")
+            out.write(self.logs)
+            out.close()
 
-        return fileName
+        return self.fileName
     
     
     
