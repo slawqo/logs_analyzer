@@ -141,7 +141,8 @@ class mainApp(QtGui.QMainWindow):
                 progressBar.show()
             
                 #pobranie logów:
-                logsFile = self.logsDownloader.saveLogs(progressBar)
+                self.logsDownloader.downloadLogs(progressBar) #TODO: to powinno być w nowym wątku odpalone
+                logsFile = self.logsDownloader.saveLogs()
                 logs = self.logsDownloader.getDownloadedLogs()
             
                 #usunięcie informacji o generowaniu logów:

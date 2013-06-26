@@ -156,7 +156,7 @@ class downloader:
     
 
     
-    def loadLogs(self, progressBarWindow = None):
+    def downloadLogs(self, progressBarWindow = None):
         if len(self.logs) == 0:
             self.prepareFullFileName()
             if os.path.isfile(self.fileName) == False or self.today in self.settings.days_range:
@@ -202,7 +202,7 @@ class downloader:
         self.prepareFullFileName()
         
         if len(self.logs) == 0:
-            self.loadLogs(progressBarWindow)
+            self.downloadLogs(progressBarWindow)
         
         if len(self.logs) > 3 :
             out = open(self.fileName, "w")
