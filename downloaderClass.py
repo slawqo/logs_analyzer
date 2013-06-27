@@ -40,13 +40,14 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
+from PyQt4 import QtCore
 from urllib import error, request, parse
 import os, sys, base64, datetime, calendar, gzip
 from io import StringIO, BytesIO, TextIOBase
 from exceptionClass import Exception
 
 
-class downloader:
+class downloader(QtCore.QThread):
     homeDir = os.path.expanduser("~")
     dataDir = ".logs_analyzer"
     programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
@@ -57,16 +58,24 @@ class downloader:
     password = ""
     fileName = ""
     
-    
+    download_finished = QtCore.pyqtSignal()
+    step_done = QtCore.pyqtSignal(object)
     
     def __init__(self, settings):
+        QtCore.QThread.__init__(self)
         self.today = datetime.date.today()
         self.settings = settings
         #definiowanie i tworzenie katalogów z danymi:
         self.createAndLoadDirs()
-        
-    
-    
+
+
+
+    def run(self):
+        self.downloadLogs()
+        self.download_finished.emit()
+
+
+
     def createAndLoadDirs(self):
         self.logsDir = self.homeDir+"/"+self.dataDir+"/"+"logs"
 
@@ -156,7 +165,7 @@ class downloader:
     
 
     
-    def downloadLogs(self, progressBarWindow = None):
+    def downloadLogs(self):
         if len(self.logs) == 0:
             self.prepareFullFileName()
             if os.path.isfile(self.fileName) == False or self.today in self.settings.days_range:
@@ -177,10 +186,7 @@ class downloader:
                     
                         counter = counter + percent_per_day
                         print ("Download counter: "+str(counter))
-                        if progressBarWindow == None:
-                            self.progressBar(counter)
-                        else:
-                            self.graphicalProgressBar(progressBarWindow, counter)
+                        self.step_done.emit(counter)
 
                     sys.stdout.write("\n")
             
@@ -198,11 +204,11 @@ class downloader:
 
 
 
-    def saveLogs(self, progressBarWindow = None):
+    def saveLogs(self):
         self.prepareFullFileName()
         
         if len(self.logs) == 0:
-            self.downloadLogs(progressBarWindow)
+            self.downloadLogs()
         
         if len(self.logs) > 3 :
             out = open(self.fileName, "w")

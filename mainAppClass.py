@@ -61,12 +61,15 @@ class mainApp(QtGui.QMainWindow):
 
     login = ""
     password = ""
+    page = ""
+    logsType = ""
     loginCanceled = False
     searchWidgetDisplayed = False #flaga informująca czy wyświetlony jest panel wyszukiwania w logach
     displayedSearchedItemIndex = 0 #index aktualnie podświetlonego elemetnu jaki został znaleziony
     items = [] #elementy wyszukane przez użytkownika
     logsLinesItems = [] #elementy logu (linie) wyświetlone w analizatorze
     lastSelectedLine = [] #ostatnio podświetlona linia w widoku logu
+    downloadLogsProgressBar = None
     reportProgressBar = None
     statsProgressBar = None
     
@@ -79,6 +82,7 @@ class mainApp(QtGui.QMainWindow):
         self.titleFont.setBold(True)
         self.titleFont.setWeight(75)
 
+        self.downloadLogsProgressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
         self.reportProgressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 0, self)
         self.statsProgressBar = QtGui.QProgressDialog("Generating statistics...", "Cancel", 0, 0, self)
 
@@ -105,8 +109,8 @@ class mainApp(QtGui.QMainWindow):
 
 
     def connectSignals(self):
-        self.ui.getLogsButton.clicked.connect(self.getLogs)
-        self.ui.pageAddress.returnPressed.connect(self.getLogs)
+        self.ui.getLogsButton.clicked.connect(self.downloadLogs)
+        self.ui.pageAddress.returnPressed.connect(self.downloadLogs)
         #sygnał nie przypisany ze względu na problem z wydajnością wyświetlania pola search:
         self.searchAction.triggered.connect(self.searchBox)
         self.ui.searchButton.clicked.connect(self.searchItem)
@@ -116,70 +120,77 @@ class mainApp(QtGui.QMainWindow):
 
 
     def getLogs(self):
-        page = str(self.ui.pageAddress.text())
-        if len(page) != 0:
-            self.logsDownloader.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
-            
-            start = self.ui.startDateValue.date()
-            end = self.ui.endDateValue.date()
-            
-            #jeżeli ktoś podał zły zakres dat:
-            if start > end:
-                end = start #wyrównaj datę końcową z początkową jeżeli koniec jest wcześniejszy niż poczętek
-                self.ui.endDateValue.setDate(start)
-           
-            logsType = str(self.ui.logsTypeValue.currentText())
-            self.logsParseSettings.test_page = page 
-            self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
-            self.logsParseSettings.prepareLogsType(logsType) 
-                        
-            try:
-                #ustawienie paska postępu pobierania logów:
-                progressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
-                #@TODO: dodać akcję dla przycisku "cancel"
-                #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-                #i dlatego przycisk "Cancel" jest ukryty
-                progressBar.setCancelButton(None)
-                progressBar.show()
-            
-                #pobranie logów:
-                self.logsDownloader.downloadLogs(progressBar) #TODO: to powinno być w nowym wątku odpalone
-                logsFile = self.logsDownloader.saveLogs()
-                logs = self.logsDownloader.getDownloadedLogs()
-            
-                #usunięcie informacji o generowaniu logów:
-                progressBar.close()
-                        
-                #analiza i wyswietlenie pobranych wyników 
-                if logs == "401":
-                    logWin = loginWindow(self)
-                    logWin.exec_()
-                    if self.loginCanceled == False:
-                        self.logsDownloader.login = self.login
-                        self.logsDownloader.password = self.password
-                        self.getLogs()
-                    else:
-                        return
-                elif logs == "404":
-                    QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
-                elif logs == "-1":
-                    QtGui.QMessageBox.about(self, "Error", "Unknown error")
+        self.closeProgressBar(self.downloadLogsProgressBar)
+
+        try:
+            logsFile = self.logsDownloader.saveLogs()
+            logs = self.logsDownloader.getDownloadedLogs()
+
+            #analiza i wyswietlenie pobranych wyników 
+            if logs == "401":
+                logWin = loginWindow(self)
+                logWin.exec_()
+                if self.loginCanceled == False:
+                    self.logsDownloader.login = self.login
+                    self.logsDownloader.password = self.password
+                    self.downloadLogs()
                 else:
-                    self.displayDataInColumns(logs, logsType)
+                    return
+            elif logs == "404":
+                QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
+            elif logs == "-1":
+                QtGui.QMessageBox.about(self, "Error", "Unknown error")
+            else:
+                self.displayDataInColumns(logs, self.logsType)
             
-                #i dodanie nowej informacji o generowaniu logów:
-                if logsType == "access":
-                    #TODO: dodać dwa checkboxy do interfejsu i je tu sprawdzać jeszcze
-                    print ("Generate report...")
-                    self.generateReport(logsFile)
-                    self.generateStats(logsFile)
+            #i dodanie nowej informacji o generowaniu logów:
+            if self.logsType == "access":
+                #TODO: dodać dwa checkboxy do interfejsu i je tu sprawdzać jeszcze
+                print ("Generate report...")
+                self.generateReport(logsFile)
+                self.generateStats(logsFile)
             
-            except Exception as e:
-                QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
-                progressBar.close()
+        except Exception as e:
+            QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
+
+
+
+    def prepareDownloadOptions(self):
+        self.logsDownloader.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+        self.page = str(self.ui.pageAddress.text())
+        
+        start = self.ui.startDateValue.date()
+        end = self.ui.endDateValue.date()
+        
+        #jeżeli ktoś podał zły zakres dat:
+        if start > end:
+            end = start #wyrównaj datę końcową z początkową jeżeli koniec jest wcześniejszy niż poczętek
+            self.ui.endDateValue.setDate(start)
+        
+        self.logsType = str(self.ui.logsTypeValue.currentText())
+        self.logsParseSettings.test_page = self.page 
+        self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
+        self.logsParseSettings.prepareLogsType(self.logsType)
+        
+
+
+
+    def downloadLogs(self):
+        #check if pageName is given:
+        if len(self.page) != 0:
+            self.prepareDownloadOptions()
+            #@TODO: dodać akcję dla przycisku "cancel"
+            #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
+            #i dlatego przycisk "Cancel" jest ukryty
+            self.downloadLogsProgressBar.setCancelButton(None)
+            self.downloadLogsProgressBar.show()
+
+            self.logsDownloader.download_finished.connect(self.getLogs)
+            self.logsDownloader.step_done.connect(self.updateDownloadLogsProgressBar)
+            #pobranie logów:
+            self.logsDownloader.start() #TODO: to powinno być w nowym wątku odpalone
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
-
 
 
     def generateReport(self, logsFile):
@@ -296,24 +307,28 @@ class mainApp(QtGui.QMainWindow):
 
         #dodanie sygnału do elementów listy:
         self.ui.reportView.itemActivated.connect(self.showLineInResultsView)
-        
-        if self.reportProgressBar.isHidden() == False:
-            self.reportProgressBar.close()
+
+        self.closeProgressBar(self.reportProgressBar)
     
     
     
     def displayStatsPage(self, awstatsFile):
-        if self.statsProgressBar.isHidden() == False:
-            self.statsProgressBar.close()
+        self.closeProgressBar(self.statsProgressBar)
         self.ui.showPage(awstatsFile)
     
     
     
-    def updateProgressBarValue(self, value):
-        self.progressBar.setValue(value)
+    def updateDownloadLogsProgressBar(self, value):
+        self.downloadLogsProgressBar.setValue(value)
     
-        
-        
+    
+    
+    def closeProgressBar(self, bar):
+        if self.bar.isHidden() == False:
+            self.bar.close()
+    
+    
+    
     def searchItem(self):
         columnToSearch = int(self.ui.searchColumns.currentIndex())-1
         self.logsProxy.setFilterKeyColumn(columnToSearch)
