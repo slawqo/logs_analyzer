@@ -55,6 +55,7 @@ class analyzer(QtCore.QThread):
     logFile = ""
     
     report_created = QtCore.pyqtSignal(object)
+    report_aborted = QtCore.pyqtSignal()
     
     def __init__(self, settings):
         QtCore.QThread.__init__(self)
@@ -69,6 +70,13 @@ class analyzer(QtCore.QThread):
         if self.logFile != "":
             output_file = self.createReport(self.logFile)
         self.report_created.emit(output_file)
+
+
+
+    def stop(self):
+        if self.isRunning():
+            self.terminate()
+            self.download_aborted.emit()
 
     
     

@@ -110,10 +110,14 @@ class mainApp(QtGui.QMainWindow):
         self.ui.searchTextValue.returnPressed.connect(self.searchItem)
         self.ui.clearButton.clicked.connect(self.clearSearchResults)
         self.ui.searchColumns.currentIndexChanged.connect(self.searchItem)
+        self.ui.downloadLogsProgressCancelButton.clicked.connect(self.logsDownloader.stop)
+        self.ui.reportProgressCancelButton.clicked.connect(self.logsAnalyzer.stop)
+        self.ui.statsProgressCancelButton.clicked.connect(self.statsGen.stop)
+
 
 
     def getLogs(self):
-        self.ui.closeProgressStatus("Log")
+        self.closeDownloadingProgressBar()
 
         try:
             logsFile = self.logsDownloader.saveLogs()
@@ -127,12 +131,15 @@ class mainApp(QtGui.QMainWindow):
                     self.logsDownloader.login = self.login
                     self.logsDownloader.password = self.password
                     self.downloadLogs()
+                    return False
                 else:
                     return
             elif logs == "404":
                 QtGui.QMessageBox.about(self, "Error 404", "Error 404 - page not found")
+                return False
             elif logs == "-1":
                 QtGui.QMessageBox.about(self, "Error", "Unknown error")
+                return False
             else:
                 self.displayDataInColumns(logs, self.logsType)
             
@@ -172,9 +179,9 @@ class mainApp(QtGui.QMainWindow):
         self.prepareDownloadOptions()
         #check if pageName is given:
         if len(self.page) != 0:
-            #TODO: dodać akcję dla przycisku "cancel"
             self.ui.openProgressStatus("Log")
             self.logsDownloader.download_finished.connect(self.getLogs)
+            self.logsDownloader.download_aborted.connect(self.closeDownloadingProgressBar)
             self.logsDownloader.step_done.connect(self.updateDownloadLogsProgressBar)
             #pobranie logów:
             self.logsDownloader.start()
@@ -182,20 +189,21 @@ class mainApp(QtGui.QMainWindow):
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
 
+
     def generateReport(self, logsFile):
-        #TODO: dodać akcję dla przycisku "cancel"
         self.ui.openProgressStatus("Report")
         self.logsAnalyzer.logFile = logsFile
         self.logsAnalyzer.report_created.connect(self.parseAndDisplayReport)
+        self.logsAnalyzer.report_aborted.connect(self.closeReportProgressBar)
         self.logsAnalyzer.start()
         
         
         
     def generateStats(self, logsFile):
-        #TODO: dodać akcję dla przycisku "cancel"
         self.ui.openProgressStatus("Statistics")
         self.statsGen.logFile = logsFile
         self.statsGen.stats_created.connect(self.displayStatsPage)
+        self.statsGen.stats_aborted.connect(self.closeStatsProgressBar)
         self.statsGen.start()
         
         
@@ -241,7 +249,7 @@ class mainApp(QtGui.QMainWindow):
    
    
     def parseAndDisplayReport(self, reportFile):
-        self.closeProgressBar("Report")
+        self.closeReportProgressBar()
         self.reportLinesItems = []
         self.ui.reportView.clear()
         self.ui.reportView.setHeaderHidden(True)
@@ -295,7 +303,7 @@ class mainApp(QtGui.QMainWindow):
     
     
     def displayStatsPage(self, awstatsFile):
-        self.closeProgressBar("Statistics")
+        self.closeStatsProgressBar()
         self.ui.showPage(awstatsFile)
     
     
@@ -303,6 +311,21 @@ class mainApp(QtGui.QMainWindow):
     def updateDownloadLogsProgressBar(self, value):
         self.ui.downloadLogsProgressBar.setValue(value)
     
+    
+    
+    def closeDownloadingProgressBar(self):
+        self.closeProgressBar("Log")
+    
+    
+    
+    def closeReportProgressBar(self):
+        self.closeProgressBar("Report")
+
+
+
+    def closeStatsProgressBar(self):
+        self.closeProgressBar("Statistics")
+
     
     
     def closeProgressBar(self, tabTitle):

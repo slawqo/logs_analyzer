@@ -53,6 +53,7 @@ class statsGenerator(QtCore.QThread):
     logFile = ""
     
     stats_created = QtCore.pyqtSignal(object)
+    stats_aborted = QtCore.pyqtSignal()
     
     def __init__(self, settings):
         QtCore.QThread.__init__(self)
@@ -67,6 +68,13 @@ class statsGenerator(QtCore.QThread):
         if self.logFile != "":
             output_file = self.createAwstats(self.logFile)
         self.stats_created.emit(output_file)
+
+
+
+    def stop(self):
+        if self.isRunning():
+            self.terminate()
+            self.stats_aborted.emit()
 
     
     

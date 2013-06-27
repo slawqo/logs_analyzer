@@ -59,6 +59,7 @@ class downloader(QtCore.QThread):
     fileName = ""
     
     download_finished = QtCore.pyqtSignal()
+    download_aborted = QtCore.pyqtSignal()
     step_done = QtCore.pyqtSignal(object)
     
     def __init__(self, settings):
@@ -73,6 +74,13 @@ class downloader(QtCore.QThread):
     def run(self):
         self.downloadLogs()
         self.download_finished.emit()
+
+
+
+    def stop(self):
+        if self.isRunning():
+            self.terminate()
+            self.download_aborted.emit()
 
 
 
