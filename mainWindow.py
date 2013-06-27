@@ -184,6 +184,8 @@ class Ui_MainWindow(object):
         self.resultsView = QtGui.QTreeView()
         self.resultsView.setObjectName(_fromUtf8("resultsTable"))
         self.resultsView.setIndentation(0)
+        self.resultsView.setSortingEnabled(True)
+        self.resultsView.header().setClickable(True)
         
         self.logsItemsModel = QtGui.QStandardItemModel()
         self.setItemsHeaders()
