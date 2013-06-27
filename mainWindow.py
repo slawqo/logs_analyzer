@@ -61,6 +61,10 @@ class Ui_MainWindow(object):
     sshColumnsToView = ['Data', 'Message']
     outColumnsToView = ['Data', 'Message']
     
+    logTabIndex = 1
+    reportTabIndex = 2
+    statsTabIndex = 3
+    
     def setupUi(self, MainWindow):
         self.main_window = MainWindow
 
@@ -93,6 +97,7 @@ class Ui_MainWindow(object):
         #utworzenie widgeta górnego i środkowego:
         self.prepareTopWidget()
         self.prepareCentralWidget()
+        self.prepareProgressBars()
             
         self.mainWidgetLayout.addWidget(self.topWidget)
         self.mainWidgetLayout.addWidget(self.centralWidget)
@@ -194,9 +199,9 @@ class Ui_MainWindow(object):
         self.showPage()
         self.statsView.setObjectName(_fromUtf8("statsView"))
 
-        self.addTab(self.tabsContainer, self.resultsView, "Log")
-        self.addTab(self.tabsContainer, self.reportView, "Report")
-        self.addTab(self.tabsContainer, self.statsView, "Statistics")
+        self.logTabIndex = self.addTab(self.tabsContainer, self.resultsView, "Log")
+        self.reportTabIndex = self.addTab(self.tabsContainer, self.reportView, "Report")
+        self.statsTabIndex = self.addTab(self.tabsContainer, self.statsView, "Statistics")
 
         self.centralWidgetLayout.addWidget(self.tabsContainer)
         self.centralWidget.setLayout(self.centralWidgetLayout)
@@ -229,6 +234,49 @@ class Ui_MainWindow(object):
 
 
 
+    def prepareProgressBars(self):
+        #download Progress Bar:
+        self.downloadLogsProgressWidget = QtGui.QWidget()
+        #self.downloadLogsProgressLayout = QtGui.QHBoxLayout()
+        self.downloadLogsProgressLabel = QtGui.QLabel(_fromUtf8("Downloading logs"), self.downloadLogsProgressWidget)
+        self.downloadLogsProgressBar = QtGui.QProgressBar(self.downloadLogsProgressWidget)
+        self.downloadLogsProgressCancelButton = QtGui.QPushButton("Cancel", self.downloadLogsProgressWidget)
+        
+        self.downloadLogsProgressLabel.move(10, 10)
+        self.downloadLogsProgressBar.move(10, 30)
+        self.downloadLogsProgressBar.setGeometry(10, 30, 310, 30)
+        self.downloadLogsProgressCancelButton.move(10, 60)
+        
+        #report Progress Bar:
+        self.reportProgressWidget = QtGui.QWidget()
+        #self.downloadLogsProgressLayout = QtGui.QHBoxLayout()
+        self.reportProgressLabel = QtGui.QLabel(_fromUtf8("Generating report..."), self.reportProgressWidget)
+        self.reportProgressBar = QtGui.QProgressBar(self.reportProgressWidget)
+        self.reportProgressBar.setMinimum(0)
+        self.reportProgressBar.setMaximum(0)
+        self.reportProgressCancelButton = QtGui.QPushButton("Cancel", self.reportProgressWidget)
+        
+        self.reportProgressLabel.move(10, 10)
+        self.reportProgressBar.move(10, 30)
+        self.reportProgressBar.setGeometry(10, 30, 310, 30)
+        self.reportProgressCancelButton.move(10, 60)
+        
+        #stats Progress Bar:
+        self.statsProgressWidget = QtGui.QWidget()
+        #self.downloadLogsProgressLayout = QtGui.QHBoxLayout()
+        self.statsProgressLabel = QtGui.QLabel(_fromUtf8("Generating statistics..."), self.statsProgressWidget)
+        self.statsProgressBar = QtGui.QProgressBar(self.statsProgressWidget)
+        self.statsProgressBar.setMinimum(0)
+        self.statsProgressBar.setMaximum(0)
+        self.statsProgressCancelButton = QtGui.QPushButton("Cancel", self.statsProgressWidget)
+        
+        self.statsProgressLabel.move(10, 10)
+        self.statsProgressBar.move(10, 30)
+        self.statsProgressBar.setGeometry(10, 30, 310, 30)
+        self.statsProgressCancelButton.move(10, 60)
+
+
+
     def prepareSearchFilters(self, logsType):
         columns = ["All",]
         columns.extend(self.getColumnsToView(logsType))
@@ -237,7 +285,7 @@ class Ui_MainWindow(object):
 
 
 
-    def addTab(self, container, widget, title):
+    def addTab(self, container, widget, title, index = -1):
         layout = QtGui.QVBoxLayout()
         centralWidget = QtGui.QWidget()
         layout.addWidget(widget)
@@ -245,8 +293,16 @@ class Ui_MainWindow(object):
             self.prepareSearchWidget()
             layout.addWidget(self.searchWidget)
         centralWidget.setLayout(layout)
-        container.addTab(centralWidget, _fromUtf8(""))
+        #if tab exists with this widger it will be removed:
+        if index != -1:
+            container.removeTab(index)
+            container.insertTab(index, centralWidget, _fromUtf8(""))
+        else:
+            container.addTab(centralWidget, _fromUtf8(""))
+        
         container.setTabText(container.indexOf(centralWidget), _fromUtf8(title))
+        container.setCurrentIndex(self.logTabIndex)
+        return container.indexOf(centralWidget)
 
 
 
@@ -282,16 +338,44 @@ class Ui_MainWindow(object):
     
     
     
-    def createProgressWindow(self, title, cancelLabel, minValue = 0, maxValue=100, parent = None):
-        self.progressBar = QtGui.QProgressDialog(title, cancelLabel, minValue, maxValue, parent)
-        #@TODO: dodać akcję dla przycisku "cancel"
-        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-        #i dlatego przycisk "Cancel" jest ukryty
-        self.progressBar.setCancelButton(None)
-        self.progressBar.setWindowModality(QtCore.Qt.WindowModal)
-        self.progressBar.show()
+    def getProgressTabWidget(self, tabTitle):
+        if tabTitle == "Log":
+            return self.downloadLogsProgressWidget
+        elif tabTitle == "Report":
+            return self.reportProgressWidget
+        elif tabTitle == "Statistics":
+            return self.statsProgressWidget
     
     
     
-    def closeProgressWindow(self):
-        self.progressBar.close()
+    def getResultTabWidget(self, tabTitle):
+        if tabTitle == "Log":
+            return self.resultsView
+        elif tabTitle == "Report":
+            return self.reportView
+        elif tabTitle == "Statistics":
+            return self.statsView
+        
+    
+    
+    def getTabIndex(self, tabTitle):
+        if tabTitle == "Log":
+            return self.logTabIndex
+        elif tabTitle == "Report":
+            return self.reportTabIndex
+        elif tabTitle == "Statistics":
+            return self.statsTabIndex
+
+
+    
+    def openProgressStatus(self, tabTitle):
+        widget = self.getProgressTabWidget(tabTitle)
+        index = self.getTabIndex(tabTitle)
+        self.addTab(self.tabsContainer, widget, tabTitle, index)
+    
+    
+    
+    def closeProgressStatus(self, tabTitle):
+        widget = self.getResultTabWidget(tabTitle)
+        index = self.getTabIndex(tabTitle)
+        self.addTab(self.tabsContainer, widget, tabTitle, index)

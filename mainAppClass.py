@@ -69,9 +69,6 @@ class mainApp(QtGui.QMainWindow):
     items = [] #elementy wyszukane przez użytkownika
     logsLinesItems = [] #elementy logu (linie) wyświetlone w analizatorze
     lastSelectedLine = [] #ostatnio podświetlona linia w widoku logu
-    downloadLogsProgressBar = None
-    reportProgressBar = None
-    statsProgressBar = None
     
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -81,10 +78,6 @@ class mainApp(QtGui.QMainWindow):
         self.titleFont.setPointSize(13)
         self.titleFont.setBold(True)
         self.titleFont.setWeight(75)
-
-        self.downloadLogsProgressBar = QtGui.QProgressDialog("Downloading logs", "Cancel", 0, 100, self)
-        self.reportProgressBar = QtGui.QProgressDialog("Generating report...", "Cancel", 0, 0, self)
-        self.statsProgressBar = QtGui.QProgressDialog("Generating statistics...", "Cancel", 0, 0, self)
 
         self.logsParseSettings = logsSettings()
         self.logsDownloader = downloader(self.logsParseSettings)
@@ -120,7 +113,7 @@ class mainApp(QtGui.QMainWindow):
 
 
     def getLogs(self):
-        self.closeProgressBar(self.downloadLogsProgressBar)
+        self.ui.closeProgressStatus("Log")
 
         try:
             logsFile = self.logsDownloader.saveLogs()
@@ -176,28 +169,22 @@ class mainApp(QtGui.QMainWindow):
 
 
     def downloadLogs(self):
+        self.prepareDownloadOptions()
         #check if pageName is given:
         if len(self.page) != 0:
-            self.prepareDownloadOptions()
-            #@TODO: dodać akcję dla przycisku "cancel"
-            #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-            #i dlatego przycisk "Cancel" jest ukryty
-            self.downloadLogsProgressBar.setCancelButton(None)
-            self.downloadLogsProgressBar.show()
-
+            #TODO: dodać akcję dla przycisku "cancel"
+            self.ui.openProgressStatus("Log")
             self.logsDownloader.download_finished.connect(self.getLogs)
             self.logsDownloader.step_done.connect(self.updateDownloadLogsProgressBar)
             #pobranie logów:
-            self.logsDownloader.start() #TODO: to powinno być w nowym wątku odpalone
+            self.logsDownloader.start()
         else:
             QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
 
 
     def generateReport(self, logsFile):
-        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-        #i dlatego przycisk "Cancel" jest ukryty:
-        self.reportProgressBar.setCancelButton(None)
-        self.reportProgressBar.show()
+        #TODO: dodać akcję dla przycisku "cancel"
+        self.ui.openProgressStatus("Report")
         self.logsAnalyzer.logFile = logsFile
         self.logsAnalyzer.report_created.connect(self.parseAndDisplayReport)
         self.logsAnalyzer.start()
@@ -205,12 +192,8 @@ class mainApp(QtGui.QMainWindow):
         
         
     def generateStats(self, logsFile):
-        #Dopóki pobieranie wszystkiego nie będzie w osobnym wątku to nie da się anulować tego pobierania 
-        #i dlatego przycisk "Cancel" jest ukryty:
-        self.statsProgressBar.setCancelButton(None)
-        self.statsProgressBar.show()
-        #awstatsFile = self.statsGen.createAwstats(logFile = logsFile, progressBarWindow = progressBar)
-        #report = self.parseAndDisplayReport(reportFile)
+        #TODO: dodać akcję dla przycisku "cancel"
+        self.ui.openProgressStatus("Statistics")
         self.statsGen.logFile = logsFile
         self.statsGen.stats_created.connect(self.displayStatsPage)
         self.statsGen.start()
@@ -258,6 +241,7 @@ class mainApp(QtGui.QMainWindow):
    
    
     def parseAndDisplayReport(self, reportFile):
+        self.closeProgressBar("Report")
         self.reportLinesItems = []
         self.ui.reportView.clear()
         self.ui.reportView.setHeaderHidden(True)
@@ -307,25 +291,22 @@ class mainApp(QtGui.QMainWindow):
 
         #dodanie sygnału do elementów listy:
         self.ui.reportView.itemActivated.connect(self.showLineInResultsView)
-
-        self.closeProgressBar(self.reportProgressBar)
     
     
     
     def displayStatsPage(self, awstatsFile):
-        self.closeProgressBar(self.statsProgressBar)
+        self.closeProgressBar("Statistics")
         self.ui.showPage(awstatsFile)
     
     
     
     def updateDownloadLogsProgressBar(self, value):
-        self.downloadLogsProgressBar.setValue(value)
+        self.ui.downloadLogsProgressBar.setValue(value)
     
     
     
-    def closeProgressBar(self, bar):
-        if self.bar.isHidden() == False:
-            self.bar.close()
+    def closeProgressBar(self, tabTitle):
+        self.ui.closeProgressStatus(tabTitle)
     
     
     
