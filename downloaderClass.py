@@ -191,7 +191,7 @@ class downloader(QtCore.QThread):
                     sys.stdout.write("\n")
             
             else:
-                result = open(fileName, "r").read()
+                result = open(self.fileName, "r").read()
             
             self.logs = result
         
