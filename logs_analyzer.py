@@ -40,16 +40,18 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
-import sys
+import sys, os
 from PyQt4 import QtGui
 from mainAppClass import mainApp
 
 if __name__ == '__main__':
+    programDir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    
     app = QtGui.QApplication(sys.argv)
     myapp = mainApp()
     
-    app.setWindowIcon(QtGui.QIcon('graphics/main-icon.png'))
-    myapp.setWindowIcon(QtGui.QIcon('graphics/main-icon.png'))
+    app.setWindowIcon(QtGui.QIcon(programDir+'/graphics/main-icon.png'))
+    myapp.setWindowIcon(QtGui.QIcon(programDir+'/graphics/main-icon.png'))
     
     myapp.show()
     sys.exit(app.exec_())
