@@ -70,6 +70,8 @@ class mainApp(QtGui.QMainWindow):
     logsLinesItems = [] #elementy logu (linie) wyświetlone w analizatorze
     lastSelectedLine = [] #ostatnio podświetlona linia w widoku logu
     
+    MAXCOLUMNWIDTH = 250
+    
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
         super(mainApp, self).__init__(parent)
@@ -241,11 +243,8 @@ class mainApp(QtGui.QMainWindow):
         col = 0
         
         for longestValue in longestTexts:
-            itemWidth = int(QtGui.QFontMetrics(self.ui.resultsView.font()).width(longestValue))
-            if itemWidth <= 200:
-                self.ui.resultsView.setColumnWidth(col, itemWidth+25) #nie wiem dlaczego, ale bez tego zawsze trochę brakuje
-            else:
-                self.ui.resultsView.setColumnWidth(col, itemWidth*0.6)
+            itemWidth = min(int(QtGui.QFontMetrics(self.ui.resultsView.font()).width(longestValue))+25, self.MAXCOLUMNWIDTH)
+            self.ui.resultsView.setColumnWidth(col, itemWidth) #nie wiem dlaczego, ale bez tego zawsze trochę brakuje
             col += 1
    
    
