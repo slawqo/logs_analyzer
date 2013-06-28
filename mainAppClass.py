@@ -499,10 +499,19 @@ class mainApp(QtGui.QMainWindow):
     
     def setCheckboxesActive(self):
         self.ui.generateReportCheckBox.setEnabled(True)
+        self.ui.generateReportCheckBox.setCheckState(self.generateReportLastState)
         self.ui.generateStatsCheckBox.setEnabled(True)
+        self.ui.generateStatsCheckBox.setCheckState(self.generateStatsLastState)
     
     
     
     def setCheckboxesInactive(self):
-        self.ui.generateReportCheckBox.setEnabled(False)
-        self.ui.generateStatsCheckBox.setEnabled(False)
+        if self.ui.generateReportCheckBox.isEnabled():
+            self.generateReportLastState = self.ui.generateReportCheckBox.checkState()
+            self.ui.generateReportCheckBox.setChecked(False)
+            self.ui.generateReportCheckBox.setEnabled(False)
+        
+        if self.ui.generateStatsCheckBox.isEnabled():
+            self.generateStatsLastState = self.ui.generateStatsCheckBox.checkState()
+            self.ui.generateStatsCheckBox.setChecked(False)
+            self.ui.generateStatsCheckBox.setEnabled(False)
