@@ -144,11 +144,10 @@ class mainApp(QtGui.QMainWindow):
             
             #i dodanie nowej informacji o generowaniu logów:
             if self.logsType == "access":
-                #TODO: dodać dwa checkboxy do interfejsu i je tu sprawdzać jeszcze
-                print ("Generate report...")
-                self.generateReport(logsFile)
+                if self.ui.generateReportCheckBox.isChecked():
+                    self.generateReport(logsFile)
                 
-                if DOAWSTATS:
+                if DOAWSTATS and self.ui.generateStatsCheckBox.isChecked():
                     self.generateStats(logsFile)
             
         except Exception as e:

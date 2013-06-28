@@ -162,7 +162,16 @@ class Ui_MainWindow(object):
         self.getLogsButton.setFixedSize(100, 25)
         self.secondLineTopWidgetLayout.addWidget(self.getLogsButton, 0, QtCore.Qt.AlignLeft)
 
-        #self.secondLineTopWidgetLayout.addStretch(0)
+        self.generateReportCheckBox = QtGui.QCheckBox(_fromUtf8("Generate report"))
+        self.generateReportCheckBox.setChecked(True)
+        self.secondLineTopWidgetLayout.addWidget(self.generateReportCheckBox)
+
+        self.generateStatsCheckBox = QtGui.QCheckBox(_fromUtf8("Generate statistics"))
+        self.generateStatsCheckBox.setChecked(True)
+        self.secondLineTopWidgetLayout.addWidget(self.generateStatsCheckBox)
+        
+        self.secondLineTopWidgetLayout.setAlignment(QtCore.Qt.AlignLeft)
+        self.secondLineTopWidgetLayout.setSpacing(20)
         self.secondLineTopWidget.setLayout(self.secondLineTopWidgetLayout)
         #koniec konfiguracji drugiej linii górnego widgetu    
 
