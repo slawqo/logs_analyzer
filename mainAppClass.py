@@ -112,6 +112,8 @@ class mainApp(QtGui.QMainWindow):
         self.ui.downloadLogsProgressCancelButton.clicked.connect(self.logsDownloader.stop)
         self.ui.reportProgressCancelButton.clicked.connect(self.logsAnalyzer.stop)
         self.ui.statsProgressCancelButton.clicked.connect(self.statsGen.stop)
+        self.ui.logsTypeValue.currentIndexChanged.connect(self.setCheckboxesStates)
+
 
 
 
@@ -484,3 +486,23 @@ class mainApp(QtGui.QMainWindow):
             for value in values:
                 result.append(value.strip())
         return result
+    
+    
+    
+    def setCheckboxesStates(self):
+        if self.ui.logsTypeValue.currentIndex() == 0:
+            self.setCheckboxesActive()
+        else:
+            self.setCheckboxesInactive()
+    
+    
+    
+    def setCheckboxesActive(self):
+        self.ui.generateReportCheckBox.setEnabled(True)
+        self.ui.generateStatsCheckBox.setEnabled(True)
+    
+    
+    
+    def setCheckboxesInactive(self):
+        self.ui.generateReportCheckBox.setEnabled(False)
+        self.ui.generateStatsCheckBox.setEnabled(False)
