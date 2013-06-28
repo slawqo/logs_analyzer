@@ -38,14 +38,13 @@ This file is part of Logs Analyzer.
     Place, Fifth Floor, Boston, MA  02110-1301  USA
 '''
 
-# Form implementation generated from reading ui file 'main_window_project.ui'
-#
-# Created: Tue Feb 26 16:52:43 2013
-#      by: PyQt4 UI code generator 4.9.1
-#
-# WARNING! All changes made in this file will be lost!
+DOAWSTATS = True
 
-from PyQt4 import QtCore, QtGui, QtWebKit
+try:
+    from PyQt4 import QtCore, QtGui, QtWebKit
+except ImportError:
+    DOAWSTATS = False
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8

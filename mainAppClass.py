@@ -40,7 +40,7 @@ This file is part of Logs Analyzer.
 
 from PyQt4 import QtCore, QtGui
 
-from mainWindow import Ui_MainWindow
+from mainWindow import *
 from loginWindowClass import loginWindow
 from downloaderClass import downloader
 from analyzerClass import analyzer
@@ -147,7 +147,9 @@ class mainApp(QtGui.QMainWindow):
                 #TODO: dodać dwa checkboxy do interfejsu i je tu sprawdzać jeszcze
                 print ("Generate report...")
                 self.generateReport(logsFile)
-                self.generateStats(logsFile)
+                
+                if DOAWSTATS:
+                    self.generateStats(logsFile)
             
         except Exception as e:
             QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
