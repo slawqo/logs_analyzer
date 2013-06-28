@@ -104,10 +104,9 @@ class mainApp(QtGui.QMainWindow):
     def connectSignals(self):
         self.ui.getLogsButton.clicked.connect(self.downloadLogs)
         self.ui.pageAddress.returnPressed.connect(self.downloadLogs)
-        #sygnał nie przypisany ze względu na problem z wydajnością wyświetlania pola search:
         self.searchAction.triggered.connect(self.searchBox)
-        self.ui.searchButton.clicked.connect(self.searchItem)
         self.ui.searchTextValue.returnPressed.connect(self.searchItem)
+        self.ui.searchButton.clicked.connect(self.searchItem)
         self.ui.clearButton.clicked.connect(self.clearSearchResults)
         self.ui.searchColumns.currentIndexChanged.connect(self.searchItem)
         self.ui.downloadLogsProgressCancelButton.clicked.connect(self.logsDownloader.stop)

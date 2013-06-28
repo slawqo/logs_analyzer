@@ -65,6 +65,8 @@ class Ui_MainWindow(object):
     reportTabIndex = 2
     statsTabIndex = 3
     
+    searchWidget = None
+    
     def setupUi(self, MainWindow):
         self.main_window = MainWindow
 
@@ -292,7 +294,8 @@ class Ui_MainWindow(object):
         centralWidget = QtGui.QWidget()
         layout.addWidget(widget)
         if title == "Log":
-            self.prepareSearchWidget()
+            if self.searchWidget == None:
+                self.prepareSearchWidget()
             layout.addWidget(self.searchWidget)
         centralWidget.setLayout(layout)
         #if tab exists with this widger it will be removed:
