@@ -198,13 +198,14 @@ class Ui_MainWindow(object):
 
         self.reportView.setObjectName(_fromUtf8("reportView"))
         
-        self.statsView = QtWebKit.QWebView()
-        self.showPage()
-        self.statsView.setObjectName(_fromUtf8("statsView"))
-
         self.logTabIndex = self.addTab(self.tabsContainer, self.resultsView, "Log")
         self.reportTabIndex = self.addTab(self.tabsContainer, self.reportView, "Report")
-        self.statsTabIndex = self.addTab(self.tabsContainer, self.statsView, "Statistics")
+        
+        if DOAWSTATS:
+            self.statsView = QtWebKit.QWebView()
+            self.showPage()
+            self.statsView.setObjectName(_fromUtf8("statsView"))
+            self.statsTabIndex = self.addTab(self.tabsContainer, self.statsView, "Statistics")
 
         self.centralWidgetLayout.addWidget(self.tabsContainer)
         self.centralWidget.setLayout(self.centralWidgetLayout)
