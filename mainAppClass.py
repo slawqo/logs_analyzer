@@ -63,6 +63,7 @@ class mainApp(QtGui.QMainWindow):
     password = ""
     page = ""
     logsType = ""
+    logsFile = ""
     loginCanceled = False
     searchWidgetDisplayed = False #flaga informująca czy wyświetlony jest panel wyszukiwania w logach
     displayedSearchedItemIndex = 0 #index aktualnie podświetlonego elemetnu jaki został znaleziony
@@ -104,6 +105,8 @@ class mainApp(QtGui.QMainWindow):
 
 
     def connectSignals(self):
+        self.ui.openFileButton.clicked.connect(self.openLogFile)
+        self.ui.openFileClearButton.clicked.connect(self.resetLogFile)
         self.ui.getLogsButton.clicked.connect(self.downloadLogs)
         self.ui.pageAddress.returnPressed.connect(self.downloadLogs)
         self.searchAction.triggered.connect(self.searchBox)
@@ -123,7 +126,7 @@ class mainApp(QtGui.QMainWindow):
         self.closeDownloadingProgressBar()
 
         try:
-            logsFile = self.logsDownloader.saveLogs()
+            self.logsFile = self.logsDownloader.saveLogs()
             logs = self.logsDownloader.getDownloadedLogs()
 
             #analiza i wyswietlenie pobranych wyników 
@@ -149,10 +152,10 @@ class mainApp(QtGui.QMainWindow):
             #i dodanie nowej informacji o generowaniu logów:
             if self.logsType == "access":
                 if self.ui.generateReportCheckBox.isChecked():
-                    self.generateReport(logsFile)
+                    self.generateReport(self.logsFile)
                 
                 if DOAWSTATS and self.ui.generateStatsCheckBox.isChecked():
-                    self.generateStats(logsFile)
+                    self.generateStats(self.logsFile)
             
         except Exception as e:
             QtGui.QMessageBox.about(self, "Error", _fromUtf8(str(e)))
@@ -514,3 +517,20 @@ class mainApp(QtGui.QMainWindow):
             self.generateStatsLastState = self.ui.generateStatsCheckBox.checkState()
             self.ui.generateStatsCheckBox.setChecked(False)
             self.ui.generateStatsCheckBox.setEnabled(False)
+
+
+
+    def openLogFile(self):
+        self.logsFile = QtGui.QFileDialog.getOpenFileName(self, "Open logs file", '/home')
+        if len(self.logsFile) != 0:
+            self.ui.openFileName.setText(_fromUtf8(self.logsFile))
+            self.ui.openFileName.setVisible(True)
+            self.ui.openFileClearButton.setVisible(True)
+            self.ui.setOpenFileGroupState(False)
+
+
+    def resetLogFile(self):
+        self.logsFile = ""
+        self.ui.openFileName.setVisible(False)
+        self.ui.openFileClearButton.setVisible(False)
+        self.ui.setOpenFileGroupState(True)

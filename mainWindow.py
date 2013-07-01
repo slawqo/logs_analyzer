@@ -117,42 +117,70 @@ class Ui_MainWindow(object):
         self.firstLineTopWidgetLayout = QtGui.QHBoxLayout()
         self.secondLineTopWidgetLayout = QtGui.QHBoxLayout()
 
+        #deklaracja groupboxów:
+        self.openFileGroupBox = QtGui.QGroupBox(_fromUtf8("Open local log file"))
+        self.openFileGroupBoxLayout = QtGui.QVBoxLayout()
+        self.downloadFileGroupBox = QtGui.QGroupBox(_fromUtf8("Download log file from logs.ovh.net"))
+        self.downloadFileGroupBoxLayout = QtGui.QHBoxLayout()
+
         #deklaracja elementów w pierwszej linii górnego widgetu:
+
+        #deklaracja elementów z grupy otwierania pliku lokalnego:
+        self.openFileButton = QtGui.QPushButton(_fromUtf8("Open file"))
+        self.openFileButton.setObjectName(_fromUtf8("openFileButton"))
+        self.openFileGroupBoxLayout.addWidget(self.openFileButton)
+        
+        self.openFileName = QtGui.QLabel()
+        self.openFileName.setObjectName(_fromUtf8("openFileName"))
+        self.openFileGroupBoxLayout.addWidget(self.openFileName)
+
+        self.openFileClearButton = QtGui.QPushButton(_fromUtf8("Clear"))
+        self.openFileClearButton.setObjectName(_fromUtf8("openFileClearButton"))
+        self.openFileClearButton.setVisible(False)
+        self.openFileGroupBoxLayout.addWidget(self.openFileClearButton)
+
+        #deklaracja elementów z grupy pobierania pliku:
         self.pageAddressLabel = QtGui.QLabel(_fromUtf8("Page name: "))
         self.pageAddressLabel.setObjectName(_fromUtf8("pageAddressLabel"))
-        self.firstLineTopWidgetLayout.addWidget(self.pageAddressLabel)    
+        self.downloadFileGroupBoxLayout.addWidget(self.pageAddressLabel)    
     
         self.pageAddress = QtGui.QLineEdit()
         self.pageAddress.setObjectName(_fromUtf8("pageAddress"))
-        self.firstLineTopWidgetLayout.addWidget(self.pageAddress)
+        self.downloadFileGroupBoxLayout.addWidget(self.pageAddress)
     
         self.logsTypeLabel = QtGui.QLabel(_fromUtf8("Logs type: "))
         self.logsTypeLabel.setObjectName(_fromUtf8("logsTypeLabel"))
-        self.firstLineTopWidgetLayout.addWidget(self.logsTypeLabel)
+        self.downloadFileGroupBoxLayout.addWidget(self.logsTypeLabel)
 
         self.logsTypeValue = QtGui.QComboBox()
         self.logsTypeValue.setObjectName(_fromUtf8("logsTypeValue"))
         self.logsTypeValue.addItems(self.logsTypes)
-        self.firstLineTopWidgetLayout.addWidget(self.logsTypeValue)
+        self.downloadFileGroupBoxLayout.addWidget(self.logsTypeValue)
 
         self.startDateLabel = QtGui.QLabel(_fromUtf8("Start date: "))
         self.startDateLabel.setObjectName(_fromUtf8("startDateLabel"))
-        self.firstLineTopWidgetLayout.addWidget(self.startDateLabel)
+        self.downloadFileGroupBoxLayout.addWidget(self.startDateLabel)
 
         self.startDateValue = QtGui.QDateEdit()
         self.startDateValue.setObjectName(_fromUtf8("startDateValue"))
         self.startDateValue.setDate(QtCore.QDate().currentDate())
-        self.firstLineTopWidgetLayout.addWidget(self.startDateValue)
+        self.downloadFileGroupBoxLayout.addWidget(self.startDateValue)
 
         self.endDateLabel = QtGui.QLabel(_fromUtf8("End date: "))
         self.endDateLabel.setObjectName(_fromUtf8("endDateLabel"))
-        self.firstLineTopWidgetLayout.addWidget(self.endDateLabel)
+        self.downloadFileGroupBoxLayout.addWidget(self.endDateLabel)
         
         self.endDateValue = QtGui.QDateEdit()
         self.endDateValue.setObjectName(_fromUtf8("endDateValue"))
         self.endDateValue.setDate(QtCore.QDate().currentDate())
-        self.firstLineTopWidgetLayout.addWidget(self.endDateValue)
+        self.downloadFileGroupBoxLayout.addWidget(self.endDateValue)
+       
+        self.openFileGroupBox.setLayout(self.openFileGroupBoxLayout)
+        self.downloadFileGroupBox.setLayout(self.downloadFileGroupBoxLayout)
         
+        self.firstLineTopWidgetLayout.addWidget(self.openFileGroupBox)
+        self.firstLineTopWidgetLayout.addWidget(self.downloadFileGroupBox)
+
         self.firstLineTopWidget.setLayout(self.firstLineTopWidgetLayout)
         # koniec konfiguracji pierwszej linii górnego widgetu
 
@@ -393,3 +421,11 @@ class Ui_MainWindow(object):
         widget = self.getResultTabWidget(tabTitle)
         index = self.getTabIndex(tabTitle)
         self.addTab(self.tabsContainer, widget, tabTitle, index)
+
+
+
+    def setOpenFileGroupState(self, newState):
+        self.pageAddress.setEnabled(newState)
+        self.logsTypeValue.setEnabled(newState)
+        self.startDateValue.setEnabled(newState)
+        self.endDateValue.setEnabled(newState)
