@@ -118,7 +118,7 @@ class mainApp(QtGui.QMainWindow):
         self.ui.reportProgressCancelButton.clicked.connect(self.logsAnalyzer.stop)
         self.ui.statsProgressCancelButton.clicked.connect(self.statsGen.stop)
         self.ui.logsTypeValue.currentIndexChanged.connect(self.setCheckboxesStates)
-
+        self.ui.openFileLogsTypeValue.currentIndexChanged.connect(self.setOpenFileCheckoxesStates)
 
 
 
@@ -176,7 +176,11 @@ class mainApp(QtGui.QMainWindow):
             end = start #wyrównaj datę końcową z początkową jeżeli koniec jest wcześniejszy niż poczętek
             self.ui.endDateValue.setDate(start)
         
-        self.logsType = str(self.ui.logsTypeValue.currentText())
+        if len(self.fileToOpen) != 0:
+            self.logsType = str(self.ui.openFileLogsTypeValue.currentText())
+        else:
+            self.logsType = str(self.ui.logsTypeValue.currentText())
+        
         self.logsParseSettings.test_page = self.page 
         self.logsParseSettings.prepareTimeValues(start.toPyDate().strftime("%d.%m.%Y"), end.toPyDate().strftime("%d.%m.%Y"))
         self.logsParseSettings.prepareLogsType(self.logsType)
@@ -422,6 +426,7 @@ class mainApp(QtGui.QMainWindow):
     
     def splitLogLine(self, line, logType):
         result = []
+        print (logType)
         if logType == "access":
             return self.splitAccessLogLine(line)
         elif logType == "error":
@@ -494,6 +499,16 @@ class mainApp(QtGui.QMainWindow):
             for value in values:
                 result.append(value.strip())
         return result
+    
+    
+    
+    def setOpenFileCheckoxesStates(self):
+        if self.ui.openFileLogsTypeValue.currentIndex() == 0:
+            self.ui.openFilePageName.setEnabled(True)
+            self.setCheckboxesActive()
+        else:
+            self.setCheckboxesInactive()
+            self.ui.openFilePageName.setEnabled(False)
     
     
     
