@@ -49,7 +49,7 @@ class logsSettings:
     date_end = ""
     days_range = ""
     logs_type = "access"
-    
+    isLocalFile = False
     
     
     def prepareLogsType(self, logs_type):

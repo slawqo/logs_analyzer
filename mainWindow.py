@@ -152,6 +152,11 @@ class Ui_MainWindow(object):
         self.openFileGroupBoxSecondLineLayout = QtGui.QHBoxLayout()
         self.openFileGroupBoxSecondLineLayout.setObjectName(_fromUtf8("openFileGroupBoxSecondLineLayout"))
         
+        self.openFileGroupBoxThirdLine = QtGui.QWidget()
+        self.openFileGroupBoxThirdLine.setObjectName(_fromUtf8("openFileGroupBoxThirdLine"))
+        self.openFileGroupBoxThirdLineLayout = QtGui.QHBoxLayout()
+        self.openFileGroupBoxThirdLineLayout.setObjectName(_fromUtf8("openFileGroupBoxThirdLineLayout"))
+        
         self.openFileButton = QtGui.QPushButton(_fromUtf8("Open file"))
         self.openFileButton.setObjectName(_fromUtf8("openFileButton"))
         self.openFileButton.setFixedSize(100, 25)
@@ -162,22 +167,36 @@ class Ui_MainWindow(object):
         self.openFileName.setVisible(False)
         self.openFileGroupBoxFirstLineLayout.addWidget(self.openFileName)
 
+        self.openFilePageNameLabel = QtGui.QLabel(_fromUtf8("Web page: "))
+        self.openFilePageNameLabel.setObjectName(_fromUtf8("openFilePageNameLabel"))
+        self.openFilePageNameLabel.setVisible(False)
+        self.openFileGroupBoxSecondLineLayout.addWidget(self.openFilePageNameLabel)
+        
+        self.openFilePageName = QtGui.QLineEdit()
+        self.openFilePageName.setObjectName(_fromUtf8("openFilePageName"))
+        self.openFilePageName.setVisible(False)
+        self.openFileGroupBoxSecondLineLayout.addWidget(self.openFilePageName)
+        
         self.openFileClearButton = QtGui.QPushButton(_fromUtf8("Clear"))
         self.openFileClearButton.setObjectName(_fromUtf8("openFileClearButton"))
         self.openFileClearButton.setVisible(False)
         self.openFileClearButton.setFixedSize(100, 25)
-        self.openFileGroupBoxSecondLineLayout.addWidget(self.openFileClearButton)
+        self.openFileGroupBoxThirdLineLayout.addWidget(self.openFileClearButton)
         
         self.openFileGroupBoxFirstLineLayout.setAlignment(QtCore.Qt.AlignLeft)
         self.openFileGroupBoxFirstLineLayout.setSpacing(20)
         self.openFileGroupBoxSecondLineLayout.setAlignment(QtCore.Qt.AlignLeft)
         self.openFileGroupBoxSecondLineLayout.setSpacing(20)
+        self.openFileGroupBoxThirdLineLayout.setAlignment(QtCore.Qt.AlignLeft)
+        self.openFileGroupBoxThirdLineLayout.setSpacing(20)
         
         self.openFileGroupBoxFirstLine.setLayout(self.openFileGroupBoxFirstLineLayout)
         self.openFileGroupBoxSecondLine.setLayout(self.openFileGroupBoxSecondLineLayout)
+        self.openFileGroupBoxThirdLine.setLayout(self.openFileGroupBoxThirdLineLayout)
         
         self.openFileGroupBoxLayout.addWidget(self.openFileGroupBoxFirstLine)
         self.openFileGroupBoxLayout.addWidget(self.openFileGroupBoxSecondLine)
+        self.openFileGroupBoxLayout.addWidget(self.openFileGroupBoxThirdLine)
         self.openFileGroupBox.setLayout(self.openFileGroupBoxLayout)
     
 
@@ -464,9 +483,18 @@ class Ui_MainWindow(object):
 
 
 
-    def setOpenFileGroupState(self, newState):
+    def setDownloadFileGroupState(self, newState):
         self.downloadFileGroupBox.setVisible(newState)
         self.pageAddress.setEnabled(newState)
         self.logsTypeValue.setEnabled(newState)
         self.startDateValue.setEnabled(newState)
         self.endDateValue.setEnabled(newState)
+    
+    
+    
+    def setOpenFileElementsState(self, newState, newFileNameLabel):
+        self.openFileName.setText(newFileNameLabel)
+        self.openFileName.setVisible(newState)
+        self.openFilePageName.setVisible(newState)
+        self.openFilePageNameLabel.setVisible(newState)
+        self.openFileClearButton.setVisible(newState)

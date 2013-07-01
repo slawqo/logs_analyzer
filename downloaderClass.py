@@ -57,7 +57,6 @@ class downloader(QtCore.QThread):
     login = ""
     password = ""
     fileName = ""
-    isLocalFile = False
     
     download_finished = QtCore.pyqtSignal()
     download_aborted = QtCore.pyqtSignal()
@@ -176,10 +175,10 @@ class downloader(QtCore.QThread):
     
     def downloadLogs(self):
         if len(self.logs) == 0:
-            if self.isLocalFile == False:
+            if self.settings.isLocalFile == False:
                 self.prepareFullFileName()
             
-            if (os.path.isfile(self.fileName) == False or self.today in self.settings.days_range) and self.isLocalFile == False:
+            if (os.path.isfile(self.fileName) == False or self.today in self.settings.days_range) and self.settings.isLocalFile == False:
                 if (self.settings.date_start == self.settings.date_end):
                     result =  self.loadLogsFromDay(self.settings.date_start)
                 else:

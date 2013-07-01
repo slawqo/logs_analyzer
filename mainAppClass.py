@@ -194,7 +194,8 @@ class mainApp(QtGui.QMainWindow):
             self.logsDownloader.step_done.connect(self.updateDownloadLogsProgressBar)
             if len(self.fileToOpen) != 0:
                 self.logsDownloader.fileName = self.fileToOpen
-                self.logsDownloader.isLocalFile = True
+                self.logsParseSettings.test_page = str(self.ui.openFilePageName.text())
+                self.logsParseSettings.isLocalFile = True
             #pobranie logów:
             self.logsDownloader.start()
         else:
@@ -528,15 +529,11 @@ class mainApp(QtGui.QMainWindow):
     def openLogFile(self):
         self.fileToOpen = QtGui.QFileDialog.getOpenFileName(self, "Open logs file", '/home')
         if len(self.fileToOpen) != 0:
-            self.ui.openFileName.setText(_fromUtf8("File to open: "+self.fileToOpen))
-            self.ui.openFileName.setVisible(True)
-            self.ui.openFileClearButton.setVisible(True)
-            self.ui.setOpenFileGroupState(False)
+            self.ui.setOpenFileElementsState(True, _fromUtf8("File to open: "+self.fileToOpen))
+            self.ui.setDownloadFileGroupState(False)
 
 
     def resetLogFile(self):
         self.fileToOpen = ""
-        self.ui.openFileName.setText(_fromUtf8("File to open: "))
-        self.ui.openFileName.setVisible(False)
-        self.ui.openFileClearButton.setVisible(False)
-        self.ui.setOpenFileGroupState(True)
+        self.ui.setOpenFileElementsState(False, _fromUtf8("File to open: "))
+        self.ui.setDownloadFileGroupState(True)
