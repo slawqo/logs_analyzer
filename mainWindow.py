@@ -107,40 +107,85 @@ class Ui_MainWindow(object):
     def prepareTopWidget(self):
         self.topWidget = QtGui.QWidget()
         self.topWidget.setObjectName(_fromUtf8("topWidget"))
+        self.topWidgetLayout = QtGui.QVBoxLayout()
         
+        #deklaracja elementów w pierwszej linii górnego widgetu:
+        self.prepareFirstLineTopWidget()
+
+        #druga linia górnego widgetu:
+        self.prepareSecondLineTopWidget()
+        
+        #poskładanie do kupy tych widgetów:
+        self.topWidgetLayout.addWidget(self.firstLineTopWidget)
+        self.topWidgetLayout.addWidget(self.secondLineTopWidget)
+        self.topWidget.setLayout(self.topWidgetLayout)
+    
+    
+    
+    def prepareFirstLineTopWidget(self):
         self.firstLineTopWidget = QtGui.QWidget()
         self.firstLineTopWidget.setObjectName(_fromUtf8("firstLineTopWidget"))
-        self.secondLineTopWidget = QtGui.QWidget()
-        self.secondLineTopWidget.setObjectName(_fromUtf8("secondLineTopWidget"))  
-
-        self.topWidgetLayout = QtGui.QVBoxLayout()
+        
         self.firstLineTopWidgetLayout = QtGui.QHBoxLayout()
-        self.secondLineTopWidgetLayout = QtGui.QHBoxLayout()
+        
+        self.prepareOpenFileGroupBox()
+        self.prepareDownloadLogGroupBox()
+        
+        self.firstLineTopWidgetLayout.addWidget(self.openFileGroupBox)
+        self.firstLineTopWidgetLayout.addWidget(self.downloadFileGroupBox)
 
-        #deklaracja groupboxów:
+        self.firstLineTopWidget.setLayout(self.firstLineTopWidgetLayout)
+        
+        
+        
+    def prepareOpenFileGroupBox(self):
         self.openFileGroupBox = QtGui.QGroupBox(_fromUtf8("Open local log file"))
         self.openFileGroupBoxLayout = QtGui.QVBoxLayout()
-        self.downloadFileGroupBox = QtGui.QGroupBox(_fromUtf8("Download log file from logs.ovh.net"))
-        self.downloadFileGroupBoxLayout = QtGui.QHBoxLayout()
-
-        #deklaracja elementów w pierwszej linii górnego widgetu:
-
-        #deklaracja elementów z grupy otwierania pliku lokalnego:
+        
+        self.openFileGroupBoxFirstLine = QtGui.QWidget()
+        self.openFileGroupBoxFirstLine.setObjectName(_fromUtf8("openFileGroupBoxFirstLine"))
+        self.openFileGroupBoxFirstLineLayout = QtGui.QHBoxLayout()
+        self.openFileGroupBoxFirstLineLayout.setObjectName(_fromUtf8("openFileGroupBoxFirstLineLayout"))
+        
+        self.openFileGroupBoxSecondLine = QtGui.QWidget()
+        self.openFileGroupBoxSecondLine.setObjectName(_fromUtf8("openFileGroupBoxSecondLine"))
+        self.openFileGroupBoxSecondLineLayout = QtGui.QHBoxLayout()
+        self.openFileGroupBoxSecondLineLayout.setObjectName(_fromUtf8("openFileGroupBoxSecondLineLayout"))
+        
         self.openFileButton = QtGui.QPushButton(_fromUtf8("Open file"))
         self.openFileButton.setObjectName(_fromUtf8("openFileButton"))
-        self.openFileGroupBoxLayout.addWidget(self.openFileButton)
+        self.openFileButton.setFixedSize(100, 25)
+        self.openFileGroupBoxFirstLineLayout.addWidget(self.openFileButton)
         
-        self.openFileName = QtGui.QLabel()
+        self.openFileName = QtGui.QLabel(_fromUtf8("File to open: "))
         self.openFileName.setObjectName(_fromUtf8("openFileName"))
         self.openFileName.setVisible(False)
-        self.openFileGroupBoxLayout.addWidget(self.openFileName)
+        self.openFileGroupBoxFirstLineLayout.addWidget(self.openFileName)
 
         self.openFileClearButton = QtGui.QPushButton(_fromUtf8("Clear"))
         self.openFileClearButton.setObjectName(_fromUtf8("openFileClearButton"))
         self.openFileClearButton.setVisible(False)
-        self.openFileGroupBoxLayout.addWidget(self.openFileClearButton)
+        self.openFileClearButton.setFixedSize(100, 25)
+        self.openFileGroupBoxSecondLineLayout.addWidget(self.openFileClearButton)
+        
+        self.openFileGroupBoxFirstLineLayout.setAlignment(QtCore.Qt.AlignLeft)
+        self.openFileGroupBoxFirstLineLayout.setSpacing(20)
+        self.openFileGroupBoxSecondLineLayout.setAlignment(QtCore.Qt.AlignLeft)
+        self.openFileGroupBoxSecondLineLayout.setSpacing(20)
+        
+        self.openFileGroupBoxFirstLine.setLayout(self.openFileGroupBoxFirstLineLayout)
+        self.openFileGroupBoxSecondLine.setLayout(self.openFileGroupBoxSecondLineLayout)
+        
+        self.openFileGroupBoxLayout.addWidget(self.openFileGroupBoxFirstLine)
+        self.openFileGroupBoxLayout.addWidget(self.openFileGroupBoxSecondLine)
+        self.openFileGroupBox.setLayout(self.openFileGroupBoxLayout)
+    
 
-        #deklaracja elementów z grupy pobierania pliku:
+
+    def prepareDownloadLogGroupBox(self):
+        self.downloadFileGroupBox = QtGui.QGroupBox(_fromUtf8("Download log file from logs.ovh.net"))
+        self.downloadFileGroupBoxLayout = QtGui.QHBoxLayout()
+        
         self.pageAddressLabel = QtGui.QLabel(_fromUtf8("Page name: "))
         self.pageAddressLabel.setObjectName(_fromUtf8("pageAddressLabel"))
         self.downloadFileGroupBoxLayout.addWidget(self.pageAddressLabel)    
@@ -175,17 +220,17 @@ class Ui_MainWindow(object):
         self.endDateValue.setObjectName(_fromUtf8("endDateValue"))
         self.endDateValue.setDate(QtCore.QDate().currentDate())
         self.downloadFileGroupBoxLayout.addWidget(self.endDateValue)
-       
-        self.openFileGroupBox.setLayout(self.openFileGroupBoxLayout)
-        self.downloadFileGroupBox.setLayout(self.downloadFileGroupBoxLayout)
         
-        self.firstLineTopWidgetLayout.addWidget(self.openFileGroupBox)
-        self.firstLineTopWidgetLayout.addWidget(self.downloadFileGroupBox)
+        self.downloadFileGroupBox.setLayout(self.downloadFileGroupBoxLayout)
 
-        self.firstLineTopWidget.setLayout(self.firstLineTopWidgetLayout)
-        # koniec konfiguracji pierwszej linii górnego widgetu
 
-        #druga linia górnego widgetu:
+
+    def prepareSecondLineTopWidget(self):
+        self.secondLineTopWidgetLayout = QtGui.QHBoxLayout()
+        
+        self.secondLineTopWidget = QtGui.QWidget()
+        self.secondLineTopWidget.setObjectName(_fromUtf8("secondLineTopWidget"))  
+        
         self.getLogsButton = QtGui.QPushButton(_fromUtf8("Get Logs"))
         self.getLogsButton.setObjectName(_fromUtf8("getLogsButton"))
         self.getLogsButton.setFixedSize(100, 25)
@@ -202,15 +247,9 @@ class Ui_MainWindow(object):
         self.secondLineTopWidgetLayout.setAlignment(QtCore.Qt.AlignLeft)
         self.secondLineTopWidgetLayout.setSpacing(20)
         self.secondLineTopWidget.setLayout(self.secondLineTopWidgetLayout)
-        #koniec konfiguracji drugiej linii górnego widgetu    
-
-        #poskładanie do kupy tych widgetów:
-        self.topWidgetLayout.addWidget(self.firstLineTopWidget)
-        self.topWidgetLayout.addWidget(self.secondLineTopWidget)
-        self.topWidget.setLayout(self.topWidgetLayout)
-
-
-
+        
+        
+        
     def prepareCentralWidget(self):
         self.centralWidget = QtGui.QWidget()
         self.centralWidget.setObjectName(_fromUtf8("centralwidget"))
@@ -426,6 +465,7 @@ class Ui_MainWindow(object):
 
 
     def setOpenFileGroupState(self, newState):
+        self.downloadFileGroupBox.setVisible(newState)
         self.pageAddress.setEnabled(newState)
         self.logsTypeValue.setEnabled(newState)
         self.startDateValue.setEnabled(newState)
