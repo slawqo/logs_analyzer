@@ -63,7 +63,7 @@ class mainApp(QtGui.QMainWindow):
     password = ""
     page = ""
     logsType = ""
-    logsFile = ""
+    fileToOpen = ""
     loginCanceled = False
     searchWidgetDisplayed = False #flaga informująca czy wyświetlony jest panel wyszukiwania w logach
     displayedSearchedItemIndex = 0 #index aktualnie podświetlonego elemetnu jaki został znaleziony
@@ -164,6 +164,8 @@ class mainApp(QtGui.QMainWindow):
 
     def prepareDownloadOptions(self):
         self.logsDownloader.logs = "" #zeruję logi zapisane w klasie parser aby ewentualnie przy kolejnym pobraniu klasa pobrała nowe logi a nie korzystała już z tego co ma zapisane z poprzeniej próby
+        self.logsDownloader.isLocalFile = False #zeruję flagę bo później i tak będzie ewentualnie ustawiona od nowe
+        self.logsDownloader.fileName = "" #to również zerujemy bo później jest ustawiane
         self.page = str(self.ui.pageAddress.text())
         
         start = self.ui.startDateValue.date()
@@ -185,15 +187,18 @@ class mainApp(QtGui.QMainWindow):
     def downloadLogs(self):
         self.prepareDownloadOptions()
         #check if pageName is given:
-        if len(self.page) != 0:
+        if len(self.page) != 0 or len(self.fileToOpen) != 0:
             self.ui.openProgressStatus("Log")
             self.logsDownloader.download_finished.connect(self.getLogs)
             self.logsDownloader.download_aborted.connect(self.closeDownloadingProgressBar)
             self.logsDownloader.step_done.connect(self.updateDownloadLogsProgressBar)
+            if len(self.fileToOpen) != 0:
+                self.logsDownloader.fileName = self.fileToOpen
+                self.logsDownloader.isLocalFile = True
             #pobranie logów:
             self.logsDownloader.start()
         else:
-            QtGui.QMessageBox.about(self, "Error", "Page name must be given to get logs")
+            QtGui.QMessageBox.about(self, "Error", "Page name or log file must be given to get logs")
 
 
 
@@ -521,16 +526,16 @@ class mainApp(QtGui.QMainWindow):
 
 
     def openLogFile(self):
-        self.logsFile = QtGui.QFileDialog.getOpenFileName(self, "Open logs file", '/home')
-        if len(self.logsFile) != 0:
-            self.ui.openFileName.setText(_fromUtf8(self.logsFile))
+        self.fileToOpen = QtGui.QFileDialog.getOpenFileName(self, "Open logs file", '/home')
+        if len(self.fileToOpen) != 0:
+            self.ui.openFileName.setText(_fromUtf8(self.fileToOpen))
             self.ui.openFileName.setVisible(True)
             self.ui.openFileClearButton.setVisible(True)
             self.ui.setOpenFileGroupState(False)
 
 
     def resetLogFile(self):
-        self.logsFile = ""
+        self.fileToOpen = ""
         self.ui.openFileName.setVisible(False)
         self.ui.openFileClearButton.setVisible(False)
         self.ui.setOpenFileGroupState(True)

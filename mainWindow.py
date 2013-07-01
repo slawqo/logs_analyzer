@@ -132,6 +132,7 @@ class Ui_MainWindow(object):
         
         self.openFileName = QtGui.QLabel()
         self.openFileName.setObjectName(_fromUtf8("openFileName"))
+        self.openFileName.setVisible(False)
         self.openFileGroupBoxLayout.addWidget(self.openFileName)
 
         self.openFileClearButton = QtGui.QPushButton(_fromUtf8("Clear"))
