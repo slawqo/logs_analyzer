@@ -88,7 +88,7 @@ class statsGenerator(QtCore.QThread):
     
     
     
-    def createAwstats(self, logFile = ""):
+    def createAwstats(self, logFile = "", fileName = ""):
         if self.settings.logs_type == "":
             file_logs_type = "access"
         else:
@@ -97,12 +97,15 @@ class statsGenerator(QtCore.QThread):
         if logFile == "" :
             raise Exception("No logs file given. No awstats will be generated")
         
-        if self.settings.isLocalFile == True:
-            awstatsResultFileName = self.awstatsDir+"/stats/"+self.settings.test_page+"_local.html"
-        elif (self.settings.date_start == self.settings.date_end):
-            awstatsResultFileName = self.awstatsDir+"/stats/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+file_logs_type+".html"
+        if len(fileName) == 0:
+            if self.settings.isLocalFile == True:
+                awstatsResultFileName = self.awstatsDir+"/stats/"+self.settings.test_page+"_local.html"
+            elif (self.settings.date_start == self.settings.date_end):
+                awstatsResultFileName = self.awstatsDir+"/stats/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+file_logs_type+".html"
+            else:
+                awstatsResultFileName = self.awstatsDir+"/stats/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+self.settings.date_end.strftime("%Y.%m.%d")+"-"+file_logs_type+".html"
         else:
-            awstatsResultFileName = self.awstatsDir+"/stats/"+self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+self.settings.date_end.strftime("%Y.%m.%d")+"-"+file_logs_type+".html"
+            awstatsResultFileName = fileName
         
         if os.path.isfile(awstatsResultFileName) == False or self.today in self.settings.days_range or self.settings.isLocalFile == True:
             configFile = self.createTmpConfig()

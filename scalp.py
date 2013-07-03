@@ -437,7 +437,9 @@ def generate_xml_file(flag, access, filters, odir, fname = ""):
     else:
         fname = fname+".xml"
         
-    fname = os.path.abspath(odir + os.sep + fname)
+    if odir != "":
+        fname = os.path.abspath(odir + os.sep + fname)
+    
     try:
         out = open(fname, 'w')
         out.write(xml_header)
@@ -471,8 +473,10 @@ def generate_html_file(flag, access, filters, odir, fname = ""):
         fname = '%s_scalp_%s.html' % (access,  curtime)
     else:
         fname = fname+".html"
-        
-    fname = os.path.abspath(odir + os.sep + fname)
+    
+    if odir != "":
+        fname = os.path.abspath(odir + os.sep + fname)
+    
     try:
         out = open(fname, 'w')
         out.write(html_header)
@@ -484,8 +488,7 @@ def generate_html_file(flag, access, filters, odir, fname = ""):
             if len(flag[attack_type].values()) < 1:
                 continue
             out.write("  <h2>%s (%s)</h2>\n" % (attack_type, name))
-            impacts = flag[attack_type].keys()
-            impacts.sort(reverse=True)
+            impacts = sorted(flag[attack_type], reverse = True)
             # order by impact
             for i in impacts:
                 out.write("<div class='match impact-%d'>\n" % int(i))
@@ -501,7 +504,7 @@ def generate_html_file(flag, access, filters, odir, fname = ""):
             out.write("<br />\n")
         out.write(html_footer)
         out.close()
-    except IOError:
+    except IOError as er:
         print ("Cannot open the file:", fname)
     return
 

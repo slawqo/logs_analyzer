@@ -97,13 +97,18 @@ class analyzer(QtCore.QThread):
             self.filters = os.path.abspath(os.path.dirname(__file__))+"/filters/default_filter.xml"
     
     
-    def createReport(self, logFile = ""):
-      
+    def createReport(self, logFile = "", fileName = ""):
         if (self.settings.date_start == self.settings.date_end):
             reportsFileName = self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")
         else:
             reportsFileName = self.settings.test_page+"_"+self.settings.date_start.strftime("%Y.%m.%d")+"-"+self.settings.date_end.strftime("%Y.%m.%d")
 
+        if len(fileName) == 0:
+            outputFile = self.reportsDir+"/"+reportsFileName+"."+self.report_format
+        else:
+            outputFile = fileName
+            reportsFileName = fileName
+            self.reportsDir = ""
         
         preferences = {
             'attack_type' : [],
@@ -122,9 +127,8 @@ class analyzer(QtCore.QThread):
         if logFile == "" :
             raise Exception("No logs file given. Analyze will not start")
             
-        outputFile = self.reportsDir+"/"+reportsFileName+"."+self.report_format
         #sprawdzanie czy plik już przypadkiem nie istnieje, jeżeli tak to raport nie jest tworzony na nowo:
         if os.path.isfile(outputFile) == False or self.today in self.settings.days_range:
-            report = scalp.scalper(logFile, self.filters, preferences, fileName=reportsFileName)
+            report = scalp.scalper(logFile, self.filters, preferences, output = self.report_format, fileName=reportsFileName)
         
         return outputFile

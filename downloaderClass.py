@@ -120,7 +120,6 @@ class downloader(QtCore.QThread):
             self.logs_address = self.main_address+"/"+self.settings.test_page+"/logs-"+day.strftime("%m")+"-"+day.strftime("%Y")+logs_type+self.settings.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log.gz"
         else:
             self.logs_address = self.main_address+"/"+self.settings.test_page+"/osl"+logs_type+self.settings.test_page+"-"+day.strftime("%d")+"-"+day.strftime("%m")+"-"+day.strftime("%Y")+".log"
-        print ("page address: "+self.logs_address)
 
 
 
@@ -195,7 +194,7 @@ class downloader(QtCore.QThread):
                             return self.logs
                     
                         counter = counter + percent_per_day
-                        print ("Download counter: "+str(counter))
+                        print ("Downloaded: "+str(counter)+"%")
                         self.step_done.emit(counter)
 
                     sys.stdout.write("\n")
@@ -214,8 +213,11 @@ class downloader(QtCore.QThread):
 
 
 
-    def saveLogs(self):
-        self.prepareFullFileName()
+    def saveLogs(self, fileName = ""):
+        if len(fileName) == 0:
+            self.prepareFullFileName()
+        else:
+            self.fileName = fileName
         
         if len(self.logs) == 0:
             self.downloadLogs()
