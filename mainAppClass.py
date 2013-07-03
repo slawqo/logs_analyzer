@@ -189,6 +189,7 @@ class mainApp(QtGui.QMainWindow):
 
 
     def downloadLogs(self):
+        self.clearSearchResults()
         self.prepareDownloadOptions()
         #check if pageName is given:
         if len(self.page) != 0 or len(self.fileToOpen) != 0:
@@ -426,7 +427,6 @@ class mainApp(QtGui.QMainWindow):
     
     def splitLogLine(self, line, logType):
         result = []
-        print (logType)
         if logType == "access":
             return self.splitAccessLogLine(line)
         elif logType == "error":

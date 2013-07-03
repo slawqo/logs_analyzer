@@ -65,6 +65,7 @@ class Ui_MainWindow(object):
     statsTabIndex = 3
     
     searchWidget = None
+    searchWidgetStatus = False
     
     def setupUi(self, MainWindow):
         self.main_window = MainWindow
@@ -498,6 +499,9 @@ class Ui_MainWindow(object):
 
     
     def openProgressStatus(self, tabTitle):
+        if tabTitle == "Log":
+            self.searchWidgetStatus = self.searchWidget.isVisible()
+            self.searchWidget.hide()
         widget = self.getProgressTabWidget(tabTitle)
         index = self.getTabIndex(tabTitle)
         self.addTab(self.tabsContainer, widget, tabTitle, index)
@@ -508,6 +512,8 @@ class Ui_MainWindow(object):
         widget = self.getResultTabWidget(tabTitle)
         index = self.getTabIndex(tabTitle)
         self.addTab(self.tabsContainer, widget, tabTitle, index)
+        if tabTitle == "Log":
+            self.searchWidget.setVisible(self.searchWidgetStatus)
 
 
 
