@@ -88,7 +88,7 @@ if __name__ == '__main__':
     filters_file = ""
     isLocalFile = False
 
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1] == "--help" or sys.argv[1] == "-h":
         show_help()
         sys.exit(0)
     else:
