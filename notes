@@ -1,8 +1,0 @@
-Użycie awstats:
-
-awstats-7.1.1/wwwroot/cgi-bin/awstats.pl Logfile=~/.logs_analyzer/logs/ask-www.eu_2013.04.11-access.log -config=awstats.conf -SiteDomain=ask-www.eu -output > 
-awstats_test.html
-
-Trzeba jeszcze:
-1. dopracować plik config
-2. opracować jakiś sposób na dodawanie do config'u parametru SiteDomain
