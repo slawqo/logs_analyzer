@@ -109,7 +109,7 @@ class statsGenerator(QtCore.QThread):
         
         if os.path.isfile(awstatsResultFileName) == False or self.today in self.settings.days_range or self.settings.isLocalFile == True:
             configFile = self.createTmpConfig()
-            systemCommand = self.programDir+"/libs/awstats/wwwroot/cgi-bin/awstats.pl Logfile="+logFile+" -config="+configFile+" -update -output > "+awstatsResultFileName
+            systemCommand = self.programDir+"/tools/awstats/wwwroot/cgi-bin/awstats.pl Logfile="+logFile+" -config="+configFile+" -update -output > "+awstatsResultFileName
             #systemProcess = sub.Popen(systemCommand, stdout=sub.PIPE, stderr=sub.PIPE)
             os.system(systemCommand)
             self.cleanAwstatsFiles()
@@ -119,7 +119,7 @@ class statsGenerator(QtCore.QThread):
 
 
     def createTmpConfig(self):
-        awstatsBaseConfig = self.programDir+"/libs/awstats/base_access_config.conf"
+        awstatsBaseConfig = self.programDir+"/tools/awstats/base_access_config.conf"
         tmpConfig = self.awstatsDir+"/awstats_tmp_config.conf"
         base_file = open(awstatsBaseConfig, "r")
         tmp_file = open(tmpConfig, "w")
